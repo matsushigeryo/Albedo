@@ -1,4 +1,4 @@
-#include "player_bullet_manager.h"
+#include "player_bullet.h"
 #include <iostream>
 #include <DxLib.h>
 #include "global.h"
@@ -35,26 +35,25 @@ namespace game {
             if (bullet.is_active_) {
                 // 描画する画像ハンドルを決定する
                 switch (bullet.type_) {
-                case BulletType::MainShot: image_handle = image_handle_mainshot_; break;
-                case BulletType::SubShot: image_handle = image_handle_subshot_; break;
+                case PlayerBulletType::MainShot: image_handle = image_handle_mainshot_; break;
+                case PlayerBulletType::SubShot: image_handle = image_handle_subshot_; break;
                 }
 
                 // 射出直後から時間経過でフェードインする
-                alpha = InvLerpF(0, 8, bullet.elapsed_time_);
-                if (alpha < 0.0f) alpha = 0.0f;
-                if (alpha > 1.0f) alpha = 1.0f;
-                alpha = LerpF(0, 180, alpha);
-                SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
+                if (bullet.elapsed_time_ >= 0 && bullet.elapsed_time_ <= 8) {
+                    alpha = InvLerpF(0, 8, bullet.elapsed_time_);
+                    alpha = LerpF(0, 180, alpha);
+                    SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
+                }
 
                 // 描画
                 DrawRotaGraphF(bullet.x_, bullet.y_, 1.0, 0.0, image_handle, true);
+                SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0); // 合成モードを元に戻す
             }
         }
-
-        SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0); // 合成モードを元に戻す
     }
 
-    bool PlayerBulletManager::Shot(BulletType type, float x, float y) {
+    bool PlayerBulletManager::Shot(PlayerBulletType type, float x, float y) {
         for (auto &bullet : bullets_) {
             if (!bullet.is_active_) { // 配列から空きを見つけて弾を追加
                 bullet.is_active_ = true;
@@ -71,7 +70,14 @@ namespace game {
         return false;
     }
 
-    std::array<Bullet, PlayerBulletManager::kMaxNum> &PlayerBulletManager::GetBullets() {
+    // 敵に当たったとき
+    void PlayerBulletManager::OnHitEnemy(PlayerBullet &bullet) {
+        bullet.is_active_ = false;                                                  // 消去
+        effect_manager_ptr->Spawn(EffectType::PlayerBulletSparkle, bullet.x_, bullet.y_); // エフェクト発生
+    }
+
+    // 弾の配列を取得する
+    std::array<PlayerBullet, PlayerBulletManager::kMaxNum> &PlayerBulletManager::GetBullets() {
         return bullets_;
     }
 }

@@ -26,6 +26,7 @@ void Draw() {
     SetDrawScreen(DX_SCREEN_BACK);
     DrawExtendGraph(0, 0, kWindowWidth, kWindowHeight, render_buffer, false);
     DrawFormatString(3, 3, GetColor(255, 255, 255), "%.1fFPS", current_FPS);
+    DrawFormatString(3, 3 + 16, GetColor(255, 255, 255), "USING %.2fMB", GetWindowsMemoryUsage() / 1024.0f / 1024.0f);
     ScreenFlip();
 }
 

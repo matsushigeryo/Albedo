@@ -1,4 +1,6 @@
 #include "global.h"
+#include <Windows.h>
+#include <Psapi.h>
 
 bool is_running = false;
 float current_FPS = 0.0f;
@@ -17,7 +19,32 @@ float InvLerpF(float start, float end, float v) {
     return (v - start) / (end - start);
 }
 
+// イージング関数群
+float EaseInQuad(float x) {
+    return x * x;
+}
+float EaseOutQuad(float x) {
+    return 1.0f - (1.0f - x) * (1.0f - x);
+}
+
+// 任意の範囲からランダムな整数値を取得する
+int GetRandomRange(int min, int max) {
+    return min + rand() % (max - min);
+}
+
+// 0.0～1.0に正規化されたランダムな浮動小数点値を取得する
+float GetRandomF() {
+    return static_cast<float>(rand()) / RAND_MAX;
+}
+
 // その座標が画面内か？
 bool OnScreen(int x, int y) {
     return x >= 0 && x < kWindowWidth && y >= 0 && y < kWindowHeight;
+}
+
+// 現在のプロセスのメモリ使用量を取得する(バイト単位)
+unsigned long GetWindowsMemoryUsage() {
+    PROCESS_MEMORY_COUNTERS_EX pmc;
+    GetProcessMemoryInfo(GetCurrentProcess(), reinterpret_cast<PROCESS_MEMORY_COUNTERS*>(&pmc), sizeof(pmc));
+    return static_cast<unsigned long>(pmc.PrivateUsage);
 }

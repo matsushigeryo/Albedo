@@ -6,8 +6,9 @@
 #include "input.h"
 #include "camera.h"
 #include "player.h"
-#include "player_bullet_manager.h"
-#include "enemy_manager.h"
+#include "player_bullet.h"
+#include "enemy.h"
+#include "effect.h"
 #include "tilemap.h"
 
 constexpr float kPi = 3.14159265f;
@@ -26,7 +27,12 @@ extern int render_buffer;
 
 float LerpF(float start, float end, float t);
 float InvLerpF(float start, float end, float v);
+float EaseInQuad(float x);
+float EaseOutQuad(float x);
+int GetRandomRange(int min, int max);
+float GetRandomF();
 bool OnScreen(int x, int y);
+unsigned long GetWindowsMemoryUsage();
 
 namespace game {
     extern int time;
@@ -36,6 +42,7 @@ namespace game {
     extern std::unique_ptr<Player> player_ptr;
     extern std::unique_ptr<PlayerBulletManager> player_bullet_manager_ptr;
     extern std::unique_ptr<EnemyManager> enemy_manager_ptr;
+    extern std::unique_ptr<EffectManager> effect_manager_ptr;
     extern std::unique_ptr<TileMap> tilemap_ptr;
 }
 

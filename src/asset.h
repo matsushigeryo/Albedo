@@ -12,6 +12,8 @@ namespace game {
         PlayerBulletMainShot,
         PlayerBulletSubShot,
         EnemyKuro,
+        EffectWhiteSparkle1,
+        EffectWhiteSparkle2,
     };
 
     class Asset {

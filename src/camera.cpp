@@ -9,7 +9,7 @@ namespace game {
     }
 
     void Camera::Update() {
-        y_ -= 0.1f;
+        y_ -= 0.05f;
     }
 
     float Camera::GetX() const {
