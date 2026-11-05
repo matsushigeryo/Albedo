@@ -1,0 +1,42 @@
+#ifndef GLOBAL_H_
+#define GLOBAL_H_
+
+#include <memory>
+#include "asset.h"
+#include "input.h"
+#include "camera.h"
+#include "player.h"
+#include "player_bullet_manager.h"
+#include "enemy_manager.h"
+#include "tilemap.h"
+
+constexpr float kPi = 3.14159265f;
+constexpr float kSqrt2 = 1.414213562f;
+
+constexpr const char *kWindowTitle = "DXƒ‰ƒCƒuƒ‰ƒŠ";
+constexpr long long kIdealFrameDuration = 16666;
+constexpr int kWindowWidth = 640;
+constexpr int kWindowHeight = 480;
+constexpr int kGraphicWidth = 320;
+constexpr int kGraphicHeight = 240;
+
+extern bool is_running;
+extern float current_FPS;
+extern int render_buffer;
+
+float LerpF(float start, float end, float t);
+float InvLerpF(float start, float end, float v);
+bool OnScreen(int x, int y);
+
+namespace game {
+    extern int time;
+    extern Asset asset;
+    extern Input input;
+    extern Camera camera;
+    extern std::unique_ptr<Player> player_ptr;
+    extern std::unique_ptr<PlayerBulletManager> player_bullet_manager_ptr;
+    extern std::unique_ptr<EnemyManager> enemy_manager_ptr;
+    extern std::unique_ptr<TileMap> tilemap_ptr;
+}
+
+#endif
