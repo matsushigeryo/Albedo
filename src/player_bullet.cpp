@@ -71,7 +71,7 @@ namespace game {
     }
 
     // 敵に当たったとき
-    void PlayerBulletManager::OnHitEnemy(PlayerBullet &bullet) {
+    void PlayerBulletManager::OnDamage(PlayerBullet &bullet) {
         bullet.is_active_ = false;                                                  // 消去
         effect_manager_ptr->Spawn(EffectType::PlayerBulletSparkle, bullet.x_, bullet.y_); // エフェクト発生
     }

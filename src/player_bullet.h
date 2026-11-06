@@ -29,7 +29,7 @@ namespace game {
         void Update();
         void Draw();
         bool Shot(PlayerBulletType type, float x, float y);
-        void OnHitEnemy(PlayerBullet &bullet);
+        void OnDamage(PlayerBullet &bullet);
         std::array<PlayerBullet, kMaxNum> &GetBullets();
 
       private:

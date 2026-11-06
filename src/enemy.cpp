@@ -13,11 +13,18 @@ namespace game {
     void EnemyManager::Update() {
         for (auto &enemy : enemies_) {
             if (enemy.is_active_) {
-                enemy.on_damage_timer_++;
-                enemy.y_ += 1.0f;
+                // 座標更新
+                enemy.y_ += 0.7f;
                 if (enemy.y_ > kGraphicHeight + 32) {
                     enemy.is_active_ = false;
                 }
+                // 敵の攻撃(仮)
+                if (enemy.elapsed_time_ % 10 == 0 && enemy.y_ > 32 && enemy.y_ < kGraphicHeight / 2) {
+                    enemy_bullet_manager_ptr->AddBullet(enemy.x_, enemy.y_, GetRandomNormalized() * kPi * 2.0f, LerpF(1.0f, 2.0f, GetRandomNormalized()));
+                }
+                // タイマー更新
+                enemy.elapsed_time_++;
+                enemy.on_damage_timer_++;
             }
         }
     }

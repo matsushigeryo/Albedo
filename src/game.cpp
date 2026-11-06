@@ -11,34 +11,38 @@ namespace game {
     Asset asset{"asset"};
     Input input{};
     Camera camera{};
+    std::unique_ptr<TileMap> tilemap_ptr = nullptr;
     std::unique_ptr<Player> player_ptr = nullptr;
     std::unique_ptr<PlayerBulletManager> player_bullet_manager_ptr = nullptr;
     std::unique_ptr<EnemyManager> enemy_manager_ptr = nullptr;
+    std::unique_ptr<EnemyBulletManager> enemy_bullet_manager_ptr = nullptr;
     std::unique_ptr<EffectManager> effect_manager_ptr = nullptr;
-    std::unique_ptr<TileMap> tilemap_ptr = nullptr;
 
     void Init() {
         // アセット群の読み込み
-        asset.LoadImageAsset(ImageID::TileSet, "tileset.png");
-        asset.LoadImageAsset(ImageID::Player, "player.png");
-        asset.LoadImageAsset(ImageID::PlayerOption, "player_option.png");
-        asset.LoadImageAsset(ImageID::PlayerBulletMainShot, "player_bullet_main_shot.png");
-        asset.LoadImageAsset(ImageID::PlayerBulletSubShot, "player_bullet_sub_shot.png");
-        asset.LoadImageAsset(ImageID::EnemyKuro, "enemy_kuro.png");
-        asset.LoadImageAsset(ImageID::EffectWhiteSparkle1, "effect_white_sparkle_1.png");
-        asset.LoadImageAsset(ImageID::EffectWhiteSparkle2, "effect_white_sparkle_2.png");
+        asset.LoadImageAsset(ImageID::TileSet, "image/tileset.png");
+        asset.LoadImageAsset(ImageID::Player, "image/player.png");
+        asset.LoadImageAsset(ImageID::PlayerOption, "image/player_option.png");
+        asset.LoadImageAsset(ImageID::PlayerBulletMainShot, "image/player_bullet_main_shot.png");
+        asset.LoadImageAsset(ImageID::PlayerBulletSubShot, "image/player_bullet_sub_shot.png");
+        asset.LoadImageAsset(ImageID::EnemyKuro, "image/enemy_kuro.png");
+        asset.LoadImageAsset(ImageID::EnemyBullet, "image/enemy_bullet.png");
+        asset.LoadImageAsset(ImageID::EffectWhiteSparkle1, "image/effect_white_sparkle_1.png");
+        asset.LoadImageAsset(ImageID::EffectWhiteSparkle2, "image/effect_white_sparkle_2.png");
 
         // 初期化
         tilemap_ptr = std::make_unique<TileMap>("asset/tilemap.tmj");
         player_ptr = std::make_unique<Player>();
         player_bullet_manager_ptr = std::make_unique<PlayerBulletManager>();
         enemy_manager_ptr = std::make_unique<EnemyManager>();
+        enemy_bullet_manager_ptr = std::make_unique<EnemyBulletManager>();
         effect_manager_ptr = std::make_unique<EffectManager>();
 
         camera.Init();
         player_ptr->Init();
         player_bullet_manager_ptr->Init();
         enemy_manager_ptr->Init();
+        enemy_bullet_manager_ptr->Init();
         effect_manager_ptr->Init();
 
         std::cout << "―― ゲームシーンを初期化しました ――" << std::endl;
@@ -55,10 +59,12 @@ namespace game {
         player_ptr->Update();
         player_bullet_manager_ptr->Update();
         enemy_manager_ptr->Update();
+        enemy_bullet_manager_ptr->Update();
         effect_manager_ptr->Update();
         
         // 当たり判定の処理
         UpdateCollisionPlayerToEnemy(player_ptr.get(), enemy_manager_ptr.get());
+        UpdateCollisionPlayerToEnemyBullet(player_ptr.get(), enemy_bullet_manager_ptr.get());
         UpdateCollisionPlayerBulletToEnemy(player_bullet_manager_ptr.get(), enemy_manager_ptr.get());
 
         if (time >= 40 && (time - 40) % 20 == 0) {
@@ -73,6 +79,7 @@ namespace game {
         player_bullet_manager_ptr->Draw();
         player_ptr->Draw();
         enemy_manager_ptr->Draw();
+        enemy_bullet_manager_ptr->Draw();
         effect_manager_ptr->Draw();
     }
 }

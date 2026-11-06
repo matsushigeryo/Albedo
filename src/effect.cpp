@@ -77,8 +77,8 @@ namespace game {
     void EffectManager::UniqueSpawn(Effect &effect) {
         switch (effect.type_) {
         case EffectType::EnemyDead: {
-            const float angle = GetRandomF() * kPi * 2.0f;
-            const float speed = LerpF(2.0f, 3.5f, GetRandomF());
+            const float angle = GetRandomNormalized() * kPi * 2.0f;
+            const float speed = LerpF(2.0f, 3.5f, GetRandomNormalized());
             effect.vx_ = std::cosf(angle) * speed;
             effect.vy_ = std::sinf(angle) * speed;
         }
