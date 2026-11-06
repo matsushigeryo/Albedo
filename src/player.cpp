@@ -93,8 +93,8 @@ namespace game {
         SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0); // 合成モードを元に戻す
     }
 
-    // 敵と当たったとき
-    void Player::OnHitEnemy() {
+    // ダメージを受けたとき
+    void Player::OnDamage() {
         if (!IsInvincible()) {
             dead_timer_ = 0;
         }

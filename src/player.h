@@ -24,7 +24,7 @@ namespace game {
         void Init();
         void Update();
         void Draw();
-        void OnHitEnemy();
+        void OnDamage();
         float GetX() const;
         float GetY() const;
         bool IsInvincible() const;
