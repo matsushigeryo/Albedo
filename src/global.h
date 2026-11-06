@@ -17,8 +17,8 @@ constexpr float kSqrt2 = 1.414213562f;
 
 constexpr const char *kWindowTitle = "DXƒ‰ƒCƒuƒ‰ƒŠ";
 constexpr long long kIdealFrameDuration = 16666;
-constexpr int kWindowWidth = 640;
-constexpr int kWindowHeight = 480;
+constexpr int kWindowWidth = 960;
+constexpr int kWindowHeight = 720;
 constexpr int kGraphicWidth = 320;
 constexpr int kGraphicHeight = 240;
 

@@ -20,6 +20,7 @@ namespace game {
 
     void Init() {
         // アセット群の読み込み
+        asset.Clear();
         asset.LoadImageAsset(ImageID::TileSet, "image/tileset.png");
         asset.LoadImageAsset(ImageID::Player, "image/player.png");
         asset.LoadImageAsset(ImageID::PlayerOption, "image/player_option.png");

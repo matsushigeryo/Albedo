@@ -21,6 +21,7 @@ namespace game {
       public:
         Asset(const std::string &root_folder_path);
         ~Asset() = default;
+        void Clear();
         bool LoadImageAsset(const ImageID image_id, const std::string &file_path);
         int GetImageAsset(const ImageID image_id) const;
 

@@ -7,6 +7,14 @@ namespace game {
         : root_folder_path_{root_folder_path} {
     }
 
+    // アセットを解放する
+    void Asset::Clear() {
+        for (const auto &pair : image_map_) {
+            DeleteGraph(pair.second);
+        }
+        image_map_.clear();
+    }
+
     // 画像ファイルを読み込む
     bool Asset::LoadImageAsset(const ImageID image_id, const std::string &file_path) {
         const std::string full_path = root_folder_path_ + "/" + file_path;

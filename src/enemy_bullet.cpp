@@ -17,8 +17,8 @@ namespace game {
 			bullet.x_ += bullet.vx_;
 			bullet.y_ += bullet.vy_;
 			// âÊñ äOÇ…èoÇΩÇÁè¡ãé
-            const float bullet_radius = 2;
-			if (bullet.x_ - bullet_radius < 0 || bullet.x_ + bullet_radius > kGraphicWidth || bullet.y_ - bullet_radius < 0 || bullet.y_ + bullet_radius > kGraphicHeight) {
+            const float bullet_radius = 4;
+			if (bullet.x_ + bullet_radius < 0 || bullet.x_ - bullet_radius > kGraphicWidth || bullet.y_ + bullet_radius < 0 || bullet.y_ - bullet_radius > kGraphicHeight) {
 				bullet.is_active_ = false;
 			}
             // éûä‘åoâﬂ
