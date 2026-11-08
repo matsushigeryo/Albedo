@@ -1,8 +1,8 @@
-#include <DxLib.h>
 #include <Windows.h>
-#include "src/game.h"
-#include "src/global.h"
-#include "src/input.h"
+#include <DxLib.h>
+#include "game.h"
+#include "global.h"
+#include "input.h"
 
 void Init() {
     is_running = true;

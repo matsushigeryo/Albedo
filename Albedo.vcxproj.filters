@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="ヘッダー ファイル\sol">
+      <UniqueIdentifier>{6d90f8ab-7c48-41ef-90e8-b32e50f57f56}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -91,6 +94,15 @@
     </ClInclude>
     <ClInclude Include="src\enemy_bullet.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sol\config.hpp">
+      <Filter>ヘッダー ファイル\sol</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sol\forward.hpp">
+      <Filter>ヘッダー ファイル\sol</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sol\sol.hpp">
+      <Filter>ヘッダー ファイル\sol</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
