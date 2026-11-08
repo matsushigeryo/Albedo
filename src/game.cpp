@@ -1,7 +1,6 @@
 #include "game.h"
 #include <iostream>
 #include <DxLib.h>
-#include <sol/sol.hpp>
 #include "global.h"
 #include "collision.h"
 
@@ -46,22 +45,6 @@ namespace game {
         enemy_manager_ptr->Init();
         enemy_bullet_manager_ptr->Init();
         effect_manager_ptr->Init();
-
-        std::cout << "―― ゲームシーンを初期化しました ――" << std::endl;
-
-        sol::state lua;
-        lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::math);
-
-        // Luaの print 関数を C++ 側で再定義
-        lua["print"] = [](sol::variadic_args args) {
-            for (auto arg : args) {
-                std::string str = arg.get<std::string>();
-                std::cout << str << " ";
-            }
-            std::cout << std::endl;
-        };
-
-        lua.script("print('Hello from Lua!')");
     }
 
     void Update() {
