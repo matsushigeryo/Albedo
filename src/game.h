@@ -8,6 +8,7 @@ namespace game {
     void Init();
     void Update();
     void Draw();
+    int GetGameTime();
 }
 
 #endif

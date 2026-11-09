@@ -53,7 +53,7 @@ namespace game {
         // ファイルを開く
         std::ifstream ifs(json_path);
         if (!ifs.is_open()) {
-            std::cerr << "マップデータが開けませんでした: " << json_path << std::endl;
+            // std::cerr << "マップデータが開けませんでした: " << json_path << std::endl;
             return false;
         }
 
@@ -78,16 +78,16 @@ namespace game {
             }
 
         } catch (const nlohmann::json::out_of_range &e) {
-            std::cerr << "マップデータに必要なキーが存在しませんでした: " << json_path << std::endl
-                      << e.what() << std::endl;
+            // std::cerr << "マップデータに必要なキーが存在しませんでした: " << json_path << std::endl
+            //          << e.what() << std::endl;
             return false;
         }
 
         // デバッグ用出力
-        std::cout << "マップデータが正常に読み込まれました: " << json_path << std::endl;
-        std::cout << "map_width: " << map_width_ << std::endl;
-        std::cout << "map_height: " << map_height_ << std::endl;
-        std::cout << "layers: " << layers_.size() << std::endl;
+        // std::cout << "マップデータが正常に読み込まれました: " << json_path << std::endl;
+        // std::cout << "map_width: " << map_width_ << std::endl;
+        // std::cout << "map_height: " << map_height_ << std::endl;
+        // std::cout << "layers: " << layers_.size() << std::endl;
 
         return true;
     }

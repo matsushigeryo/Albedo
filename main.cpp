@@ -42,6 +42,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
     freopen_s((FILE **)stderr, "CONOUT$", "w", stderr);
 
     // DxLib‚Ì‰Šúİ’è
+    SetApplicationLogFileName("dxlib.log");
     ChangeWindowMode(true);
     SetWindowVisibleFlag(false);
     SetWindowStyleMode(8);

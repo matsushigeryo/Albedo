@@ -1,6 +1,7 @@
 #include "asset.h"
-#include <iostream>
 #include <DxLib.h>
+#include <magic_enum/magic_enum.hpp>
+#include "global.h"
 
 namespace game {
     Asset::Asset(const std::string &root_folder_path)
@@ -20,10 +21,11 @@ namespace game {
         const std::string full_path = root_folder_path_ + "/" + file_path;
         int handle = LoadGraph(full_path.c_str(), false);
         if (handle == -1) {
-            std::cerr << "画像ファイルの読み込みに失敗しました: " << file_path << std::endl;
+            log.Print("Asset: 新規画像ファイルの読み込みに失敗しました: %s", full_path.c_str());
             return false;
         } else {
             image_map_[image_id] = handle;
+            log.Print("Asset: 新規画像ファイルを読み込みました: %s", full_path.c_str());
             return true;
         }
     }
@@ -33,8 +35,7 @@ namespace game {
         try {
             return image_map_.at(image_id);
         } catch (const std::out_of_range &e) {
-            std::cerr << "取得しようとした画像アセットは存在しませんでした" << std::endl
-                      << e.what() << std::endl;
+            log.Print("Asset: 取得しようとした画像アセットは存在しませんでした: ImageID::%s", magic_enum::enum_name(image_id).data());
         }
     }
 }

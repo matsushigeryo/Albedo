@@ -66,13 +66,13 @@ namespace game {
         }
 
         // 弾が追加できなかった場合
-        std::cerr << "プレイヤー弾の追加に失敗しました。" << std::endl;
+        // std::cerr << "プレイヤー弾の追加に失敗しました。" << std::endl;
         return false;
     }
 
     // 敵に当たったとき
     void PlayerBulletManager::OnDamage(PlayerBullet &bullet) {
-        bullet.is_active_ = false;                                                  // 消去
+        bullet.is_active_ = false;                                                        // 消去
         effect_manager_ptr->Spawn(EffectType::PlayerBulletSparkle, bullet.x_, bullet.y_); // エフェクト発生
     }
 

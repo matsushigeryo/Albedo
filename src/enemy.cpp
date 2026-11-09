@@ -66,7 +66,7 @@ namespace game {
         }
 
         // “G‚ª’Ç‰Á‚Å‚«‚È‚©‚Á‚½ê‡
-        std::cerr << "“G‚Ì’Ç‰Á‚É¸”s‚µ‚Ü‚µ‚½B" << std::endl;
+        // std::cerr << "“G‚Ì’Ç‰Á‚É¸”s‚µ‚Ü‚µ‚½B" << std::endl;
         return false;
     }
 

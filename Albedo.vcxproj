@@ -112,7 +112,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\DxLib_VC3_24f\プロジェクトに追加すべきファイル_VC用;$(SolutionDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <LanguageStandard>Default</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc11</LanguageStandard_C>
     </ClCompile>
     <Link>
@@ -132,7 +132,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\DxLib_VC3_24f\プロジェクトに追加すべきファイル_VC用;$(SolutionDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <LanguageStandard>Default</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc11</LanguageStandard_C>
     </ClCompile>
     <Link>
@@ -155,6 +155,7 @@
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\global.cpp" />
     <ClCompile Include="src\input.cpp" />
+    <ClCompile Include="src\log.cpp" />
     <ClCompile Include="src\player.cpp" />
     <ClCompile Include="src\player_bullet.cpp" />
     <ClCompile Include="src\tilemap.cpp" />
@@ -169,6 +170,7 @@
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\global.h" />
     <ClInclude Include="src\input.h" />
+    <ClInclude Include="src\log.h" />
     <ClInclude Include="src\player.h" />
     <ClInclude Include="src\player_bullet.h" />
     <ClInclude Include="src\tilemap.h" />

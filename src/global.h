@@ -4,6 +4,7 @@
 #include <memory>
 #include "asset.h"
 #include "input.h"
+#include "log.h"
 #include "camera.h"
 #include "player.h"
 #include "player_bullet.h"
@@ -35,9 +36,10 @@ bool OnScreen(int x, int y);
 unsigned long GetWindowsMemoryUsage();
 
 namespace game {
-    extern int time;
+    extern int game_time;
     extern Asset asset;
     extern Input input;
+    extern Log log;
     extern Camera camera;
     extern std::unique_ptr<TileMap> tilemap_ptr;
     extern std::unique_ptr<Player> player_ptr;

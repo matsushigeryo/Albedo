@@ -47,8 +47,8 @@ namespace game {
         int option_index = 0;
         const float orbit_radius = LerpF(20, 12, EaseOutQuad(options_formation_anim_progress_));
         for (auto &option : options_) {
-            option.offset_x_ = std::cosf((time / 60.0f + option_index / static_cast<float>(options_.size())) * kPi * 2.0f) * orbit_radius;
-            option.offset_y_ = std::sinf((time / 60.0f + option_index / static_cast<float>(options_.size())) * kPi * 2.0f) * orbit_radius;
+            option.offset_x_ = std::cosf((game_time / 60.0f + option_index / static_cast<float>(options_.size())) * kPi * 2.0f) * orbit_radius;
+            option.offset_y_ = std::sinf((game_time / 60.0f + option_index / static_cast<float>(options_.size())) * kPi * 2.0f) * orbit_radius;
             option_index++;
         }
 

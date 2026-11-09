@@ -7,9 +7,10 @@
 namespace game {
 
     // ŽÀ‘Ì‚ð’è‹`
-    int time = 0;
+    int game_time = 0;
     Asset asset{"asset"};
     Input input{};
+    Log log{"game.log"};
     Camera camera{};
     std::unique_ptr<TileMap> tilemap_ptr = nullptr;
     std::unique_ptr<Player> player_ptr = nullptr;
@@ -66,11 +67,11 @@ namespace game {
         UpdateCollisionPlayerToEnemyBullet(player_ptr.get(), enemy_bullet_manager_ptr.get());
         UpdateCollisionPlayerBulletToEnemy(player_bullet_manager_ptr.get(), enemy_manager_ptr.get());
 
-        if (time >= 40 && (time - 40) % 20 == 0) {
+        if (game_time >= 40 && (game_time - 40) % 20 == 0) {
             enemy_manager_ptr->Spawn(EnemySprite::Kuro, 32 + rand() % (kGraphicWidth - 64), -32);
         }
 
-        time++;
+        game_time++;
     }
 
     void Draw() {
@@ -80,5 +81,9 @@ namespace game {
         enemy_manager_ptr->Draw();
         enemy_bullet_manager_ptr->Draw();
         effect_manager_ptr->Draw();
+    }
+
+    int GetGameTime() {
+        return game_time;
     }
 }
