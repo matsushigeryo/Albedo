@@ -4521,11 +4521,11 @@ class exception : public std::exception
 
   protected:
     JSON_HEDLEY_NON_NULL(3)
-    exception(int id_, const char* what_arg) : id(id_), m(what_arg) {} // NOLINT(bugprone-throw-keyword-missing)
+    exception(int name_, const char* what_arg) : id(name_), m(what_arg) {} // NOLINT(bugprone-throw-keyword-missing)
 
-    static std::string name(const std::string& ename, int id_)
+    static std::string name(const std::string& ename, int name_)
     {
-        return concat("[json.exception.", ename, '.', std::to_string(id_), "] ");
+        return concat("[json.exception.", ename, '.', std::to_string(name_), "] ");
     }
 
     static std::string diagnostics(std::nullptr_t /*leaf_element*/)
@@ -4636,20 +4636,20 @@ class parse_error : public exception
     @return parse_error object
     */
     template<typename BasicJsonContext, enable_if_t<is_basic_json_context<BasicJsonContext>::value, int> = 0>
-    static parse_error create(int id_, const position_t& pos, const std::string& what_arg, BasicJsonContext context)
+    static parse_error create(int name_, const position_t& pos, const std::string& what_arg, BasicJsonContext context)
     {
-        const std::string w = concat(exception::name("parse_error", id_), "parse error",
+        const std::string w = concat(exception::name("parse_error", name_), "parse error",
                                      position_string(pos), ": ", exception::diagnostics(context), what_arg);
-        return {id_, pos.chars_read_total, w.c_str()};
+        return {name_, pos.chars_read_total, w.c_str()};
     }
 
     template<typename BasicJsonContext, enable_if_t<is_basic_json_context<BasicJsonContext>::value, int> = 0>
-    static parse_error create(int id_, std::size_t byte_, const std::string& what_arg, BasicJsonContext context)
+    static parse_error create(int name_, std::size_t byte_, const std::string& what_arg, BasicJsonContext context)
     {
-        const std::string w = concat(exception::name("parse_error", id_), "parse error",
+        const std::string w = concat(exception::name("parse_error", name_), "parse error",
                                      (byte_ != 0 ? (concat(" at byte ", std::to_string(byte_))) : ""),
                                      ": ", exception::diagnostics(context), what_arg);
-        return {id_, byte_, w.c_str()};
+        return {name_, byte_, w.c_str()};
     }
 
     /*!
@@ -4664,8 +4664,8 @@ class parse_error : public exception
     const std::size_t byte;
 
   private:
-    parse_error(int id_, std::size_t byte_, const char* what_arg)
-        : exception(id_, what_arg), byte(byte_) {}
+    parse_error(int name_, std::size_t byte_, const char* what_arg)
+        : exception(name_, what_arg), byte(byte_) {}
 
     static std::string position_string(const position_t& pos)
     {
@@ -4680,16 +4680,16 @@ class invalid_iterator : public exception
 {
   public:
     template<typename BasicJsonContext, enable_if_t<is_basic_json_context<BasicJsonContext>::value, int> = 0>
-    static invalid_iterator create(int id_, const std::string& what_arg, BasicJsonContext context)
+    static invalid_iterator create(int name_, const std::string& what_arg, BasicJsonContext context)
     {
-        const std::string w = concat(exception::name("invalid_iterator", id_), exception::diagnostics(context), what_arg);
-        return {id_, w.c_str()};
+        const std::string w = concat(exception::name("invalid_iterator", name_), exception::diagnostics(context), what_arg);
+        return {name_, w.c_str()};
     }
 
   private:
     JSON_HEDLEY_NON_NULL(3)
-    invalid_iterator(int id_, const char* what_arg)
-        : exception(id_, what_arg) {}
+    invalid_iterator(int name_, const char* what_arg)
+        : exception(name_, what_arg) {}
 };
 
 /// @brief exception indicating executing a member function with a wrong type
@@ -4698,15 +4698,15 @@ class type_error : public exception
 {
   public:
     template<typename BasicJsonContext, enable_if_t<is_basic_json_context<BasicJsonContext>::value, int> = 0>
-    static type_error create(int id_, const std::string& what_arg, BasicJsonContext context)
+    static type_error create(int name_, const std::string& what_arg, BasicJsonContext context)
     {
-        const std::string w = concat(exception::name("type_error", id_), exception::diagnostics(context), what_arg);
-        return {id_, w.c_str()};
+        const std::string w = concat(exception::name("type_error", name_), exception::diagnostics(context), what_arg);
+        return {name_, w.c_str()};
     }
 
   private:
     JSON_HEDLEY_NON_NULL(3)
-    type_error(int id_, const char* what_arg) : exception(id_, what_arg) {}
+    type_error(int name_, const char* what_arg) : exception(name_, what_arg) {}
 };
 
 /// @brief exception indicating access out of the defined range
@@ -4715,15 +4715,15 @@ class out_of_range : public exception
 {
   public:
     template<typename BasicJsonContext, enable_if_t<is_basic_json_context<BasicJsonContext>::value, int> = 0>
-    static out_of_range create(int id_, const std::string& what_arg, BasicJsonContext context)
+    static out_of_range create(int name_, const std::string& what_arg, BasicJsonContext context)
     {
-        const std::string w = concat(exception::name("out_of_range", id_), exception::diagnostics(context), what_arg);
-        return {id_, w.c_str()};
+        const std::string w = concat(exception::name("out_of_range", name_), exception::diagnostics(context), what_arg);
+        return {name_, w.c_str()};
     }
 
   private:
     JSON_HEDLEY_NON_NULL(3)
-    out_of_range(int id_, const char* what_arg) : exception(id_, what_arg) {}
+    out_of_range(int name_, const char* what_arg) : exception(name_, what_arg) {}
 };
 
 /// @brief exception indicating other library errors
@@ -4732,15 +4732,15 @@ class other_error : public exception
 {
   public:
     template<typename BasicJsonContext, enable_if_t<is_basic_json_context<BasicJsonContext>::value, int> = 0>
-    static other_error create(int id_, const std::string& what_arg, BasicJsonContext context)
+    static other_error create(int name_, const std::string& what_arg, BasicJsonContext context)
     {
-        const std::string w = concat(exception::name("other_error", id_), exception::diagnostics(context), what_arg);
-        return {id_, w.c_str()};
+        const std::string w = concat(exception::name("other_error", name_), exception::diagnostics(context), what_arg);
+        return {name_, w.c_str()};
     }
 
   private:
     JSON_HEDLEY_NON_NULL(3)
-    other_error(int id_, const char* what_arg) : exception(id_, what_arg) {}
+    other_error(int name_, const char* what_arg) : exception(name_, what_arg) {}
 };
 
 }  // namespace detail

@@ -1,6 +1,7 @@
 #include "game.h"
 #include <iostream>
 #include <DxLib.h>
+#include "enemy_script.h"
 #include "global.h"
 #include "collision.h"
 
@@ -17,6 +18,7 @@ namespace game {
     std::unique_ptr<PlayerBulletManager> player_bullet_manager_ptr = nullptr;
     std::unique_ptr<EnemyManager> enemy_manager_ptr = nullptr;
     std::unique_ptr<EnemyBulletManager> enemy_bullet_manager_ptr = nullptr;
+    std::unique_ptr<EnemyScriptManager> enemy_script_manager_ptr = nullptr;
     std::unique_ptr<EffectManager> effect_manager_ptr = nullptr;
 
     void Init() {
@@ -33,11 +35,12 @@ namespace game {
         asset.LoadImageAsset(ImageID::EffectWhiteSparkle2, "image/effect_white_sparkle_2.png");
 
         // èâä˙âª
-        tilemap_ptr = std::make_unique<TileMap>("asset/tilemap.tmj");
+        tilemap_ptr = std::make_unique<TileMap>("asset/data/test_tilemap.tmj");
         player_ptr = std::make_unique<Player>();
         player_bullet_manager_ptr = std::make_unique<PlayerBulletManager>();
         enemy_manager_ptr = std::make_unique<EnemyManager>();
         enemy_bullet_manager_ptr = std::make_unique<EnemyBulletManager>();
+        enemy_script_manager_ptr = std::make_unique<EnemyScriptManager>();
         effect_manager_ptr = std::make_unique<EffectManager>();
 
         camera.Init();
@@ -70,6 +73,9 @@ namespace game {
         if (game_time >= 40 && (game_time - 40) % 20 == 0) {
             enemy_manager_ptr->Spawn(EnemySprite::Kuro, 32 + rand() % (kGraphicWidth - 64), -32);
         }
+
+        static EnemyScriptRunner test_runner(enemy_script_manager_ptr->Get("asset/data/test_script.xml"));
+        test_runner.Update();
 
         game_time++;
     }

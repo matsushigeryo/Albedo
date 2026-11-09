@@ -21,11 +21,11 @@ namespace game {
         const std::string full_path = root_folder_path_ + "/" + file_path;
         int handle = LoadGraph(full_path.c_str(), false);
         if (handle == -1) {
-            log.Print("Asset: 新規画像ファイルの読み込みに失敗しました: %s", full_path.c_str());
+            log.Print("Asset: 画像ファイルの読み込みに失敗しました: %s", full_path.c_str());
             return false;
         } else {
             image_map_[image_id] = handle;
-            log.Print("Asset: 新規画像ファイルを読み込みました: %s", full_path.c_str());
+            log.Print("Asset: 画像ファイルを読み込みました: %s", full_path.c_str());
             return true;
         }
     }

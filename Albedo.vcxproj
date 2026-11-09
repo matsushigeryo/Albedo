@@ -152,12 +152,14 @@
     <ClCompile Include="src\effect.cpp" />
     <ClCompile Include="src\enemy.cpp" />
     <ClCompile Include="src\enemy_bullet.cpp" />
+    <ClCompile Include="src\enemy_script.cpp" />
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\global.cpp" />
     <ClCompile Include="src\input.cpp" />
     <ClCompile Include="src\log.cpp" />
     <ClCompile Include="src\player.cpp" />
     <ClCompile Include="src\player_bullet.cpp" />
+    <ClCompile Include="src\pugixml\pugixml.cpp" />
     <ClCompile Include="src\tilemap.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -167,6 +169,7 @@
     <ClInclude Include="src\effect.h" />
     <ClInclude Include="src\enemy.h" />
     <ClInclude Include="src\enemy_bullet.h" />
+    <ClInclude Include="src\enemy_script.h" />
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\global.h" />
     <ClInclude Include="src\input.h" />
@@ -174,6 +177,9 @@
     <ClInclude Include="src\player.h" />
     <ClInclude Include="src\player_bullet.h" />
     <ClInclude Include="src\tilemap.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="asset\data\test_script.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
