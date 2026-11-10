@@ -118,6 +118,7 @@ namespace game {
                 command.name_ = node.attribute("name").as_string("");
                 command.offset_x_ = GetParamOrDefault(node, "offset_x", "0", false);
                 command.offset_y_ = GetParamOrDefault(node, "offset_y", "0", false);
+                out_commands.push_back({command});
             }
 
             // Print–½—ß
@@ -260,7 +261,7 @@ namespace game {
             else if (auto *command = std::get_if<CommandGetAngleToPlayer>(&command_variant.data_)) {
                 const float dy = player_ptr->GetY() - (base_y + command->offset_y_.Evaluate(variables_));
                 const float dx = player_ptr->GetX() - (base_x + command->offset_x_.Evaluate(variables_));
-                variables_[command->name_] = RadianToDegree(atan2f(dy, dx)) + 90;
+                variables_[command->name_] = RadianToDegree(std::atan2f(dx, dy));
                 current_frame.step_index_++;
             }
 

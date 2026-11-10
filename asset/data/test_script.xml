@@ -1,13 +1,15 @@
 <EnemyScript name="TestScript">
 	<Wait frames="30" />
 
-	<Repeat count="64">
-		<GetAngleToPlayer name="base_angle" />
-		<GetRandom name="speed" min="1.5" max="2.0" />
-		<GetRandom name="angle_offset" min="-15" max="15"/>
-		<AddVar name="base_angle" value="$angle_offset" />
-		<FireNWay way_count="1" speed="$speed" angle_range="0" base_angle="$base_angle" />
-		<Wait frames="1"/>
+	<Repeat count="100">
+		<GetRandom name="base_angle" min="-8" max="8" />
+		<Repeat count="5">
+			<AddVar name="base_angle" value="2" />
+			<GetRandom name="speed" min="0.2" max="1.2" />
+			<FireNWay way_count="16" speed="$speed" angle_range="360" base_angle="$base_angle" />
+		</Repeat>
+		
+		<Wait frames="10" />
 	</Repeat>
 
 	<Print message="プログラム終了" />
