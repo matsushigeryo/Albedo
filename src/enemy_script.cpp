@@ -72,55 +72,78 @@ namespace game {
 
             // Wait命令
             if (name == "Wait") {
-                Param frames = GetParamOrDefault(node, "frames", "0", true);
-                out_commands.push_back({CommandWait(frames)});
+                CommandWait command;
+                command.frames_ = GetParamOrDefault(node, "frames", "0", true);
+                out_commands.push_back({command});
             }
 
             // Repeat命令
             else if (name == "Repeat") {
-                Param count = GetParamOrDefault(node, "count", "0", true);
-                std::vector<Command> child_commands;
-                if (!ParseChildren(node, child_commands)) { // 子要素群をパースして命令が持つ
+                CommandRepeat command;
+                command.total_count_ = GetParamOrDefault(node, "count", "0", true);
+                if (!ParseChildren(node, command.child_commands_)) { // 子要素群をパースして命令が持つ
                     return false;
                 }
-                out_commands.push_back({CommandRepeat(count, child_commands)});
+                out_commands.push_back({command});
             }
 
             // SetVar命令
             else if (name == "SetVar") {
-                std::string name = node.attribute("name").as_string("");
-                Param value = Param::Parse(node.attribute("value").as_string("0"));
-                out_commands.push_back({CommandSetVar(name, value)});
+                CommandSetVar command;
+                command.name_ = node.attribute("name").as_string("");
+                command.value_ = Param::Parse(node.attribute("value").as_string("0"));
+                out_commands.push_back({command});
             }
 
             // AddVar命令
             else if (name == "AddVar") {
-                std::string name = node.attribute("name").as_string("");
-                Param value = Param::Parse(node.attribute("value").as_string("0"));
-                out_commands.push_back({CommandAddVar(name, value)});
+                CommandAddVar command;
+                command.name_ = node.attribute("name").as_string("");
+                command.value_ = Param::Parse(node.attribute("value").as_string("0"));
+                out_commands.push_back({command});
+            }
+
+            // GetRandom命令
+            else if (name == "GetRandom") {
+                CommandGetRandom command;
+                command.name_ = node.attribute("name").as_string("");
+                command.min_ = GetParamOrDefault(node, "min", "0", true);
+                command.max_ = GetParamOrDefault(node, "max", "0", true);
+                out_commands.push_back({command});
+            }
+
+            // GetAngleToPlayer
+            else if (name == "GetAngleToPlayer") {
+                CommandGetAngleToPlayer command;
+                command.name_ = node.attribute("name").as_string("");
+                command.offset_x_ = GetParamOrDefault(node, "offset_x", "0", false);
+                command.offset_y_ = GetParamOrDefault(node, "offset_y", "0", false);
             }
 
             // Print命令
             else if (name == "Print") {
-                std::string message = node.attribute("message").as_string("");
-                out_commands.push_back({CommandPrint(message)});
+                CommandPrint command;
+                command.message_ = node.attribute("message").as_string("");
+                out_commands.push_back({command});
             }
 
             // Log命令
             else if (name == "Log") {
-                Param value = Param::Parse(node.attribute("value").as_string("0"));
-                out_commands.push_back({CommandLog(value)});
+                CommandLog command;
+                command.value_ = Param::Parse(node.attribute("value").as_string("0"));
+                out_commands.push_back({command});
             }
 
             // FireNWay命令
             else if (name == "FireNWay") {
-                Param offset_x = GetParamOrDefault(node, "offset_x", "0", false);
-                Param offset_y = GetParamOrDefault(node, "offset_y", "0", false);
-                Param way_count = GetParamOrDefault(node, "way_count", "0", true);
-                Param speed = GetParamOrDefault(node, "speed", "0", true);
-                Param angle_range = GetParamOrDefault(node, "angle_range", "0", true);
-                Param base_angle = GetParamOrDefault(node, "base_angle", "0", true);
-                out_commands.push_back({CommandFireNWay(offset_x, offset_y, way_count, speed, angle_range, base_angle)});
+                CommandFireNWay command;
+                command.offset_x_ = GetParamOrDefault(node, "offset_x", "0", false);
+                command.offset_y_ = GetParamOrDefault(node, "offset_y", "0", false);
+                command.way_count_ = GetParamOrDefault(node, "way_count", "0", true);
+                command.speed_ = GetParamOrDefault(node, "speed", "0", true);
+                command.angle_range_ = GetParamOrDefault(node, "angle_range", "0", true);
+                command.base_angle_ = GetParamOrDefault(node, "base_angle", "0", true);
+                out_commands.push_back({command});
             }
 
             else {
@@ -133,7 +156,7 @@ namespace game {
     }
 
     // XMLタグから属性を取得する
-    Param EnemyScriptData::GetParamOrDefault(pugi::xml_node node, const char* attribute_name, const std::string& default_value, bool warning_log) {
+    Param EnemyScriptData::GetParamOrDefault(pugi::xml_node node, const char *attribute_name, const std::string &default_value, bool warning_log) {
         pugi::xml_attribute attr = node.attribute(attribute_name);
 
         // 属性が見つからなかった場合
@@ -194,6 +217,9 @@ namespace game {
                 continue;
             }
 
+            const float base_x = kGraphicWidth / 2.0f; // 仮の原点X
+            const float base_y = 64.0f;                // 仮の原点Y
+
             // 実行するコマンドを取得
             const Command &command_variant = (*current_frame.commands_ptr_).at(current_frame.step_index_);
 
@@ -222,6 +248,22 @@ namespace game {
                 current_frame.step_index_++;
             }
 
+            // GetRandom命令
+            else if (auto *command = std::get_if<CommandGetRandom>(&command_variant.data_)) {
+                const float min = command->min_.Evaluate(variables_);
+                const float max = command->max_.Evaluate(variables_);
+                variables_[command->name_] = min + xoshiro.GetRandomNormalized() * (max - min);
+                current_frame.step_index_++;
+            }
+
+            // GetAngleToPlayer命令
+            else if (auto *command = std::get_if<CommandGetAngleToPlayer>(&command_variant.data_)) {
+                const float dy = player_ptr->GetY() - (base_y + command->offset_y_.Evaluate(variables_));
+                const float dx = player_ptr->GetX() - (base_x + command->offset_x_.Evaluate(variables_));
+                variables_[command->name_] = RadianToDegree(atan2f(dy, dx)) + 90;
+                current_frame.step_index_++;
+            }
+
             // Print命令
             else if (auto *command = std::get_if<CommandPrint>(&command_variant.data_)) {
                 std::cout << command->message_ << std::endl;
@@ -240,9 +282,6 @@ namespace game {
 
             // FireNWay命令
             else if (auto *command = std::get_if<CommandFireNWay>(&command_variant.data_)) {
-                const float base_x = kGraphicWidth / 2.0f; // 仮の原点X
-                const float base_y = 64.0f;                // 仮の原点Y
-
                 const float offset_x = command->offset_x_.Evaluate(variables_);
                 const float offset_y = command->offset_y_.Evaluate(variables_);
                 const int way_count = static_cast<int>(command->way_count_.Evaluate(variables_));

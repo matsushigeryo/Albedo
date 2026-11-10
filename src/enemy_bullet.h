@@ -13,11 +13,11 @@ namespace game {
         int elapsed_time_ = 0;
     };
 
-    constexpr float kEnemyBulletFlashEffectLength = 10;
+    constexpr float kEnemyBulletEnterEffectLength = 10;
 
     class EnemyBulletManager {
       public:
-        static constexpr int kMaxNum = 256;
+        static constexpr int kMaxNum = 512;
 
       public:
         EnemyBulletManager() = default;

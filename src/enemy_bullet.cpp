@@ -13,14 +13,17 @@ namespace game {
 	void EnemyBulletManager::Update() {
 		for (auto &bullet : bullets_) {
 			if (!bullet.is_active_) continue;
+
             // 座標更新
 			bullet.x_ += bullet.vx_;
 			bullet.y_ += bullet.vy_;
+
 			// 画面外に出たら消去
             const float bullet_radius = 4;
 			if (bullet.x_ + bullet_radius < 0 || bullet.x_ - bullet_radius > kGraphicWidth || bullet.y_ + bullet_radius < 0 || bullet.y_ - bullet_radius > kGraphicHeight) {
 				bullet.is_active_ = false;
 			}
+
             // 時間経過
             bullet.elapsed_time_++;
 		}
@@ -32,17 +35,19 @@ namespace game {
 
         for (const auto &bullet : bullets_) {
             if (!bullet.is_active_) continue;
-            DrawRotaGraphF(bullet.x_, bullet.y_, 1.0, 0.0, image_handle, TRUE);
-            
-            // 上から白塗りのスプライトを描画して出現時のフラッシュ演出を行う
-            if (bullet.elapsed_time_ >= 0 && bullet.elapsed_time_ <= kEnemyBulletFlashEffectLength) {
-                flash_add = InvLerpF(kEnemyBulletFlashEffectLength, 0, bullet.elapsed_time_);
-                SetIgnoreDrawGraphColor(true);
-                SetDrawBlendMode(DX_BLENDMODE_ADD, flash_add * 255);
-                DrawRotaGraphF(bullet.x_, bullet.y_, 1.0, 0.0, image_handle, TRUE);
-                SetIgnoreDrawGraphColor(false);
-                SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+            // スポーン時のアニメーション
+            float scale = 1.0f;
+            float alpha = 1.0f;
+            if (bullet.elapsed_time_ >= 0 && bullet.elapsed_time_ <= kEnemyBulletEnterEffectLength) {
+                scale = 1.0f + InvLerpF(kEnemyBulletEnterEffectLength, 0, bullet.elapsed_time_);
+                alpha = InvLerpF(0, kEnemyBulletEnterEffectLength, bullet.elapsed_time_);
             }
+
+            // スプライト描画
+            SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha * 255);
+            DrawRotaGraphF(bullet.x_, bullet.y_, scale, 0.0, image_handle, true);
+            SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
         }
     }
 

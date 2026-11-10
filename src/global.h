@@ -34,6 +34,7 @@ float InvLerpF(float start, float end, float v);
 float EaseInQuad(float x);
 float EaseOutQuad(float x);
 float DegreeToRadian(float degree);
+float RadianToDegree(float radian);
 bool OnScreen(int x, int y);
 unsigned long GetWindowsMemoryUsage();
 

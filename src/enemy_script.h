@@ -21,47 +21,45 @@ namespace game {
     };
 
     struct CommandWait {
-        CommandWait(Param frames)
-            : frames_{frames} {};
         Param frames_;
     };
 
     struct CommandRepeat {
-        CommandRepeat(Param total_count, const std::vector<Command> &child_commands)
-            : total_count_{total_count}, child_commands_{child_commands} {}
         Param total_count_;
         std::vector<Command> child_commands_{};
     };
 
     struct CommandSetVar {
-        CommandSetVar(const std::string &name, Param value)
-            : name_{name}, value_{value} {}
         std::string name_;
         Param value_;
     };
 
     struct CommandAddVar {
-        CommandAddVar(const std::string &name, Param value)
-            : name_{name}, value_{value} {}
         std::string name_;
         Param value_;
     };
 
+    struct CommandGetRandom {
+        std::string name_;
+        Param min_;
+        Param max_;
+    };
+
+    struct CommandGetAngleToPlayer {
+        std::string name_;
+        Param offset_x_;
+        Param offset_y_;
+    };
+
     struct CommandPrint {
-        CommandPrint(const std::string &message)
-            : message_{message} {}
         std::string message_;
     };
 
     struct CommandLog {
-        CommandLog(Param value)
-            : value_{value} {}
         Param value_;
     };
 
     struct CommandFireNWay {
-        CommandFireNWay(Param offset_x, Param offset_y, Param way_count, Param speed, Param angle_range, Param base_angle)
-            : offset_x_{offset_x}, offset_y_{offset_y}, way_count_{way_count}, speed_{speed}, angle_range_{angle_range}, base_angle_{base_angle} {}
         Param offset_x_;
         Param offset_y_;
         Param way_count_;
@@ -71,7 +69,7 @@ namespace game {
     };
 
     struct Command {
-        std::variant<CommandWait, CommandRepeat, CommandSetVar, CommandAddVar, CommandPrint, CommandLog, CommandFireNWay> data_;
+        std::variant<CommandWait, CommandRepeat, CommandSetVar, CommandAddVar, CommandGetRandom, CommandGetAngleToPlayer, CommandPrint, CommandLog, CommandFireNWay> data_;
     };
 
     // スクリプトの命令群を扱う構造体

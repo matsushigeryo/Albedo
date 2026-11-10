@@ -32,6 +32,11 @@ float DegreeToRadian(float degree) {
     return (degree / 360.0f) * (kPi * 2.0f);
 }
 
+// ラジアンを度数法に変換
+float RadianToDegree(float radian) {
+    return (radian / (kPi * 2.0f)) * 360.0f;
+}
+
 // その座標が画面内か？
 bool OnScreen(int x, int y) {
     return x >= 0 && x < kWindowWidth && y >= 0 && y < kWindowHeight;
