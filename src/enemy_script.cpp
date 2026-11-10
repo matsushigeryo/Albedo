@@ -18,7 +18,7 @@ namespace game {
             try {
                 param.value_ = std::stof(str); // floatに変換して格納
             } catch (const std::exception &) {
-                log.Print("EnemyScript: パラメータ\"%s\"は不正な書式です", str.c_str());
+                log.Print("EnemyScript: XMLスクリプトの実行中にエラーが発生しました: パラメータ\"%s\"は不正な書式です", str.c_str());
             }
         }
         return param;
@@ -31,7 +31,7 @@ namespace game {
             if (it != variables.end()) {
                 return it->second;
             } else {
-                log.Print("EnemyScript: ユーザー変数\"$%s\"は不明です", variable_name_.c_str());
+                log.Print("EnemyScript: XMLスクリプトの実行中にエラーが発生しました: ユーザー変数\"$%s\"は不明です", variable_name_.c_str());
                 return 0.0f;
             }
         }
@@ -72,13 +72,13 @@ namespace game {
 
             // Wait命令
             if (name == "Wait") {
-                Param frames = Param::Parse(node.attribute("frames").as_string("0"));
+                Param frames = GetParamOrDefault(node, "frames", "0", true);
                 out_commands.push_back({CommandWait(frames)});
             }
 
             // Repeat命令
             else if (name == "Repeat") {
-                Param count = Param::Parse(node.attribute("count").as_string("0"));
+                Param count = GetParamOrDefault(node, "count", "0", true);
                 std::vector<Command> child_commands;
                 if (!ParseChildren(node, child_commands)) { // 子要素群をパースして命令が持つ
                     return false;
@@ -112,13 +112,39 @@ namespace game {
                 out_commands.push_back({CommandLog(value)});
             }
 
+            // FireNWay命令
+            else if (name == "FireNWay") {
+                Param offset_x = GetParamOrDefault(node, "offset_x", "0", false);
+                Param offset_y = GetParamOrDefault(node, "offset_y", "0", false);
+                Param way_count = GetParamOrDefault(node, "way_count", "0", true);
+                Param speed = GetParamOrDefault(node, "speed", "0", true);
+                Param angle_range = GetParamOrDefault(node, "angle_range", "0", true);
+                Param base_angle = GetParamOrDefault(node, "base_angle", "0", true);
+                out_commands.push_back({CommandFireNWay(offset_x, offset_y, way_count, speed, angle_range, base_angle)});
+            }
+
             else {
-                log.Print("EnemyScript: XMLスクリプトのパース中に未定義の命令が見つかりました: %s", xml_path_.c_str());
+                log.Print("EnemyScript: XMLスクリプトのパース中に未定義の命令が見つかりました: %s", name);
                 return false;
             }
         }
 
         return true;
+    }
+
+    // XMLタグから属性を取得する
+    Param EnemyScriptData::GetParamOrDefault(pugi::xml_node node, const char* attribute_name, const std::string& default_value, bool warning_log) {
+        pugi::xml_attribute attr = node.attribute(attribute_name);
+
+        // 属性が見つからなかった場合
+        if (!attr) {
+            if (warning_log) {
+                log.Print("EnemyScript: XMLスクリプトの<%s>タグに属性\"%s\"が含まれていません。デフォルト値\"%s\"を適応します", node.name(), attribute_name, default_value.c_str());
+            }
+            return Param::Parse(default_value);
+        }
+
+        return Param::Parse(attr.as_string());
     }
 
     // 任意のスクリプトデータを取得する
@@ -209,6 +235,36 @@ namespace game {
                 } else {
                     std::cout << command->value_.Evaluate(variables_) << std::endl;
                 }
+                current_frame.step_index_++;
+            }
+
+            // FireNWay命令
+            else if (auto *command = std::get_if<CommandFireNWay>(&command_variant.data_)) {
+                const float base_x = kGraphicWidth / 2.0f; // 仮の原点X
+                const float base_y = 64.0f;                // 仮の原点Y
+
+                const float offset_x = command->offset_x_.Evaluate(variables_);
+                const float offset_y = command->offset_y_.Evaluate(variables_);
+                const int way_count = static_cast<int>(command->way_count_.Evaluate(variables_));
+                const float speed = command->speed_.Evaluate(variables_);
+                const float base_angle = command->base_angle_.Evaluate(variables_);
+
+                // 1Wayの場合は基準角に1発発射するだけ
+                if (way_count == 1) {
+                    enemy_bullet_manager_ptr->AddBullet(base_x, base_y, DegreeToRadian(base_angle), speed);
+                }
+
+                // 複数Way
+                else if (way_count >= 2) {
+                    const float angle_range = command->angle_range_.Evaluate(variables_);
+                    const float start_angle = base_angle - (angle_range / 2.0f);
+                    const float angle_step = angle_range / (way_count - 1);
+                    for (int i = 0; i < way_count; ++i) {
+                        float current_angle = start_angle + (angle_step * i);
+                        enemy_bullet_manager_ptr->AddBullet(base_x + offset_x, base_y + offset_y, DegreeToRadian(current_angle), speed);
+                    }
+                }
+
                 current_frame.step_index_++;
             }
 

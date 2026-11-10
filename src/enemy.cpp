@@ -20,7 +20,7 @@ namespace game {
                 }
                 // 敵の攻撃(仮)
                 if (enemy.elapsed_time_ % 6 == 0 && enemy.y_ > 32 && enemy.y_ < kGraphicHeight / 2) {
-                    enemy_bullet_manager_ptr->AddBullet(enemy.x_, enemy.y_, GetRandomNormalized() * kPi * 2.0f, LerpF(1.0f, 2.0f, GetRandomNormalized()));
+                    enemy_bullet_manager_ptr->AddBullet(enemy.x_, enemy.y_, xoshiro.GetRandomNormalized() * kPi * 2.0f, LerpF(1.0f, 2.0f, xoshiro.GetRandomNormalized()));
                 }
                 // タイマー更新
                 enemy.elapsed_time_++;

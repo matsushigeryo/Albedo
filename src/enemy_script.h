@@ -59,8 +59,19 @@ namespace game {
         Param value_;
     };
 
+    struct CommandFireNWay {
+        CommandFireNWay(Param offset_x, Param offset_y, Param way_count, Param speed, Param angle_range, Param base_angle)
+            : offset_x_{offset_x}, offset_y_{offset_y}, way_count_{way_count}, speed_{speed}, angle_range_{angle_range}, base_angle_{base_angle} {}
+        Param offset_x_;
+        Param offset_y_;
+        Param way_count_;
+        Param speed_;
+        Param angle_range_;
+        Param base_angle_;
+    };
+
     struct Command {
-        std::variant<CommandWait, CommandRepeat, CommandSetVar, CommandAddVar, CommandPrint, CommandLog> data_;
+        std::variant<CommandWait, CommandRepeat, CommandSetVar, CommandAddVar, CommandPrint, CommandLog, CommandFireNWay> data_;
     };
 
     // スクリプトの命令群を扱う構造体
@@ -69,6 +80,7 @@ namespace game {
         EnemyScriptData(const std::string &xml_path);
         bool Parse();
         bool ParseChildren(pugi::xml_node parent_node, std::vector<Command> &out_commands);
+        Param GetParamOrDefault(pugi::xml_node node, const char *attribute_name, const std::string &default_value, bool warning_log);
 
       public:
         std::vector<Command> commands_{};

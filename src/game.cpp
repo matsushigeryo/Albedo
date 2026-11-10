@@ -9,6 +9,7 @@ namespace game {
 
     // ŽÀ‘Ì‚ð’è‹`
     int game_time = 0;
+    Xoshiro128PlusPlus xoshiro{0};
     Asset asset{"asset"};
     Input input{};
     Log log{"game.log"};

@@ -27,9 +27,9 @@ float EaseOutQuad(float x) {
     return 1.0f - (1.0f - x) * (1.0f - x);
 }
 
-// 0.0～1.0に正規化されたランダムな浮動小数点値を取得する
-float GetRandomNormalized() {
-    return static_cast<float>(rand()) / RAND_MAX;
+// 度数法をラジアンに変換
+float DegreeToRadian(float degree) {
+    return (degree / 360.0f) * (kPi * 2.0f);
 }
 
 // その座標が画面内か？
