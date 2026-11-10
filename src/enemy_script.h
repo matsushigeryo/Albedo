@@ -9,28 +9,61 @@
 #include <pugixml/pugixml.hpp>
 
 namespace game {
+    struct Command;
+
+    struct Param {
+        bool is_variable_ = false;
+        float value_ = 0.0f;
+        std::string variable_name_ = "";
+
+        static Param Parse(const std::string &str);
+        float Evaluate(const std::unordered_map<std::string, float> &variables) const;
+    };
+
     struct CommandWait {
-        CommandWait(int frames)
+        CommandWait(Param frames)
             : frames_{frames} {};
-        int frames_;
+        Param frames_;
+    };
+
+    struct CommandRepeat {
+        CommandRepeat(Param total_count, const std::vector<Command> &child_commands)
+            : total_count_{total_count}, child_commands_{child_commands} {}
+        Param total_count_;
+        std::vector<Command> child_commands_{};
+    };
+
+    struct CommandSetVar {
+        CommandSetVar(const std::string &name, Param value)
+            : name_{name}, value_{value} {}
+        std::string name_;
+        Param value_;
+    };
+
+    struct CommandAddVar {
+        CommandAddVar(const std::string &name, Param value)
+            : name_{name}, value_{value} {}
+        std::string name_;
+        Param value_;
     };
 
     struct CommandPrint {
         CommandPrint(const std::string &message)
-            : message_{message} {};
+            : message_{message} {}
         std::string message_;
     };
 
-    struct CommandFireNWay {
-        CommandFireNWay(int way_count, float speed, float angle_range)
-            : way_count_{way_count}, speed_{speed}, angle_range_{angle_range} {};
-        int way_count_ = 1;
-        float speed_ = 0.0f;
-        float angle_range_ = 0.0f;
+    struct CommandLog {
+        CommandLog(Param value)
+            : value_{value} {}
+        Param value_;
     };
 
-    using Command = std::variant<CommandWait, CommandPrint, CommandFireNWay>;
+    struct Command {
+        std::variant<CommandWait, CommandRepeat, CommandSetVar, CommandAddVar, CommandPrint, CommandLog> data_;
+    };
 
+    // スクリプトの命令群を扱う構造体
     class EnemyScriptData {
       public:
         EnemyScriptData(const std::string &xml_path);
@@ -45,6 +78,7 @@ namespace game {
         std::string name_ = "";
     };
 
+    // 複数のスクリプトデータを管理する構造体
     class EnemyScriptManager {
       public:
         EnemyScriptManager() = default;
@@ -54,17 +88,33 @@ namespace game {
         std::unordered_map<std::string, std::shared_ptr<const EnemyScriptData>> script_map_{};
     };
 
+    // 一つの実行階層を管理する構造体
+    struct ExecutionFrame {
+        ExecutionFrame(const std::vector<Command> *commands_ptr, size_t step_index, int repeat_count)
+            : commands_ptr_{commands_ptr}, step_index_{step_index}, repeat_count_left_{repeat_count} {}
+        const std::vector<Command> *commands_ptr_;
+        size_t step_index_;
+        int repeat_count_left_;
+    };
+
+    // スクリプトデータを参照して命令を実行する構造体
     class EnemyScriptRunner {
       public:
         explicit EnemyScriptRunner(std::shared_ptr<const EnemyScriptData> script_data)
-            : script_data_{script_data} {
+            : script_data_{std::move(script_data)} {
+            if (script_data_ && !script_data_->commands_.empty()) {
+                // ルート階層をスタックに追加
+                stack_.push_back({&script_data_->commands_, 0, 1});
+            }
         }
 
         void Update();
+        bool IsFinished() const;
 
       private:
         std::shared_ptr<const EnemyScriptData> script_data_;
-        size_t current_step_ = 0;
+        std::vector<ExecutionFrame> stack_;
+        std::unordered_map<std::string, float> variables_;
         unsigned int waiting_timer_ = 0;
     };
 }

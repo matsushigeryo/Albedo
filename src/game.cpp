@@ -21,6 +21,8 @@ namespace game {
     std::unique_ptr<EnemyScriptManager> enemy_script_manager_ptr = nullptr;
     std::unique_ptr<EffectManager> effect_manager_ptr = nullptr;
 
+    std::unique_ptr<EnemyScriptRunner> test_runner_ptr = nullptr;
+
     void Init() {
         // アセット群の読み込み
         asset.Clear();
@@ -49,6 +51,8 @@ namespace game {
         enemy_manager_ptr->Init();
         enemy_bullet_manager_ptr->Init();
         effect_manager_ptr->Init();
+
+        test_runner_ptr = std::make_unique<EnemyScriptRunner>(enemy_script_manager_ptr->Get("asset/data/test_script.xml"));
     }
 
     void Update() {
@@ -70,12 +74,7 @@ namespace game {
         UpdateCollisionPlayerToEnemyBullet(player_ptr.get(), enemy_bullet_manager_ptr.get());
         UpdateCollisionPlayerBulletToEnemy(player_bullet_manager_ptr.get(), enemy_manager_ptr.get());
 
-        if (game_time >= 40 && (game_time - 40) % 20 == 0) {
-            enemy_manager_ptr->Spawn(EnemySprite::Kuro, 32 + rand() % (kGraphicWidth - 64), -32);
-        }
-
-        static EnemyScriptRunner test_runner(enemy_script_manager_ptr->Get("asset/data/test_script.xml"));
-        test_runner.Update();
+        test_runner_ptr->Update();
 
         game_time++;
     }

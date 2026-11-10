@@ -1,12 +1,9 @@
 <EnemyScript name="TestScript">
-	<Print message="Hello, World!" />
-	<Wait frames="60" />
-	<Print message="Hello, World!" />
-	<Wait frames="60" />
-	<Print message="Hello, World!" />
-	<Wait frames="60" />
-	<Print message="Hello, World!" />
-	<Wait frames="60" />
-	<Print message="Hello, World!" />
-	<Wait frames="60" />
+	<SetVar name="hoge" value="0" />
+	<Repeat count="10">
+		<Log value="$hoge" />
+		<AddVar name="hoge" value="1"/>
+		<Wait frames="30" />
+	</Repeat>
+	<Print message="プログラム終了" />
 </EnemyScript>
