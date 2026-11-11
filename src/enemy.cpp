@@ -18,6 +18,13 @@ namespace game {
                 if (enemy.y_ > kGraphicHeight + 32) {
                     enemy.is_active_ = false;
                 }
+
+                // スクリプト実行
+                if (enemy.script_runner_) {
+                    enemy_script::EnemyScriptRunnerContext context{enemy.x_, enemy.y_};
+                    enemy.script_runner_->Update(context);
+                }
+
                 // タイマー更新
                 enemy.elapsed_time_++;
                 enemy.on_damage_timer_++;
@@ -47,9 +54,10 @@ namespace game {
         }
     }
 
-    bool EnemyManager::Spawn(EnemySprite sprite, float x, float y) {
+    bool EnemyManager::Spawn(EnemySprite sprite, float x, float y, std::string script_name) {
         for (auto &enemy : enemies_) {
             if (!enemy.is_active_) { // 配列から空きを見つけて敵を追加
+
                 enemy.is_active_ = true;
                 enemy.sprite_ = sprite;
                 enemy.x_ = x;
@@ -57,6 +65,13 @@ namespace game {
                 enemy.elapsed_time_ = 0;
                 enemy.on_damage_timer_ = kEnemyOnDamageFlashEffectLength + 1;
                 enemy.life_ = 10; // 仮でHP10とする
+                
+                // スクリプトを割り当て
+                if (script_name != "") {
+                    const std::string full_path = "asset/data/" + script_name + ".xml";
+                    enemy.script_runner_ = std::make_unique<enemy_script::EnemyScriptRunner>(enemy_script_manager_ptr->Get(full_path));
+                }
+
                 return true;
             }
         }

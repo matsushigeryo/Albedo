@@ -150,12 +150,28 @@ namespace game {
                     out_commands.push_back({command});
                 }
 
-                // GetAngleToPlayer
+                // GetAngleToPlayer命令
                 else if (name == "GetAngleToPlayer") {
                     CommandGetAngleToPlayer command;
                     command.name_ = node.attribute("name").as_string("");
                     command.offset_x_ = GetParamOrDefault(node, "offset_x", "0", false);
                     command.offset_y_ = GetParamOrDefault(node, "offset_y", "0", false);
+                    out_commands.push_back({command});
+                }
+
+                // SetEnemyPos命令
+                else if (name == "SetEnemyPos") {
+                    CommandSetEnemyPos command;
+                    command.x_ = GetParamOrDefault(node, "x", "0", true);
+                    command.y_ = GetParamOrDefault(node, "y", "0", true);
+                    out_commands.push_back({command});
+                }
+
+                // GetEnemyPos命令
+                else if (name == "GetEnemyPos") {
+                    CommandGetEnemyPos command;
+                    command.var_x_ = node.attribute("x").as_string("");
+                    command.var_y_ = node.attribute("y").as_string("");
                     out_commands.push_back({command});
                 }
 
@@ -186,7 +202,7 @@ namespace game {
                 }
 
                 else {
-                    log.Print("EnemyScript: XMLスクリプトのパース中に未定義の命令が見つかりました: %s", name);
+                    log.Print("EnemyScript: XMLスクリプトのパース中に未定義の命令が見つかりました: %s", name.c_str());
                     return false;
                 }
             }
@@ -355,6 +371,20 @@ namespace game {
                     const float dy = player_ptr->GetY() - (context.origin_y_ + command->offset_y_.Evaluate(variables_));
                     const float dx = player_ptr->GetX() - (context.origin_x_ + command->offset_x_.Evaluate(variables_));
                     variables_[command->name_] = RadianToDegree(atan2f(dy, dx));
+                    current_frame.step_index_++;
+                }
+
+                // SetEnemyPos命令
+                else if (auto *command = std::get_if<CommandSetEnemyPos>(&command_variant.data_)) {
+                    context.origin_x_ = command->x_.Evaluate(variables_);
+                    context.origin_y_ = command->y_.Evaluate(variables_);
+                    current_frame.step_index_++;
+                }
+
+                // GetEnemyPos命令
+                else if (auto *command = std::get_if<CommandGetEnemyPos>(&command_variant.data_)) {
+                    variables_[command->var_x_] = context.origin_x_;
+                    variables_[command->var_y_] = context.origin_y_;
                     current_frame.step_index_++;
                 }
 

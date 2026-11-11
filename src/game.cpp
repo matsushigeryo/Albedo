@@ -23,6 +23,8 @@ namespace game {
     std::unique_ptr<EffectManager> effect_manager_ptr = nullptr;
 
     std::unique_ptr<enemy_script::EnemyScriptRunner> test_runner_ptr = nullptr;
+    float test_runner_origin_x = kGraphicWidth / 2.0f;
+    float test_runner_origin_y = 32.0f;
 
     void Init() {
         // アセット群の読み込み
@@ -53,7 +55,9 @@ namespace game {
         enemy_bullet_manager_ptr->Init();
         effect_manager_ptr->Init();
 
-        test_runner_ptr = std::make_unique<enemy_script::EnemyScriptRunner>(enemy_script_manager_ptr->Get("asset/data/test_script.xml"));
+        // test_runner_ptr = std::make_unique<enemy_script::EnemyScriptRunner>(enemy_script_manager_ptr->Get("asset/data/test_script.xml"));
+        // test_runner_origin_x = kGraphicWidth / 2.0f;
+        // test_runner_origin_y = 32.0f;
     }
 
     void Update() {
@@ -75,10 +79,12 @@ namespace game {
         UpdateCollisionPlayerToEnemyBullet(player_ptr.get(), enemy_bullet_manager_ptr.get());
         UpdateCollisionPlayerBulletToEnemy(player_bullet_manager_ptr.get(), enemy_manager_ptr.get());
 
+        if (game_time >= 40 && (game_time - 40) % 20 == 0) {
+            enemy_manager_ptr->Spawn(EnemySprite::Kuro, 32 + rand() % (kGraphicWidth - 64), -32, "test_script");
+        }
+
         if (test_runner_ptr) {
-            static float test_runner_x = kGraphicWidth / 2.0f;
-            static float test_runner_y = 32.0f;
-            enemy_script::EnemyScriptRunnerContext context{test_runner_x, test_runner_y};
+            enemy_script::EnemyScriptRunnerContext context{test_runner_origin_x, test_runner_origin_y};
             test_runner_ptr->Update(context);
         }
 

@@ -71,6 +71,16 @@ namespace game {
             Param offset_y_;
         };
 
+        struct CommandSetEnemyPos {
+            Param x_;
+            Param y_;
+        };
+
+        struct CommandGetEnemyPos {
+            std::string var_x_;
+            std::string var_y_;
+        };
+
         struct CommandPrint {
             std::string message_;
         };
@@ -98,6 +108,8 @@ namespace game {
                 CommandAddVar,
                 CommandGetRandom,
                 CommandGetAngleToPlayer,
+                CommandSetEnemyPos,
+                CommandGetEnemyPos,
                 CommandPrint,
                 CommandLog,
                 CommandFireNWay>
