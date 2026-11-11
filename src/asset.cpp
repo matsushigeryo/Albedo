@@ -34,8 +34,9 @@ namespace game {
     int Asset::GetImageAsset(const ImageID image_id) const {
         try {
             return image_map_.at(image_id);
-        } catch (const std::out_of_range &e) {
+        } catch (const std::out_of_range &) {
             log.Print("Asset: 取得しようとした画像アセットは存在しませんでした: ImageID::%s", magic_enum::enum_name(image_id).data());
+            return -1;
         }
     }
 }

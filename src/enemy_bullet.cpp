@@ -57,8 +57,8 @@ namespace game {
             bullet.is_active_ = true;
             bullet.x_ = x;
             bullet.y_ = y;
-            bullet.vx_ = sinf(angle) * speed;
-            bullet.vy_ = cosf(angle) * speed;
+            bullet.vx_ = cosf(angle) * speed;
+            bullet.vy_ = sinf(angle) * speed;
             bullet.elapsed_time_ = 0;
             return true;
         }

@@ -5,7 +5,7 @@
 namespace game {
     void Camera::Init() {
         x_ = 0.0f;
-        y_ = tilemap_ptr->GetMapHeight() - kGraphicHeight / TileMap::kTileDrawHeight;
+        y_ = static_cast<float>(tilemap_ptr->GetMapHeight() - kGraphicHeight / TileMap::kTileDrawHeight);
     }
 
     void Camera::Update() {

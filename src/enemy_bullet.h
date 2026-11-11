@@ -17,7 +17,7 @@ namespace game {
 
     class EnemyBulletManager {
       public:
-        static constexpr int kMaxNum = 512;
+        static constexpr int kMaxNum = 1024;
 
       public:
         EnemyBulletManager() = default;

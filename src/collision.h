@@ -10,7 +10,7 @@ namespace game {
     constexpr float kPlayerCollisionRadius = 1;
     constexpr float kPlayerBulletCollisionRadius = 4;
     constexpr float kEnemyCollisionRadius = 5;
-    constexpr float kEnemyBulletCollisionRadius = 2;
+    constexpr float kEnemyBulletCollisionRadius = 1;
 
     bool CheckCollisionCircleToCircle(float ax, float ay, float ar, float bx, float by, float br);
     void UpdateCollisionPlayerToEnemy(Player *player, EnemyManager *enemy_manager);

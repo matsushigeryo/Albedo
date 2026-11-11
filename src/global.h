@@ -50,7 +50,7 @@ namespace game {
     extern std::unique_ptr<PlayerBulletManager> player_bullet_manager_ptr;
     extern std::unique_ptr<EnemyManager> enemy_manager_ptr;
     extern std::unique_ptr<EnemyBulletManager> enemy_bullet_manager_ptr;
-    extern std::unique_ptr<EnemyScriptManager> enemy_script_manager_ptr;
+    extern std::unique_ptr<enemy_script::EnemyScriptManager> enemy_script_manager_ptr;
     extern std::unique_ptr<EffectManager> effect_manager_ptr;
 }
 

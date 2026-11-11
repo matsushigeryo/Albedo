@@ -19,10 +19,10 @@ namespace game {
     std::unique_ptr<PlayerBulletManager> player_bullet_manager_ptr = nullptr;
     std::unique_ptr<EnemyManager> enemy_manager_ptr = nullptr;
     std::unique_ptr<EnemyBulletManager> enemy_bullet_manager_ptr = nullptr;
-    std::unique_ptr<EnemyScriptManager> enemy_script_manager_ptr = nullptr;
+    std::unique_ptr<enemy_script::EnemyScriptManager> enemy_script_manager_ptr = nullptr;
     std::unique_ptr<EffectManager> effect_manager_ptr = nullptr;
 
-    std::unique_ptr<EnemyScriptRunner> test_runner_ptr = nullptr;
+    std::unique_ptr<enemy_script::EnemyScriptRunner> test_runner_ptr = nullptr;
 
     void Init() {
         // アセット群の読み込み
@@ -43,7 +43,7 @@ namespace game {
         player_bullet_manager_ptr = std::make_unique<PlayerBulletManager>();
         enemy_manager_ptr = std::make_unique<EnemyManager>();
         enemy_bullet_manager_ptr = std::make_unique<EnemyBulletManager>();
-        enemy_script_manager_ptr = std::make_unique<EnemyScriptManager>();
+        enemy_script_manager_ptr = std::make_unique<enemy_script::EnemyScriptManager>();
         effect_manager_ptr = std::make_unique<EffectManager>();
 
         camera.Init();
@@ -53,7 +53,7 @@ namespace game {
         enemy_bullet_manager_ptr->Init();
         effect_manager_ptr->Init();
 
-        test_runner_ptr = std::make_unique<EnemyScriptRunner>(enemy_script_manager_ptr->Get("asset/data/test_script.xml"));
+        test_runner_ptr = std::make_unique<enemy_script::EnemyScriptRunner>(enemy_script_manager_ptr->Get("asset/data/test_script.xml"));
     }
 
     void Update() {
@@ -69,13 +69,18 @@ namespace game {
         enemy_manager_ptr->Update();
         enemy_bullet_manager_ptr->Update();
         effect_manager_ptr->Update();
-        
+
         // 当たり判定の処理
         UpdateCollisionPlayerToEnemy(player_ptr.get(), enemy_manager_ptr.get());
         UpdateCollisionPlayerToEnemyBullet(player_ptr.get(), enemy_bullet_manager_ptr.get());
         UpdateCollisionPlayerBulletToEnemy(player_bullet_manager_ptr.get(), enemy_manager_ptr.get());
 
-        test_runner_ptr->Update();
+        if (test_runner_ptr) {
+            static float test_runner_x = kGraphicWidth / 2.0f;
+            static float test_runner_y = 32.0f;
+            enemy_script::EnemyScriptRunnerContext context{test_runner_x, test_runner_y};
+            test_runner_ptr->Update(context);
+        }
 
         game_time++;
     }

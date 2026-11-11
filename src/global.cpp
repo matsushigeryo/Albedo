@@ -44,7 +44,7 @@ bool OnScreen(int x, int y) {
 
 // 現在のプロセスのメモリ使用量を取得する(バイト単位)
 unsigned long GetWindowsMemoryUsage() {
-    PROCESS_MEMORY_COUNTERS_EX pmc;
+    PROCESS_MEMORY_COUNTERS_EX pmc{};
     GetProcessMemoryInfo(GetCurrentProcess(), reinterpret_cast<PROCESS_MEMORY_COUNTERS *>(&pmc), sizeof(pmc));
     return static_cast<unsigned long>(pmc.PrivateUsage);
 }

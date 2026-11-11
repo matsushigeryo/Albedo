@@ -1,14 +1,4 @@
 <EnemyScript name="TestScript">
 	<Wait frames="30" />
-
-	<Repeat count="64">
-		<GetAngleToPlayer name="base_angle" />
-		<GetRandom name="speed" min="1.5" max="2.0" />
-		<GetRandom name="angle_offset" min="-15" max="15"/>
-		<AddVar name="base_angle" value="$angle_offset" />
-		<FireNWay way_count="1" speed="$speed" angle_range="0" base_angle="$base_angle" />
-		<Wait frames="1"/>
-	</Repeat>
-
 	<Print message="プログラム終了" />
 </EnemyScript>

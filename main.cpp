@@ -4,14 +4,14 @@
 #include "global.h"
 #include "input.h"
 
-void Init() {
+static void Init() {
     is_running = true;
     render_buffer = MakeScreen(kGraphicWidth, kGraphicHeight, false);
     game::input.Init();
     game::Init();
 }
 
-void Update() {
+static void Update() {
     game::input.Update();
     game::Update();
     if (game::input.OnPressedKeyboard(KEY_INPUT_ESCAPE)) {
@@ -19,7 +19,7 @@ void Update() {
     }
 }
 
-void Draw() {
+static void Draw() {
     SetDrawScreen(render_buffer);
     DrawBox(0, 0, kGraphicWidth, kGraphicHeight, GetColor(0, 0, 0), true);
     game::Draw();
@@ -30,7 +30,7 @@ void Draw() {
     ScreenFlip();
 }
 
-void Exit() {
+static void Exit() {
     DeleteGraph(render_buffer);
 }
 
