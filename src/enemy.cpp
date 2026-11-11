@@ -13,15 +13,13 @@ namespace game {
     void EnemyManager::Update() {
         for (auto &enemy : enemies_) {
             if (enemy.is_active_) {
-                // 座標更新
-                enemy.y_ += 0.5f;
-                if (enemy.y_ > kGraphicHeight + 32) {
-                    enemy.is_active_ = false;
+
+                // スクリプト実行
+                if (enemy.script_runner_) {
+                    enemy_script::EnemyScriptRunnerContext context{enemy.x_, enemy.y_, enemy.is_active_};
+                    enemy.script_runner_->Update(context);
                 }
-                // 敵の攻撃(仮)
-                if (enemy.elapsed_time_ % 6 == 0 && enemy.y_ > 32 && enemy.y_ < kGraphicHeight / 2) {
-                    enemy_bullet_manager_ptr->AddBullet(enemy.x_, enemy.y_, xoshiro.GetRandomNormalized() * kPi * 2.0f, LerpF(1.0f, 2.0f, xoshiro.GetRandomNormalized()));
-                }
+
                 // タイマー更新
                 enemy.elapsed_time_++;
                 enemy.on_damage_timer_++;
@@ -51,9 +49,10 @@ namespace game {
         }
     }
 
-    bool EnemyManager::Spawn(EnemySprite sprite, float x, float y) {
+    bool EnemyManager::Spawn(EnemySprite sprite, float x, float y, std::string script_name) {
         for (auto &enemy : enemies_) {
             if (!enemy.is_active_) { // 配列から空きを見つけて敵を追加
+
                 enemy.is_active_ = true;
                 enemy.sprite_ = sprite;
                 enemy.x_ = x;
@@ -61,12 +60,19 @@ namespace game {
                 enemy.elapsed_time_ = 0;
                 enemy.on_damage_timer_ = kEnemyOnDamageFlashEffectLength + 1;
                 enemy.life_ = 10; // 仮でHP10とする
+                
+                // スクリプトを割り当て
+                if (script_name != "") {
+                    const std::string full_path = "asset/data/" + script_name + ".xml";
+                    enemy.script_runner_ = std::make_unique<enemy_script::EnemyScriptRunner>(enemy_script_manager_ptr->Get(full_path));
+                }
+
                 return true;
             }
         }
 
         // 敵が追加できなかった場合
-        // std::cerr << "敵の追加に失敗しました。" << std::endl;
+        log.Print("EnemyManager: 敵のスポーンに失敗しました");
         return false;
     }
 
@@ -95,5 +101,16 @@ namespace game {
     // 敵の配列を取得する
     std::array<Enemy, EnemyManager::kMaxNum> &EnemyManager::GetEnemies() {
         return enemies_;
+    }
+
+    // アクティブな敵の数を取得する
+    size_t EnemyManager::GetActiveEnemyCount() const {
+        size_t count = 0;
+        for (const auto &enemy : enemies_) {
+            if (enemy.is_active_) {
+                count++;
+            }
+        }
+        return count;
     }
 }

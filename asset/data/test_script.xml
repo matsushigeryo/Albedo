@@ -1,16 +1,70 @@
 <EnemyScript name="TestScript">
-	<Wait frames="30" />
 
-	<Repeat count="100">
-		<GetRandom name="base_angle" min="-8" max="8" />
-		<Repeat count="5">
-			<AddVar name="base_angle" value="2" />
-			<GetRandom name="speed" min="0.2" max="1.2" />
-			<FireNWay way_count="16" speed="$speed" angle_range="360" base_angle="$base_angle" />
-		</Repeat>
-		
-		<Wait frames="10" />
-	</Repeat>
+	<Parallel mode="Join">
+		<!-- 移動 -->
+		<Task>
+			<Repeat count="60">
+				<MoveBy dx="0" dy="1" />
+				<Wait frames="1" />
+			</Repeat>
+			<Wait frames="240" />
+			<Repeat count="60">
+				<MoveBy dx="0" dy="-1" />
+				<Wait frames="1" />
+			</Repeat>
+		</Task>
 
-	<Print message="プログラム終了" />
+		<!-- 攻撃A -->
+		<Task>
+			<Wait frames="60" />
+
+			<GetAngleToPlayer name="angle" />
+			<GetRandom name="speed" min="1" max="1.8" />
+
+			<Repeat count="36">
+				<FireNWay way_count="3" speed="$speed" base_angle="$angle" angle_range="2" shape="Spike" color="Blue" />
+				<AddVar name="angle" value="10" />
+			</Repeat>
+		</Task>
+
+		<!-- 攻撃B -->
+		<Task>
+			<Wait frames="120" />
+
+			<GetAngleToPlayer name="angle" />
+			<SetVar name="speed" value="1" />
+
+			<Repeat count="5">
+				<FireNWay way_count="1" speed="$speed" base_angle="$angle" angle_range="0" shape="MidiumCircle" color="Red" />
+				<AddVar name="speed" value="0.2" />
+			</Repeat>
+
+			<Wait frames="40" />
+
+			<GetAngleToPlayer name="angle" />
+			<SetVar name="speed" value="3" />
+
+			<Repeat count="5">
+				<FireNWay way_count="3" speed="$speed" base_angle="$angle" angle_range="3" shape="SmallCircle" color="White" />
+				<AddVar name="speed" value="0.05" />
+			</Repeat>
+			
+			<Wait frames="15" />
+
+			<Repeat count="5">
+				<FireNWay way_count="3" speed="$speed" base_angle="$angle" angle_range="5" shape="SmallCircle" color="White" />
+				<AddVar name="speed" value="0.05" />
+			</Repeat>
+
+			<Wait frames="15" />
+
+			<Repeat count="5">
+				<FireNWay way_count="3" speed="$speed" base_angle="$angle" angle_range="60" shape="SmallCircle" color="White" />
+				<AddVar name="speed" value="0.05" />
+			</Repeat>
+		</Task>
+	</Parallel>
+
+	<KillEnemy/>
+
 </EnemyScript>

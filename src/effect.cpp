@@ -75,12 +75,14 @@ namespace game {
 
     // エフェクト種別ごとの固有の初期化をする
     void EffectManager::UniqueSpawn(Effect &effect) {
+
         switch (effect.type_) {
         case EffectType::EnemyDead: {
             const float angle = xoshiro.GetRandomNormalized() * kPi * 2.0f;
             const float speed = LerpF(2.0f, 3.5f, xoshiro.GetRandomNormalized());
             effect.vx_ = std::cosf(angle) * speed;
             effect.vy_ = std::sinf(angle) * speed;
+            break;
         }
 
         default:

@@ -10,26 +10,28 @@ namespace game {
         }
     }
 
-	void EnemyBulletManager::Update() {
-		for (auto &bullet : bullets_) {
-			if (!bullet.is_active_) continue;
+    void EnemyBulletManager::Update() {
+        for (auto &bullet : bullets_) {
+            if (!bullet.is_active_) continue;
 
             // 座標更新
-			bullet.x_ += bullet.vx_;
-			bullet.y_ += bullet.vy_;
+            bullet.x_ += bullet.vx_;
+            bullet.y_ += bullet.vy_;
 
-			// 画面外に出たら消去
-            const float bullet_radius = 4;
-			if (bullet.x_ + bullet_radius < 0 || bullet.x_ - bullet_radius > kGraphicWidth || bullet.y_ + bullet_radius < 0 || bullet.y_ - bullet_radius > kGraphicHeight) {
-				bullet.is_active_ = false;
-			}
+            // 画面外に出たら消去
+            const float bullet_radius = 8;
+            if (bullet.x_ + bullet_radius < 0 || bullet.x_ - bullet_radius > kGraphicWidth || bullet.y_ + bullet_radius < 0 || bullet.y_ - bullet_radius > kGraphicHeight) {
+                bullet.is_active_ = false;
+            }
 
             // 時間経過
             bullet.elapsed_time_++;
-		}
+        }
     }
 
     void EnemyBulletManager::Draw() {
+        SetDrawMode(DX_DRAWMODE_BILINEAR);
+
         int image_handle = asset.GetImageAsset(ImageID::EnemyBullet);
         float flash_add = 0.0f;
 
@@ -44,22 +46,33 @@ namespace game {
                 alpha = InvLerpF(0, kEnemyBulletEnterEffectLength, bullet.elapsed_time_);
             }
 
+            // 描画するソース範囲をShape及びColorから算出する
+            const int src_size = 15;
+            const float src_x = static_cast<float>(static_cast<int>(bullet.shape_) * src_size);
+            const float src_y = static_cast<float>(static_cast<int>(bullet.color_) * src_size);
+
             // スプライト描画
             SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha * 255);
-            DrawRotaGraphF(bullet.x_, bullet.y_, scale, 0.0, image_handle, true);
+            DrawRectRotaGraphF(bullet.x_, bullet.y_, src_x, src_y, src_size, src_size, scale, bullet.angle_ + (kPi / 2.0f), image_handle, true);
             SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
         }
+
+        SetDrawMode(DX_DRAWMODE_NEAREST);
     }
 
-    bool EnemyBulletManager::AddBullet(float x, float y, float angle, float speed) {
+    bool EnemyBulletManager::AddBullet(float x, float y, float angle, float speed, EnemyBulletShape shape, EnemyBulletColor color) {
         for (auto &bullet : bullets_) { // 配列から空きを見つけて弾を追加
             if (bullet.is_active_) continue;
             bullet.is_active_ = true;
             bullet.x_ = x;
             bullet.y_ = y;
-            bullet.vx_ = sinf(angle) * speed;
-            bullet.vy_ = cosf(angle) * speed;
+            bullet.vx_ = cosf(angle) * speed;
+            bullet.vy_ = sinf(angle) * speed;
+            bullet.angle_ = angle;
+            bullet.speed_ = speed;
             bullet.elapsed_time_ = 0;
+            bullet.shape_ = shape;
+            bullet.color_ = color;
             return true;
         }
 
@@ -76,5 +89,16 @@ namespace game {
     // 弾の配列を取得する
     std::array<EnemyBullet, EnemyBulletManager::kMaxNum> &EnemyBulletManager::GetBullets() {
         return bullets_;
+    }
+
+    // アクティブな弾の数を取得する
+    size_t EnemyBulletManager::GetActiveBulletCount() const {
+        size_t count = 0;
+        for (const auto &bullet : bullets_) {
+            if (bullet.is_active_) {
+                count++;
+            }
+        }
+        return count;
     }
 }
