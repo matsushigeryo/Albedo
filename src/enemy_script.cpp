@@ -118,6 +118,7 @@ namespace game {
                 command.name_ = node.attribute("name").as_string("");
                 command.offset_x_ = GetParamOrDefault(node, "offset_x", "0", false);
                 command.offset_y_ = GetParamOrDefault(node, "offset_y", "0", false);
+                out_commands.push_back({command});
             }
 
             // Print命令
@@ -185,6 +186,8 @@ namespace game {
             script_map_[xml_path] = data;
             return data;
         }
+
+        return nullptr;
     }
 
     // スクリプトを実行する
@@ -225,7 +228,9 @@ namespace game {
 
             // Wait命令
             if (auto *command = std::get_if<CommandWait>(&command_variant.data_)) {
-                waiting_timer_ = command->frames_.Evaluate(variables_);
+                float wait_frame = command->frames_.Evaluate(variables_);
+                if (wait_frame < 0) wait_frame = 0;
+                waiting_timer_ = static_cast<unsigned int>(wait_frame);
                 current_frame.step_index_++;
                 break;
             }
@@ -233,7 +238,7 @@ namespace game {
             // Repeat命令
             else if (auto *command = std::get_if<CommandRepeat>(&command_variant.data_)) {
                 current_frame.step_index_++;
-                stack_.push_back(ExecutionFrame(&command->child_commands_, 0, command->total_count_.Evaluate(variables_))); // 子リストをスタックに積んで遷移
+                stack_.push_back(ExecutionFrame(&command->child_commands_, 0, static_cast<int>(command->total_count_.Evaluate(variables_)))); // 子リストをスタックに積んで遷移
             }
 
             // SetVar命令
@@ -260,7 +265,7 @@ namespace game {
             else if (auto *command = std::get_if<CommandGetAngleToPlayer>(&command_variant.data_)) {
                 const float dy = player_ptr->GetY() - (base_y + command->offset_y_.Evaluate(variables_));
                 const float dx = player_ptr->GetX() - (base_x + command->offset_x_.Evaluate(variables_));
-                variables_[command->name_] = RadianToDegree(atan2f(dy, dx)) + 90;
+                variables_[command->name_] = RadianToDegree(atan2f(dx, dy));
                 current_frame.step_index_++;
             }
 
