@@ -5,11 +5,11 @@
     "file.lastUsedOpenFilter": "すべてのファイル (*)",
     "fileStates": {
         "tilemap.tmx": {
-            "scale": 2,
-            "selectedLayer": 2,
+            "scale": 1,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 139.5,
-                "y": 7711
+                "x": 295.5,
+                "y": 7883
             }
         },
         "tilemap.tmx#object": {
@@ -17,7 +17,7 @@
             "scaleInDock": 1
         },
         "tilemap.tmx#tile": {
-            "scaleInDock": 2
+            "scaleInDock": 1.5
         }
     },
     "last.exportedFilePath": "C:/Users/g026g1072/source/repos/Albedo/asset/data",

@@ -51,9 +51,15 @@ namespace game {
             const float src_x = static_cast<float>(static_cast<int>(bullet.shape_) * src_size);
             const float src_y = static_cast<float>(static_cast<int>(bullet.color_) * src_size);
 
+            // ï`âÊäpìxÇéZèoÇ∑ÇÈ
+            float draw_angle = bullet.angle_ + (kPi / 2.0f);
+            if (bullet.shape_ == EnemyBulletShape::SmallCircle || bullet.shape_ == EnemyBulletShape::MidiumCircle) {
+                draw_angle = 0.0f;
+            }
+
             // ÉXÉvÉâÉCÉgï`âÊ
             SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha * 255);
-            DrawRectRotaGraphF(bullet.x_, bullet.y_, src_x, src_y, src_size, src_size, scale, bullet.angle_ + (kPi / 2.0f), image_handle, true);
+            DrawRectRotaGraphF(bullet.x_, bullet.y_, src_x, src_y, src_size, src_size, scale, draw_angle, image_handle, true);
             SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
         }
 

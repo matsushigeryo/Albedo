@@ -65,7 +65,7 @@ namespace game {
                 enemy.y_ = y;
                 enemy.elapsed_time_ = 0;
                 enemy.on_damage_timer_ = kEnemyOnDamageFlashEffectLength + 1;
-                enemy.life_ = 10; // 仮でHP10とする
+                enemy.life_ = 8; // 仮でHP8とする
 
                 // スクリプトを割り当て
                 if (script_name != "") {

@@ -109,6 +109,13 @@ namespace game {
                 }
             }
 
+            // カメラ初期座標の上端より下に存在する敵を削除する
+            for (auto &enemy : enemy_spawn_points_) {
+                if (enemy.y_ > camera.GetY()) {
+                    enemy.is_spawned_ = true;
+                }
+            }
+
         } catch (const nlohmann::json::out_of_range &) {
             log.Print("TileMap: タイルマップデータの解析に失敗しました: %s", json_path.c_str());
             return false;
