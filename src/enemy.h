@@ -22,6 +22,19 @@ namespace game {
 
     constexpr int kEnemyOnDamageFlashEffectLength = 4;
 
+    // 文字列から敵のスプライト種別を取得する関数
+    static EnemySprite EnemySpriteFromString(const std::string &str) {
+        static const std::unordered_map<std::string, EnemySprite> kEnemySpriteMap = {
+            {"Kuro", EnemySprite::Kuro},
+        };
+        if (kEnemySpriteMap.find(str) != kEnemySpriteMap.end()) {
+            return kEnemySpriteMap.at(str);
+        } else {
+            return EnemySprite::Kuro; // 見つからなかった場合はデフォルト値を返す
+        }
+    }
+
+    // 敵の構造体
     struct Enemy {
         bool is_active_ = false;
         EnemySprite sprite_;
@@ -33,6 +46,7 @@ namespace game {
         std::unique_ptr<enemy_script::EnemyScriptRunner> script_runner_{nullptr};
     };
 
+    // 敵管理のクラス
     class EnemyManager {
       public:
         static constexpr size_t kMaxNum = 64;

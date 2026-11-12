@@ -33,15 +33,21 @@ namespace game {
 
         for (const auto &enemy : enemies_) {
             if (enemy.is_active_) {
+
+                // 描画座標を算出
+                const float draw_x = enemy.x_;
+                const float draw_y = enemy.y_;
+
+                // スプライト描画
                 image_handle = asset.GetImageAsset(kEnemySpriteImageIDs[static_cast<size_t>(enemy.sprite_)]); // 描画する画像ハンドル
-                DrawRotaGraphF(enemy.x_, enemy.y_, 1.0, 0.0, image_handle, true);                             // スプライト描画
+                DrawRotaGraphF(draw_x, draw_y, 1.0, 0.0, image_handle, true);                                 // スプライト描画
 
                 // 上から白塗りのスプライトを描画して点滅演出を行う
                 if (enemy.on_damage_timer_ >= 0 && enemy.on_damage_timer_ <= kEnemyOnDamageFlashEffectLength) {
                     flash_add = InvLerpF(kEnemyOnDamageFlashEffectLength, 0, enemy.on_damage_timer_);
                     SetIgnoreDrawGraphColor(true);
                     SetDrawBlendMode(DX_BLENDMODE_ADD, flash_add * 255);
-                    DrawRotaGraphF(enemy.x_, enemy.y_, 1.0, 0.0, image_handle, true);
+                    DrawRotaGraphF(draw_x, draw_y, 1.0, 0.0, image_handle, true);
                     SetIgnoreDrawGraphColor(false);
                     SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
                 }
@@ -60,7 +66,7 @@ namespace game {
                 enemy.elapsed_time_ = 0;
                 enemy.on_damage_timer_ = kEnemyOnDamageFlashEffectLength + 1;
                 enemy.life_ = 10; // 仮でHP10とする
-                
+
                 // スクリプトを割り当て
                 if (script_name != "") {
                     const std::string full_path = "asset/data/" + script_name + ".xml";

@@ -3,13 +3,14 @@
 #include "global.h"
 
 namespace game {
-    void Camera::Init() {
-        x_ = 0.0f;
-        y_ = static_cast<float>(tilemap_ptr->GetMapHeight() - kGraphicHeight / TileMap::kTileDrawHeight);
+    void Camera::Init(float x, float y) {
+        x_ = x;
+        y_ = y;
     }
 
     void Camera::Update() {
-        y_ -= 0.05f;
+        y_ -= 0.1f;
+        if (y_ < 0.0f) y_ = 0.0f;
     }
 
     float Camera::GetX() const {

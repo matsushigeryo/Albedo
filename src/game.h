@@ -2,9 +2,10 @@
 #define GAME_H_
 
 #include <memory>
-#include "tilemap.h"
 
 namespace game {
+    constexpr float kWorldScale = 16;
+
     void Init();
     void Update();
     void Draw();

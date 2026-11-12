@@ -179,9 +179,6 @@
     <ClInclude Include="src\tilemap.h" />
     <ClInclude Include="src\xoshiro.h" />
   </ItemGroup>
-  <ItemGroup>
-    <Xml Include="asset\data\test_script.xml" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

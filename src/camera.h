@@ -6,7 +6,7 @@ namespace game {
       public:
         Camera() = default;
         ~Camera() = default;
-        void Init();
+        void Init(float x, float y);
         void Update();
         float GetX() const;
         float GetY() const;

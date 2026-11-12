@@ -2,7 +2,8 @@
 #include <fstream>
 #include <iostream>
 #include <DxLib.h>
-#include "nlohmann/json.hpp"
+#include <magic_enum/magic_enum.hpp>
+#include <nlohmann/json.hpp>
 #include "camera.h"
 #include "global.h"
 
@@ -11,6 +12,21 @@ namespace game {
         : json_path_{json_path} {
         OpenMapFile(json_path);
         tileset_image_handle_ = asset.GetImageAsset(ImageID::TileSet);
+    }
+
+    void TileMap::UpdateEnemySpawning() {
+        for (auto &enemy : enemy_spawn_points_) {
+            if (!enemy.is_spawned_) {
+                if (enemy.y_ > camera.GetY() - 1.0f) {
+                    enemy.is_spawned_ = true;
+                    enemy_manager_ptr->Spawn(
+                        enemy.sprite_,
+                        enemy.x_ * kWorldScale,
+                        (enemy.y_ - camera.GetY()) * kWorldScale,
+                        enemy.script_);
+                }
+            }
+        }
     }
 
     bool TileMap::Draw() const {
@@ -53,6 +69,7 @@ namespace game {
         // ファイルを開く
         std::ifstream ifs(json_path);
         if (!ifs.is_open()) {
+            log.Print("TileMap: タイルマップデータを開けませんでした: %s", json_path.c_str());
             return false;
         }
 
@@ -68,19 +85,110 @@ namespace game {
 
             // 全てのレイヤーを取得
             layers_.clear();
+            enemy_spawn_points_.clear();
+
             for (auto &layer : layers) {
-                layers_.emplace_back(
-                    layer.at("data").get<std::vector<unsigned int>>(),
-                    layer.at("name").get<std::string>(),
-                    layer.at("width").get<int>(),
-                    layer.at("height").get<int>());
+                const std::string type = layer.at("type").get<std::string>();
+
+                // タイルマップの場合
+                if (type == "tilelayer") {
+                    layers_.emplace_back(
+                        layer.at("data").get<std::vector<unsigned int>>(),
+                        layer.at("name").get<std::string>(),
+                        layer.at("width").get<int>(),
+                        layer.at("height").get<int>());
+                }
+
+                // オブジェクトグループの場合
+                else if (type == "objectgroup") {
+                    LoadObjects(layer);
+                }
+
+                else {
+                    log.Print("TileMap: タイルマップデータの内部に未知のレイヤータイプが見つかったため無視されます: %s", type.c_str());
+                }
             }
 
         } catch (const nlohmann::json::out_of_range &) {
+            log.Print("TileMap: タイルマップデータの解析に失敗しました: %s", json_path.c_str());
             return false;
         }
 
+        log.Print("TileMap: タイルマップを読み込みました: %s", json_path.c_str());
+
         return true;
+    }
+
+    void TileMap::LoadObjects(const nlohmann::json &object_layer) {
+        const std::string layer_name = object_layer.at("name").get<std::string>();
+
+        // 雑魚敵グループの場合
+        if (layer_name == "enemy") {
+            for (auto &object : object_layer.at("objects").get<std::vector<nlohmann::json>>()) {
+                const std::string object_name = object.at("name").get<std::string>();
+                const float object_x = object.at("x").get<float>() / kWorldScale;
+                const float object_y = object.at("y").get<float>() / kWorldScale;
+                const float object_width = object.at("width").get<float>() / kWorldScale;
+                const float object_height = object.at("height").get<float>() / kWorldScale;
+
+                // カスタムプロパティを参照
+                std::string object_script = "";
+                EnemySprite object_sprite = EnemySprite::Kuro;
+
+                const std::vector<nlohmann::json> properties = object.at("properties").get<std::vector<nlohmann::json>>();
+
+                for (auto &property : properties) {
+                    const std::string property_name = property.at("name").get<std::string>();
+                    const std::string property_type = property.at("type").get<std::string>();
+
+                    if (property_name == "script" && property_type == "string") {
+                        object_script = property.at("value").get<std::string>();
+                    }
+
+                    else if (property_name == "sprite" && property_type == "string") {
+                        object_sprite = EnemySpriteFromString(property.at("value").get<std::string>());
+                    }
+
+                    else {
+                        log.Print("TileMap: 敵オブジェクトから不明なカスタムプロパティが見つかったため無視されます: %s", property_name.c_str());
+                    }
+                }
+
+                // 出現情報をまとめた構造体を追加する
+                const float object_spawn_x = object_x + object_width / 2.0f;
+                const float object_spawn_y = object_y + object_height / 2.0f;
+                enemy_spawn_points_.emplace_back(
+                    object_spawn_x,
+                    object_spawn_y,
+                    object_script,
+                    object_sprite);
+
+                log.Print("TileMap: 敵の出現情報を登録しました: (x=%f,y=%f,script=\"%s\",sprite=\"%s\")", object_spawn_x, object_spawn_y, object_script.c_str(), magic_enum::enum_name(object_sprite).data());
+            }
+        }
+
+        // その他のオブジェクトグループの場合
+        else if (layer_name == "others") {
+            for (auto &object : object_layer.at("objects").get<std::vector<nlohmann::json>>()) {
+                const std::string object_name = object.at("name").get<std::string>();
+                const float object_x = object.at("x").get<float>() / kWorldScale;
+                const float object_y = object.at("y").get<float>() / kWorldScale;
+
+                // カメラの位置指定オブジェクト
+                if (object_name == "camera") {
+                    camera.Init(object_x, object_y);
+                    log.Print("TileMap: カメラの位置を(%f,%f)で初期化しました", object_x, object_y);
+                }
+
+                else {
+                    log.Print("TileMap: タイルマップデータの内部に未知のオブジェクト種別が見つかったため無視されます: %s", object_name.c_str());
+                }
+            }
+        }
+
+        else {
+            log.Print("TileMap: タイルマップデータの内部に未知のオブジェクトグループが見つかったため無視されます: %s", layer_name.c_str());
+        }
     }
 
     int TileMap::GetMapWidth() const {

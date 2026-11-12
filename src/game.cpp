@@ -48,7 +48,6 @@ namespace game {
         enemy_script_manager_ptr = std::make_unique<enemy_script::EnemyScriptManager>();
         effect_manager_ptr = std::make_unique<EffectManager>();
 
-        camera.Init();
         player_ptr->Init();
         player_bullet_manager_ptr->Init();
         enemy_manager_ptr->Init();
@@ -68,6 +67,7 @@ namespace game {
 
         // ゲーム内要素の更新
         camera.Update();
+        tilemap_ptr->UpdateEnemySpawning();
         player_ptr->Update();
         player_bullet_manager_ptr->Update();
         enemy_manager_ptr->Update();
@@ -80,9 +80,9 @@ namespace game {
         UpdateCollisionPlayerBulletToEnemy(player_bullet_manager_ptr.get(), enemy_manager_ptr.get());
 
         // 敵のスポーン処理(仮)
-        if (game_time >= 40 && (game_time - 40) % 40 == 0) {
-            enemy_manager_ptr->Spawn(EnemySprite::Kuro, 32 + rand() % (kGraphicWidth - 64), -32, "test_script");
-        }
+        // if (game_time >= 40 && (game_time - 40) % 40 == 0) {
+        //     enemy_manager_ptr->Spawn(EnemySprite::Kuro, 32 + rand() % (kGraphicWidth - 64), -32, "test_script");
+        // }
 
         if (test_runner_ptr) {
             static bool owner_is_active = true;

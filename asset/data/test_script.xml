@@ -38,30 +38,6 @@
 				<FireNWay way_count="1" speed="$speed" base_angle="$angle" angle_range="0" shape="MidiumCircle" color="Red" />
 				<AddVar name="speed" value="0.2" />
 			</Repeat>
-
-			<Wait frames="40" />
-
-			<GetAngleToPlayer name="angle" />
-			<SetVar name="speed" value="3" />
-
-			<Repeat count="5">
-				<FireNWay way_count="3" speed="$speed" base_angle="$angle" angle_range="3" shape="SmallCircle" color="White" />
-				<AddVar name="speed" value="0.05" />
-			</Repeat>
-			
-			<Wait frames="15" />
-
-			<Repeat count="5">
-				<FireNWay way_count="3" speed="$speed" base_angle="$angle" angle_range="5" shape="SmallCircle" color="White" />
-				<AddVar name="speed" value="0.05" />
-			</Repeat>
-
-			<Wait frames="15" />
-
-			<Repeat count="5">
-				<FireNWay way_count="3" speed="$speed" base_angle="$angle" angle_range="60" shape="SmallCircle" color="White" />
-				<AddVar name="speed" value="0.05" />
-			</Repeat>
 		</Task>
 	</Parallel>
 
