@@ -158,6 +158,7 @@
     <ClCompile Include="src\input.cpp" />
     <ClCompile Include="src\log.cpp" />
     <ClCompile Include="src\player.cpp" />
+    <ClCompile Include="src\player_bomb.cpp" />
     <ClCompile Include="src\player_bullet.cpp" />
     <ClCompile Include="src\pugixml\pugixml.cpp" />
     <ClCompile Include="src\tilemap.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="src\input.h" />
     <ClInclude Include="src\log.h" />
     <ClInclude Include="src\player.h" />
+    <ClInclude Include="src\player_bomb.h" />
     <ClInclude Include="src\player_bullet.h" />
     <ClInclude Include="src\tilemap.h" />
     <ClInclude Include="src\xoshiro.h" />

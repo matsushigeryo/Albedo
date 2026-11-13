@@ -96,12 +96,14 @@ namespace game {
     }
 
     void Draw() {
+        // ƒQ[ƒ€“à—v‘f‚Ì•`‰æ
         tilemap_ptr->Draw();
         player_bullet_manager_ptr->Draw();
         player_ptr->Draw();
         enemy_manager_ptr->Draw();
         enemy_bullet_manager_ptr->Draw();
         effect_manager_ptr->Draw();
+        player_ptr->GetBomb().Draw();
     }
 
     int GetGameTime() {

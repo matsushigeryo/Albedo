@@ -2,13 +2,14 @@
 #define PLAYER_H_
 
 #include <array>
+#include "player_bomb.h"
 
 namespace game {
     class Player {
       public:
         static constexpr float kBaseSpeed = 3.0f;
         static constexpr float kBaseSpeedSlow = 1.5f;
-        static constexpr int kInvincibleTime = 90;
+        static constexpr int kDeadInvincibleTime = 90;
         static constexpr int kShotIntervalFrame = 5;
         static constexpr float kScreenBoundaryCollisionRadius = 7;
         static constexpr float kOptionsFormationAnimProgressPerFrame = 0.2f;
@@ -27,6 +28,7 @@ namespace game {
         void OnDamage();
         float GetX() const;
         float GetY() const;
+        PlayerBomb &GetBomb();
         bool IsInvincible() const;
 
       private:
@@ -34,10 +36,11 @@ namespace game {
         int image_handle_option_ = -1;
         float x_ = 0.0f;
         float y_ = 0.0f;
-        int dead_timer_ = kInvincibleTime + 1;
+        int dead_timer_ = kDeadInvincibleTime + 1;
         int shot_timer_ = 0;
         std::array<Option, 3> options_{};
         float options_formation_anim_progress_ = 0.0f;
+        PlayerBomb bomb_{5};
     };
 }
 

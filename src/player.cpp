@@ -11,7 +11,7 @@ namespace game {
     void Player::Init() {
         x_ = kGraphicWidth / 2;
         y_ = kGraphicHeight - 32;
-        dead_timer_ = kInvincibleTime + 1;
+        dead_timer_ = kDeadInvincibleTime + 1;
         shot_timer_ = 0;
         options_formation_anim_progress_ = 0.0f;
     }
@@ -74,6 +74,9 @@ namespace game {
             shot_timer_ = 0;
         }
 
+        // ボム更新
+        bomb_.Update();
+
         // タイマー更新
         dead_timer_++;
     }
@@ -108,7 +111,11 @@ namespace game {
         return y_;
     }
 
+    PlayerBomb& Player::GetBomb() {
+        return bomb_;
+    }
+
     bool Player::IsInvincible() const {
-        return dead_timer_ < kInvincibleTime;
+        return dead_timer_ < kDeadInvincibleTime;
     }
 }
