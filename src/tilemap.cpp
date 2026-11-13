@@ -92,11 +92,13 @@ namespace game {
 
                 // タイルマップの場合
                 if (type == "tilelayer") {
+                    const std::string name = layer.at("name").get<std::string>();
                     layers_.emplace_back(
                         layer.at("data").get<std::vector<unsigned int>>(),
-                        layer.at("name").get<std::string>(),
+                        name,
                         layer.at("width").get<int>(),
                         layer.at("height").get<int>());
+                    log.Print("TileMap: 地形レイヤーを読み込みました: %s", name.c_str());
                 }
 
                 // オブジェクトグループの場合

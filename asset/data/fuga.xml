@@ -22,7 +22,7 @@
             <Repeat count="5">
                 <Repeat count="10">
                     <GetRandom name="angle" min="0" max="360" />
-                    <GetRandom name="speed" min="1.0" max="2.0" />
+                    <GetRandom name="speed" min="1.0" max="1.5" />
                     <FireNWay way_count="1" speed="$speed" base_angle="$angle" shape="SmallCircle" color="Blue" />
                 </Repeat>
                 <Wait frames="20" />

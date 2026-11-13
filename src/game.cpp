@@ -57,6 +57,8 @@ namespace game {
         // test_runner_ptr = std::make_unique<enemy_script::EnemyScriptRunner>(enemy_script_manager_ptr->Get("asset/data/test_script.xml"));
         // test_runner_origin_x = kGraphicWidth / 2.0f;
         // test_runner_origin_y = 32.0f;
+
+        log.Print("Game: ƒQ[ƒ€ƒV[ƒ“‚ğ‰Šú‰»‚µ‚Ü‚µ‚½");
     }
 
     void Update() {
