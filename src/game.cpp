@@ -16,6 +16,7 @@ namespace game {
     Camera camera{};
     std::unique_ptr<TileMap> tilemap_ptr = nullptr;
     std::unique_ptr<Player> player_ptr = nullptr;
+    std::unique_ptr<PlayerBomb> player_bomb_ptr = nullptr;
     std::unique_ptr<PlayerBulletManager> player_bullet_manager_ptr = nullptr;
     std::unique_ptr<EnemyManager> enemy_manager_ptr = nullptr;
     std::unique_ptr<EnemyBulletManager> enemy_bullet_manager_ptr = nullptr;
@@ -42,6 +43,7 @@ namespace game {
         // èâä˙âª
         tilemap_ptr = std::make_unique<TileMap>("asset/data/test_tilemap.tmj");
         player_ptr = std::make_unique<Player>();
+        player_bomb_ptr = std::make_unique<PlayerBomb>(5);
         player_bullet_manager_ptr = std::make_unique<PlayerBulletManager>();
         enemy_manager_ptr = std::make_unique<EnemyManager>();
         enemy_bullet_manager_ptr = std::make_unique<EnemyBulletManager>();
@@ -71,6 +73,7 @@ namespace game {
         camera.Update();
         tilemap_ptr->UpdateEnemySpawning();
         player_ptr->Update();
+        player_bomb_ptr->Update();
         player_bullet_manager_ptr->Update();
         enemy_manager_ptr->Update();
         enemy_bullet_manager_ptr->Update();
@@ -103,7 +106,7 @@ namespace game {
         enemy_manager_ptr->Draw();
         enemy_bullet_manager_ptr->Draw();
         effect_manager_ptr->Draw();
-        player_ptr->GetBomb().Draw();
+        player_bomb_ptr->Draw();
     }
 
     int GetGameTime() {

@@ -26,6 +26,12 @@ float EaseInQuad(float x) {
 float EaseOutQuad(float x) {
     return 1.0f - (1.0f - x) * (1.0f - x);
 }
+float EaseInCubic(float x) {
+    return x * x * x;
+}
+float EaseOutCubic(float x) {
+    return 1.0f - std::pow(1.0f - x, 3);
+}
 
 // 度数法をラジアンに変換
 float DegreeToRadian(float degree) {

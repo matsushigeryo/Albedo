@@ -2,7 +2,6 @@
 #define PLAYER_H_
 
 #include <array>
-#include "player_bomb.h"
 
 namespace game {
     class Player {
@@ -28,7 +27,6 @@ namespace game {
         void OnDamage();
         float GetX() const;
         float GetY() const;
-        PlayerBomb &GetBomb();
         bool IsInvincible() const;
 
       private:
@@ -40,7 +38,6 @@ namespace game {
         int shot_timer_ = 0;
         std::array<Option, 3> options_{};
         float options_formation_anim_progress_ = 0.0f;
-        PlayerBomb bomb_{5};
     };
 }
 

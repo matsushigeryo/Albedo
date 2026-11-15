@@ -11,6 +11,7 @@
 #include "input.h"
 #include "log.h"
 #include "player.h"
+#include "player_bomb.h"
 #include "player_bullet.h"
 #include "tilemap.h"
 #include "xoshiro.h"
@@ -33,6 +34,8 @@ float LerpF(float start, float end, float t);
 float InvLerpF(float start, float end, float v);
 float EaseInQuad(float x);
 float EaseOutQuad(float x);
+float EaseInCubic(float x);
+float EaseOutCubic(float x);
 float DegreeToRadian(float degree);
 float RadianToDegree(float radian);
 bool OnScreen(int x, int y);
@@ -47,6 +50,7 @@ namespace game {
     extern Camera camera;
     extern std::unique_ptr<TileMap> tilemap_ptr;
     extern std::unique_ptr<Player> player_ptr;
+    extern std::unique_ptr<PlayerBomb> player_bomb_ptr;
     extern std::unique_ptr<PlayerBulletManager> player_bullet_manager_ptr;
     extern std::unique_ptr<EnemyManager> enemy_manager_ptr;
     extern std::unique_ptr<EnemyBulletManager> enemy_bullet_manager_ptr;

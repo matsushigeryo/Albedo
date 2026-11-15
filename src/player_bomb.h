@@ -3,7 +3,7 @@
 
 namespace game {
     class PlayerBomb {
-        static constexpr int kDurationTime = 60 * 5;
+        static constexpr int kDurationTime = 60 * 3;
 
       public:
         PlayerBomb(int init_stock);

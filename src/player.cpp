@@ -74,9 +74,6 @@ namespace game {
             shot_timer_ = 0;
         }
 
-        // ボム更新
-        bomb_.Update();
-
         // タイマー更新
         dead_timer_++;
     }
@@ -109,10 +106,6 @@ namespace game {
 
     float Player::GetY() const {
         return y_;
-    }
-
-    PlayerBomb& Player::GetBomb() {
-        return bomb_;
     }
 
     bool Player::IsInvincible() const {
