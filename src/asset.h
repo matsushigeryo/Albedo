@@ -13,6 +13,7 @@ namespace game {
         PlayerBulletSubShot,
         EnemyKuro,
         EnemyBullet,
+        ItemCoin,
         EffectWhiteSparkle1,
         EffectWhiteSparkle2,
     };

@@ -21,14 +21,6 @@ namespace game {
     void PlayerBomb::Draw() {
         if (left_timer_ > 0) {
             const int timer = kDurationTime - left_timer_;
-            const float gw = static_cast<float>(kGraphicWidth);
-            const float gh = static_cast<float>(kGraphicHeight);
-
-            // ”wŒi‚Ì•`‰æ
-            SetDrawBlendMode(DX_BLENDMODE_MULA, InvLerpF(0, 60, timer) * 256);
-            DrawBox(0, 0, gw, gh, GetColor(80, 250, 230), true);
         }
-
-        SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
     }
 }

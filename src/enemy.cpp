@@ -90,6 +90,8 @@ namespace game {
             for (int i = 0; i < 5; ++i) {
                 effect_manager_ptr->Spawn(EffectType::EnemyDead, enemy.x_, enemy.y_);
             }
+            // アイテム出現
+            item_manager_ptr->Spawn(ItemType::Coin, enemy.x_, enemy.y_);
         }
     }
 

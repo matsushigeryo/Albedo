@@ -156,6 +156,7 @@
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\global.cpp" />
     <ClCompile Include="src\input.cpp" />
+    <ClCompile Include="src\item.cpp" />
     <ClCompile Include="src\log.cpp" />
     <ClCompile Include="src\player.cpp" />
     <ClCompile Include="src\player_bomb.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\global.h" />
     <ClInclude Include="src\input.h" />
+    <ClInclude Include="src\item.h" />
     <ClInclude Include="src\log.h" />
     <ClInclude Include="src\player.h" />
     <ClInclude Include="src\player_bomb.h" />
