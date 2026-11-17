@@ -30,7 +30,6 @@ namespace game {
 
     // エフェクトの種別に対応するスプライトプロパティ
     const std::array<EffectSpriteProperty, kEffectTypeSize> kEffectSpriteProperties = {
-        // EffectSpriteProperty(画像ID, フレーム総数, フレーム横幅, フレーム送り間隔, ループフラグ)
         EffectSpriteProperty(ImageID::EffectWhiteSparkle1, 4, 15, 4, false),
         EffectSpriteProperty(ImageID::EffectWhiteSparkle2, 11, 15, 1, false),
     };

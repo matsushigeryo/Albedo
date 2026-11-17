@@ -21,6 +21,7 @@ namespace game {
     std::unique_ptr<EnemyManager> enemy_manager_ptr = nullptr;
     std::unique_ptr<EnemyBulletManager> enemy_bullet_manager_ptr = nullptr;
     std::unique_ptr<enemy_script::EnemyScriptManager> enemy_script_manager_ptr = nullptr;
+    std::unique_ptr<ItemManager> item_manager_ptr = nullptr;
     std::unique_ptr<EffectManager> effect_manager_ptr = nullptr;
 
     std::unique_ptr<enemy_script::EnemyScriptRunner> test_runner_ptr = nullptr;
@@ -37,6 +38,7 @@ namespace game {
         asset.LoadImageAsset(ImageID::PlayerBulletSubShot, "image/player_bullet_sub_shot.png");
         asset.LoadImageAsset(ImageID::EnemyKuro, "image/enemy_kuro.png");
         asset.LoadImageAsset(ImageID::EnemyBullet, "image/enemy_bullet.png");
+        asset.LoadImageAsset(ImageID::ItemCoin, "image/item_coin.png");
         asset.LoadImageAsset(ImageID::EffectWhiteSparkle1, "image/effect_white_sparkle_1.png");
         asset.LoadImageAsset(ImageID::EffectWhiteSparkle2, "image/effect_white_sparkle_2.png");
 
@@ -48,12 +50,14 @@ namespace game {
         enemy_manager_ptr = std::make_unique<EnemyManager>();
         enemy_bullet_manager_ptr = std::make_unique<EnemyBulletManager>();
         enemy_script_manager_ptr = std::make_unique<enemy_script::EnemyScriptManager>();
+        item_manager_ptr = std::make_unique<ItemManager>();
         effect_manager_ptr = std::make_unique<EffectManager>();
 
         player_ptr->Init();
         player_bullet_manager_ptr->Init();
         enemy_manager_ptr->Init();
         enemy_bullet_manager_ptr->Init();
+        item_manager_ptr->Init();
         effect_manager_ptr->Init();
 
         // test_runner_ptr = std::make_unique<enemy_script::EnemyScriptRunner>(enemy_script_manager_ptr->Get("asset/data/test_script.xml"));
@@ -77,6 +81,7 @@ namespace game {
         player_bullet_manager_ptr->Update();
         enemy_manager_ptr->Update();
         enemy_bullet_manager_ptr->Update();
+        item_manager_ptr->Update();
         effect_manager_ptr->Update();
 
         // “–‚½‚è”»’è‚Ìˆ—
@@ -102,6 +107,7 @@ namespace game {
         // ƒQ[ƒ€“à—v‘f‚Ì•`‰æ
         tilemap_ptr->Draw();
         player_bullet_manager_ptr->Draw();
+        item_manager_ptr->Draw();
         player_ptr->Draw();
         enemy_manager_ptr->Draw();
         enemy_bullet_manager_ptr->Draw();

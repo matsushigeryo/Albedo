@@ -9,6 +9,7 @@
 #include "enemy_bullet.h"
 #include "enemy_script.h"
 #include "input.h"
+#include "item.h"
 #include "log.h"
 #include "player.h"
 #include "player_bomb.h"
@@ -55,6 +56,7 @@ namespace game {
     extern std::unique_ptr<EnemyManager> enemy_manager_ptr;
     extern std::unique_ptr<EnemyBulletManager> enemy_bullet_manager_ptr;
     extern std::unique_ptr<enemy_script::EnemyScriptManager> enemy_script_manager_ptr;
+    extern std::unique_ptr<ItemManager> item_manager_ptr;
     extern std::unique_ptr<EffectManager> effect_manager_ptr;
 }
 

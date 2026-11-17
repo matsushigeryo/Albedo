@@ -37,7 +37,5 @@ namespace game {
                 DrawCircle(ex, ey, 32, GetColor(80, 250, 230), false, 1);
             }
         }
-
-        SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
     }
 }
