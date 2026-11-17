@@ -5,24 +5,26 @@
 #include <magic_enum/magic_enum.hpp>
 #include <nlohmann/json.hpp>
 #include "camera.h"
+#include "enemy.h"
+#include "game.h"
 #include "global.h"
+#include "log.h"
 
 namespace game {
     TileMap::TileMap(const std::string &json_path)
         : json_path_{json_path} {
         OpenMapFile(json_path);
-        tileset_image_handle_ = asset.GetImageAsset(ImageID::TileSet);
     }
 
     void TileMap::UpdateEnemySpawning() {
         for (auto &enemy : enemy_spawn_points_) {
             if (!enemy.is_spawned_) {
-                if (enemy.y_ > camera.GetY() - 1.0f) {
+                if (enemy.y_ > g_game.camera->GetY() - 1.0f) {
                     enemy.is_spawned_ = true;
-                    enemy_manager_ptr->Spawn(
+                    g_game.enemy_manager->Spawn(
                         enemy.sprite_,
                         enemy.x_ * kWorldScale,
-                        (enemy.y_ - camera.GetY()) * kWorldScale,
+                        (enemy.y_ - g_game.camera->GetY()) * kWorldScale,
                         enemy.script_);
                 }
             }
@@ -30,15 +32,16 @@ namespace game {
     }
 
     bool TileMap::Draw() const {
-        if (tileset_image_handle_ == -1) return false;
+        int tileset_image_handle = g_game.asset->GetImageAsset(ImageID::TileSet);
+        if (tileset_image_handle == -1) return false;
 
         // タイルを描画する
         unsigned int tile_id, tile_x, tile_y;
         float dest_x1, dest_y1, dest_x2, dest_y2, src_x, src_y;
-        const int camera_offset_int_x = std::floor(camera.GetX());
-        const int camera_offset_int_y = std::floor(camera.GetY());
-        const float camera_offset_x = camera.GetX() - camera_offset_int_x;
-        const float camera_offset_y = camera.GetY() - camera_offset_int_y;
+        const int camera_offset_int_x = std::floor(g_game.camera->GetX());
+        const int camera_offset_int_y = std::floor(g_game.camera->GetY());
+        const float camera_offset_x = g_game.camera->GetX() - camera_offset_int_x;
+        const float camera_offset_y = g_game.camera->GetY() - camera_offset_int_y;
 
         for (auto &layer : layers_) {
             for (int y = 0; y < kGraphicHeight / kTileDrawHeight + 2; ++y) {
@@ -54,7 +57,7 @@ namespace game {
                             dest_y2 = dest_y1 + kTileDrawHeight;
                             src_x = (tile_id - 1) % kTileSetXNum * kTileSetXSize;
                             src_y = (tile_id - 1) / kTileSetXNum * kTileSetYSize;
-                            DrawRectExtendGraphF(dest_x1, dest_y1, dest_x2, dest_y2, src_x, src_y, kTileSetXSize, kTileSetYSize, tileset_image_handle_, true);
+                            DrawRectExtendGraphF(dest_x1, dest_y1, dest_x2, dest_y2, src_x, src_y, kTileSetXSize, kTileSetYSize, tileset_image_handle, true);
                         }
                     }
                 }
@@ -69,7 +72,7 @@ namespace game {
         // ファイルを開く
         std::ifstream ifs(json_path);
         if (!ifs.is_open()) {
-            log.Print("TileMap: タイルマップデータを開けませんでした: %s", json_path.c_str());
+            g_game.log->Print("TileMap: タイルマップデータを開けませんでした: %s", json_path.c_str());
             return false;
         }
 
@@ -98,7 +101,7 @@ namespace game {
                         name,
                         layer.at("width").get<int>(),
                         layer.at("height").get<int>());
-                    log.Print("TileMap: 地形レイヤーを読み込みました: %s", name.c_str());
+                    g_game.log->Print("TileMap: 地形レイヤーを読み込みました: %s", name.c_str());
                 }
 
                 // オブジェクトグループの場合
@@ -107,23 +110,23 @@ namespace game {
                 }
 
                 else {
-                    log.Print("TileMap: タイルマップデータの内部に未知のレイヤータイプが見つかったため無視されます: %s", type.c_str());
+                    g_game.log->Print("TileMap: タイルマップデータの内部に未知のレイヤータイプが見つかったため無視されます: %s", type.c_str());
                 }
             }
 
             // カメラ初期座標の上端より下に存在する敵を削除する
             for (auto &enemy : enemy_spawn_points_) {
-                if (enemy.y_ > camera.GetY()) {
+                if (enemy.y_ > g_game.camera->GetY()) {
                     enemy.is_spawned_ = true;
                 }
             }
 
         } catch (const nlohmann::json::out_of_range &) {
-            log.Print("TileMap: タイルマップデータの解析に失敗しました: %s", json_path.c_str());
+            g_game.log->Print("TileMap: タイルマップデータの解析に失敗しました: %s", json_path.c_str());
             return false;
         }
 
-        log.Print("TileMap: タイルマップを読み込みました: %s", json_path.c_str());
+        g_game.log->Print("TileMap: タイルマップを読み込みました: %s", json_path.c_str());
 
         return true;
     }
@@ -159,7 +162,7 @@ namespace game {
                     }
 
                     else {
-                        log.Print("TileMap: 敵オブジェクトから不明なカスタムプロパティが見つかったため無視されます: %s", property_name.c_str());
+                        g_game.log->Print("TileMap: 敵オブジェクトから不明なカスタムプロパティが見つかったため無視されます: %s", property_name.c_str());
                     }
                 }
 
@@ -172,7 +175,7 @@ namespace game {
                     object_script,
                     object_sprite);
 
-                log.Print("TileMap: 敵の出現情報を登録しました: (x=%f,y=%f,script=\"%s\",sprite=\"%s\")", object_spawn_x, object_spawn_y, object_script.c_str(), magic_enum::enum_name(object_sprite).data());
+                g_game.log->Print("TileMap: 敵の出現情報を登録しました: (x=%f,y=%f,script=\"%s\",sprite=\"%s\")", object_spawn_x, object_spawn_y, object_script.c_str(), magic_enum::enum_name(object_sprite).data());
             }
         }
 
@@ -185,18 +188,18 @@ namespace game {
 
                 // カメラの位置指定オブジェクト
                 if (object_name == "camera") {
-                    camera.Init(object_x, object_y);
-                    log.Print("TileMap: カメラの位置を(%f,%f)で初期化しました", object_x, object_y);
+                    g_game.camera->Init(object_x, object_y);
+                    g_game.log->Print("TileMap: カメラの位置を(%f,%f)で初期化しました", object_x, object_y);
                 }
 
                 else {
-                    log.Print("TileMap: タイルマップデータの内部に未知のオブジェクト種別が見つかったため無視されます: %s", object_name.c_str());
+                    g_game.log->Print("TileMap: タイルマップデータの内部に未知のオブジェクト種別が見つかったため無視されます: %s", object_name.c_str());
                 }
             }
         }
 
         else {
-            log.Print("TileMap: タイルマップデータの内部に未知のオブジェクトグループが見つかったため無視されます: %s", layer_name.c_str());
+            g_game.log->Print("TileMap: タイルマップデータの内部に未知のオブジェクトグループが見つかったため無視されます: %s", layer_name.c_str());
         }
     }
 

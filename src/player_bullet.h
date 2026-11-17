@@ -23,7 +23,7 @@ namespace game {
         static constexpr float kBulletSpeed = 8.0f;
 
       public:
-        PlayerBulletManager();
+        PlayerBulletManager() = default;
         ~PlayerBulletManager() = default;
         void Init();
         void Update();

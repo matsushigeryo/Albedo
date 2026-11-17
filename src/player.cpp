@@ -1,15 +1,18 @@
 #include "player.h"
 #include <DxLib.h>
+#include "asset.h"
+#include "game.h"
 #include "global.h"
+#include "input.h"
+#include "player_bullet.h"
 
 namespace game {
-    Player::Player() {
-        image_handle_ = asset.GetImageAsset(ImageID::Player);
-        image_handle_option_ = asset.GetImageAsset(ImageID::PlayerOption);
-    }
 
     void Player::Init() {
-        x_ = kGraphicWidth / 2;
+        image_handle_ = g_game.asset->GetImageAsset(ImageID::Player);
+        image_handle_option_ = g_game.asset->GetImageAsset(ImageID::PlayerOption);
+
+        x_ = kGraphicWidth / 2.0f;
         y_ = kGraphicHeight - 32;
         dead_timer_ = kDeadInvincibleTime + 1;
         shot_timer_ = 0;
@@ -18,12 +21,12 @@ namespace game {
 
     void Player::Update() {
         // 入力フラグを取得
-        const bool input_right = input.OnHeldKeyboard(KEY_INPUT_RIGHT);
-        const bool input_left = input.OnHeldKeyboard(KEY_INPUT_LEFT);
-        const bool input_down = input.OnHeldKeyboard(KEY_INPUT_DOWN);
-        const bool input_up = input.OnHeldKeyboard(KEY_INPUT_UP);
-        const bool input_shot = input.OnHeldKeyboard(KEY_INPUT_Z);
-        const bool input_slow = input.OnHeldKeyboard(KEY_INPUT_LSHIFT);
+        const bool input_right = g_game.input->OnHeldKeyboard(KEY_INPUT_RIGHT);
+        const bool input_left = g_game.input->OnHeldKeyboard(KEY_INPUT_LEFT);
+        const bool input_down = g_game.input->OnHeldKeyboard(KEY_INPUT_DOWN);
+        const bool input_up = g_game.input->OnHeldKeyboard(KEY_INPUT_UP);
+        const bool input_shot = g_game.input->OnHeldKeyboard(KEY_INPUT_Z);
+        const bool input_slow = g_game.input->OnHeldKeyboard(KEY_INPUT_LSHIFT);
 
         // 移動速度を計算する
         float move_speed = input_slow ? kBaseSpeedSlow : kBaseSpeed;
@@ -47,8 +50,8 @@ namespace game {
         int option_index = 0;
         const float orbit_radius = LerpF(20, 12, EaseOutQuad(options_formation_anim_progress_));
         for (auto &option : options_) {
-            option.offset_x_ = std::cosf((game_time / 60.0f + option_index / static_cast<float>(options_.size())) * kPi * 2.0f) * orbit_radius;
-            option.offset_y_ = std::sinf((game_time / 60.0f + option_index / static_cast<float>(options_.size())) * kPi * 2.0f) * orbit_radius;
+            option.offset_x_ = std::cosf((g_game.time / 60.0f + option_index / static_cast<float>(options_.size())) * kPi * 2.0f) * orbit_radius;
+            option.offset_y_ = std::sinf((g_game.time / 60.0f + option_index / static_cast<float>(options_.size())) * kPi * 2.0f) * orbit_radius;
             option_index++;
         }
 
@@ -64,9 +67,9 @@ namespace game {
         // ショットを放つ
         if (input_shot) {
             if (shot_timer_ % kShotIntervalFrame == 0) {
-                player_bullet_manager_ptr->Shot(PlayerBulletType::MainShot, x_, y_);
+                g_game.player_bullet_manager->Shot(PlayerBulletType::MainShot, x_, y_);
                 for (const auto &option : options_) {
-                    player_bullet_manager_ptr->Shot(PlayerBulletType::SubShot, x_ + option.offset_x_, y_ + option.offset_y_);
+                    g_game.player_bullet_manager->Shot(PlayerBulletType::SubShot, x_ + option.offset_x_, y_ + option.offset_y_);
                 }
             }
             shot_timer_++;

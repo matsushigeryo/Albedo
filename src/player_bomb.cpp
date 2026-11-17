@@ -1,6 +1,7 @@
 #include "player_bomb.h"
 #include <DxLib.h>
-#include "global.h"
+#include "game.h"
+#include "input.h"
 
 namespace game {
     PlayerBomb::PlayerBomb(int init_stock)
@@ -13,7 +14,7 @@ namespace game {
         if (left_timer_ < 0) left_timer_ = 0;
 
         // ƒ{ƒ€”­“®
-        if (left_timer_ == 0 && input.OnPressedKeyboard(KEY_INPUT_X)) {
+        if (left_timer_ == 0 && g_game.input->OnPressedKeyboard(KEY_INPUT_X)) {
             left_timer_ = kDurationTime;
         }
     }

@@ -1,93 +1,101 @@
 #include "game.h"
-#include <iostream>
 #include <DxLib.h>
+#include <iostream>
+#include "asset.h"
+#include "camera.h"
+#include "collision.h"
+#include "effect.h"
+#include "enemy.h"
+#include "enemy_bullet.h"
 #include "enemy_script.h"
 #include "global.h"
-#include "collision.h"
+#include "input.h"
+#include "item.h"
+#include "log.h"
+#include "player.h"
+#include "player_bomb.h"
+#include "player_bullet.h"
+#include "tilemap.h"
+#include "xoshiro.h"
 
 namespace game {
 
-    // 実体を定義
-    int game_time = 0;
-    Xoshiro128PlusPlus xoshiro{0};
-    Asset asset{"asset"};
-    Input input{};
-    Log log{"game.log"};
-    Camera camera{};
-    std::unique_ptr<TileMap> tilemap_ptr = nullptr;
-    std::unique_ptr<Player> player_ptr = nullptr;
-    std::unique_ptr<PlayerBomb> player_bomb_ptr = nullptr;
-    std::unique_ptr<PlayerBulletManager> player_bullet_manager_ptr = nullptr;
-    std::unique_ptr<EnemyManager> enemy_manager_ptr = nullptr;
-    std::unique_ptr<EnemyBulletManager> enemy_bullet_manager_ptr = nullptr;
-    std::unique_ptr<enemy_script::EnemyScriptManager> enemy_script_manager_ptr = nullptr;
-    std::unique_ptr<ItemManager> item_manager_ptr = nullptr;
-    std::unique_ptr<EffectManager> effect_manager_ptr = nullptr;
+    Game::Game() = default;
+    Game::~Game() = default;
+    Game g_game{};
 
-    std::unique_ptr<enemy_script::EnemyScriptRunner> test_runner_ptr = nullptr;
+    std::unique_ptr<EnemyScriptRunner> test_runner_ptr = nullptr;
     float test_runner_origin_x = kGraphicWidth / 2.0f;
     float test_runner_origin_y = 32.0f;
 
     void Init() {
+        // ポインタに実体を入れる
+        g_game.asset = std::make_unique<Asset>("asset");
+        g_game.xoshiro = std::make_unique<Xoshiro128PlusPlus>(0);
+        g_game.input = std::make_unique<Input>();
+        g_game.log = std::make_unique<Log>("game.log");
+        g_game.camera = std::make_unique<Camera>();
+        g_game.tilemap = std::make_unique<TileMap>("asset/data/test_tilemap.tmj");
+        g_game.player = std::make_unique<Player>();
+        g_game.player_bomb = std::make_unique<PlayerBomb>(5);
+        g_game.player_bullet_manager = std::make_unique<PlayerBulletManager>();
+        g_game.enemy_manager = std::make_unique<EnemyManager>();
+        g_game.enemy_bullet_manager = std::make_unique<EnemyBulletManager>();
+        g_game.enemy_script_manager = std::make_unique<EnemyScriptManager>();
+        g_game.item_manager = std::make_unique<ItemManager>();
+        g_game.effect_manager = std::make_unique<EffectManager>();
+
         // アセット群の読み込み
-        asset.Clear();
-        asset.LoadImageAsset(ImageID::TileSet, "image/tileset.png");
-        asset.LoadImageAsset(ImageID::Player, "image/player.png");
-        asset.LoadImageAsset(ImageID::PlayerOption, "image/player_option.png");
-        asset.LoadImageAsset(ImageID::PlayerBulletMainShot, "image/player_bullet_main_shot.png");
-        asset.LoadImageAsset(ImageID::PlayerBulletSubShot, "image/player_bullet_sub_shot.png");
-        asset.LoadImageAsset(ImageID::EnemyKuro, "image/enemy_kuro.png");
-        asset.LoadImageAsset(ImageID::EnemyBullet, "image/enemy_bullet.png");
-        asset.LoadImageAsset(ImageID::ItemCoin, "image/item_coin.png");
-        asset.LoadImageAsset(ImageID::EffectWhiteSparkle1, "image/effect_white_sparkle_1.png");
-        asset.LoadImageAsset(ImageID::EffectWhiteSparkle2, "image/effect_white_sparkle_2.png");
+        g_game.asset->Clear();
+        g_game.asset->LoadImageAsset(ImageID::TileSet, "image/tileset.png");
+        g_game.asset->LoadImageAsset(ImageID::Player, "image/player.png");
+        g_game.asset->LoadImageAsset(ImageID::PlayerOption, "image/player_option.png");
+        g_game.asset->LoadImageAsset(ImageID::PlayerBulletMainShot, "image/player_bullet_main_shot.png");
+        g_game.asset->LoadImageAsset(ImageID::PlayerBulletSubShot, "image/player_bullet_sub_shot.png");
+        g_game.asset->LoadImageAsset(ImageID::EnemyKuro, "image/enemy_kuro.png");
+        g_game.asset->LoadImageAsset(ImageID::EnemyBullet, "image/enemy_bullet.png");
+        g_game.asset->LoadImageAsset(ImageID::ItemCoin, "image/item_coin.png");
+        g_game.asset->LoadImageAsset(ImageID::EffectWhiteSparkle1, "image/effect_white_sparkle_1.png");
+        g_game.asset->LoadImageAsset(ImageID::EffectWhiteSparkle2, "image/effect_white_sparkle_2.png");
 
         // 初期化
-        tilemap_ptr = std::make_unique<TileMap>("asset/data/test_tilemap.tmj");
-        player_ptr = std::make_unique<Player>();
-        player_bomb_ptr = std::make_unique<PlayerBomb>(5);
-        player_bullet_manager_ptr = std::make_unique<PlayerBulletManager>();
-        enemy_manager_ptr = std::make_unique<EnemyManager>();
-        enemy_bullet_manager_ptr = std::make_unique<EnemyBulletManager>();
-        enemy_script_manager_ptr = std::make_unique<enemy_script::EnemyScriptManager>();
-        item_manager_ptr = std::make_unique<ItemManager>();
-        effect_manager_ptr = std::make_unique<EffectManager>();
+        g_game.input->Init();
+        g_game.player->Init();
+        g_game.player_bullet_manager->Init();
+        g_game.enemy_manager->Init();
+        g_game.enemy_bullet_manager->Init();
+        g_game.item_manager->Init();
+        g_game.effect_manager->Init();
 
-        player_ptr->Init();
-        player_bullet_manager_ptr->Init();
-        enemy_manager_ptr->Init();
-        enemy_bullet_manager_ptr->Init();
-        item_manager_ptr->Init();
-        effect_manager_ptr->Init();
-
-        // test_runner_ptr = std::make_unique<enemy_script::EnemyScriptRunner>(enemy_script_manager_ptr->Get("asset/data/test_script.xml"));
+        // test_runner_ptr = std::make_unique<EnemyScriptRunner>(g_game.enemy_script_manager->Get("asset/data/test_script.xml"));
         // test_runner_origin_x = kGraphicWidth / 2.0f;
         // test_runner_origin_y = 32.0f;
 
-        log.Print("Game: ゲームシーンを初期化しました");
+        g_game.log->Print("Game: ゲームシーンを初期化しました");
     }
 
     void Update() {
-        if (input.OnPressedKeyboard(KEY_INPUT_F5)) {
+        if (g_game.input->OnPressedKeyboard(KEY_INPUT_F5)) {
             Init();
             return;
         }
 
         // ゲーム内要素の更新
-        camera.Update();
-        tilemap_ptr->UpdateEnemySpawning();
-        player_ptr->Update();
-        player_bomb_ptr->Update();
-        player_bullet_manager_ptr->Update();
-        enemy_manager_ptr->Update();
-        enemy_bullet_manager_ptr->Update();
-        item_manager_ptr->Update();
-        effect_manager_ptr->Update();
+        g_game.input->Update();
+        g_game.camera->Update();
+        g_game.tilemap->UpdateEnemySpawning();
+        g_game.player->Update();
+        g_game.player_bomb->Update();
+        g_game.player_bullet_manager->Update();
+        g_game.enemy_manager->Update();
+        g_game.enemy_bullet_manager->Update();
+        g_game.item_manager->Update();
+        g_game.effect_manager->Update();
 
         // 当たり判定の処理
-        UpdateCollisionPlayerToEnemy(player_ptr.get(), enemy_manager_ptr.get());
-        UpdateCollisionPlayerToEnemyBullet(player_ptr.get(), enemy_bullet_manager_ptr.get());
-        UpdateCollisionPlayerBulletToEnemy(player_bullet_manager_ptr.get(), enemy_manager_ptr.get());
+        UpdateCollisionPlayerToEnemy(g_game.player.get(), g_game.enemy_manager.get());
+        UpdateCollisionPlayerToEnemyBullet(g_game.player.get(), g_game.enemy_bullet_manager.get());
+        UpdateCollisionPlayerBulletToEnemy(g_game.player_bullet_manager.get(), g_game.enemy_manager.get());
 
         // 敵のスポーン処理(仮)
         // if (game_time >= 40 && (game_time - 40) % 40 == 0) {
@@ -96,26 +104,22 @@ namespace game {
 
         if (test_runner_ptr) {
             static bool owner_is_active = true;
-            enemy_script::EnemyScriptRunnerContext context{test_runner_origin_x, test_runner_origin_y, owner_is_active};
+            EnemyScriptRunnerContext context{test_runner_origin_x, test_runner_origin_y, owner_is_active};
             test_runner_ptr->Update(context);
         }
 
-        game_time++;
+        g_game.time++;
     }
 
     void Draw() {
         // ゲーム内要素の描画
-        tilemap_ptr->Draw();
-        player_bullet_manager_ptr->Draw();
-        item_manager_ptr->Draw();
-        player_ptr->Draw();
-        enemy_manager_ptr->Draw();
-        enemy_bullet_manager_ptr->Draw();
-        effect_manager_ptr->Draw();
-        player_bomb_ptr->Draw();
-    }
-
-    int GetGameTime() {
-        return game_time;
+        g_game.tilemap->Draw();
+        g_game.player_bullet_manager->Draw();
+        g_game.item_manager->Draw();
+        g_game.player->Draw();
+        g_game.enemy_manager->Draw();
+        g_game.enemy_bullet_manager->Draw();
+        g_game.effect_manager->Draw();
+        g_game.player_bomb->Draw();
     }
 }

@@ -1,6 +1,8 @@
 #include "enemy_bullet.h"
 #include <iostream>
 #include <DxLib.h>
+#include "asset.h"
+#include "game.h"
 #include "global.h"
 
 namespace game {
@@ -32,7 +34,7 @@ namespace game {
     void EnemyBulletManager::Draw() {
         SetDrawMode(DX_DRAWMODE_BILINEAR);
 
-        int image_handle = asset.GetImageAsset(ImageID::EnemyBullet);
+        int image_handle = g_game.asset->GetImageAsset(ImageID::EnemyBullet);
         float flash_add = 0.0f;
 
         for (const auto &bullet : bullets_) {

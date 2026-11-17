@@ -3,8 +3,7 @@
 
 #include <array>
 #include <DxLib.h>
-#include "asset.h"
-#include "global.h"
+#include "game.h"
 
 namespace game {
 
@@ -48,7 +47,7 @@ namespace game {
         virtual ~EntityManager() = default;
 
         void Init() {
-            for (auto &entity : entities) {
+            for (auto &entity : entities_) {
                 entity.is_active_ = false;
             }
         }
@@ -94,16 +93,16 @@ namespace game {
         void Draw() {
             const auto &properties = GetSpriteProperties();
 
-            for (auto &entity : entities) {
+            for (auto &entity : entities_) {
                 if (!entity.is_active_) continue;
 
                 const auto &prop = properties[static_cast<size_t>(entity.type_)];
-                int image_handle = asset.GetImageAsset(prop.image_id_);
+                int image_handle = g_game.asset->GetImageAsset(prop.image_id_);
                 int image_height = 0;
                 GetGraphSize(image_handle, nullptr, &image_height);
 
-                int src_x = (entity.animation_time_ / prop.animation_interval_) * prop.frame_width_; // 現在フレームから画像アセットの描画範囲を算出する
-                DrawRectRotaGraphF(entity.x_, entity.y_, src_x, 0, prop.frame_width_, image_height, 1.0, 0.0, image_handle, true);
+                int src_x = (entity.animation_time_ / prop.animation_interval_) * prop.image_width_; // 現在フレームから画像アセットの描画範囲を算出する
+                DrawRectRotaGraphF(entity.x_, entity.y_, src_x, 0, prop.image_width_, image_height, 1.0, 0.0, image_handle, true);
             }
         }
 

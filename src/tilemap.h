@@ -14,8 +14,8 @@ namespace game {
         static constexpr int kTileSetYNum = 16;
         static constexpr int kTileSetXSize = 16;
         static constexpr int kTileSetYSize = 16;
-        static constexpr int kTileDrawWidth = kWorldScale;
-        static constexpr int kTileDrawHeight = kWorldScale;
+        static constexpr int kTileDrawWidth = 16;
+        static constexpr int kTileDrawHeight = 16;
 
         struct Layer {
             Layer(const std::vector<unsigned int> &data, const std::string &name, const int width, const int height)
@@ -58,7 +58,6 @@ namespace game {
         int map_height_ = 0;
         std::vector<Layer> layers_ = {};
         std::vector<EnemySpawnPoint> enemy_spawn_points_ = {};
-        int tileset_image_handle_ = -1;
     };
 }
 

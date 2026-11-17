@@ -17,7 +17,7 @@ namespace game {
         bool Print(const char *format, Args... args) {
             if (output_file_.is_open()) {
                 if (snprintf(buf_, sizeof(buf_), format, args...) < sizeof(buf_)) {
-                    output_file_ << std::setw(8) << std::setfill('0') << GetGameTime() << "  " << buf_ << std::endl;
+                    output_file_ << std::setw(8) << std::setfill('0') << g_game.time << "  " << buf_ << std::endl;
                     return true;
                 }
             }

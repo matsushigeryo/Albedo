@@ -1,7 +1,11 @@
 #include "enemy.h"
 #include <iostream>
 #include <DxLib.h>
+#include "effect.h"
+#include "game.h"
 #include "global.h"
+#include "item.h"
+#include "log.h"
 
 namespace game {
     void EnemyManager::Init() {
@@ -16,7 +20,7 @@ namespace game {
 
                 // スクリプト実行
                 if (enemy.script_runner_) {
-                    enemy_script::EnemyScriptRunnerContext context{enemy.x_, enemy.y_, enemy.is_active_};
+                    EnemyScriptRunnerContext context{enemy.x_, enemy.y_, enemy.is_active_};
                     enemy.script_runner_->Update(context);
                 }
 
@@ -39,7 +43,7 @@ namespace game {
                 const float draw_y = enemy.y_;
 
                 // スプライト描画
-                image_handle = asset.GetImageAsset(kEnemySpriteImageIDs[static_cast<size_t>(enemy.sprite_)]); // 描画する画像ハンドル
+                image_handle = g_game.asset->GetImageAsset(kEnemySpriteImageIDs[static_cast<size_t>(enemy.sprite_)]); // 描画する画像ハンドル
                 DrawRotaGraphF(draw_x, draw_y, 1.0, 0.0, image_handle, true);                                 // スプライト描画
 
                 // 上から白塗りのスプライトを描画して点滅演出を行う
@@ -70,7 +74,7 @@ namespace game {
                 // スクリプトを割り当て
                 if (script_name != "") {
                     const std::string full_path = "asset/data/" + script_name + ".xml";
-                    enemy.script_runner_ = std::make_unique<enemy_script::EnemyScriptRunner>(enemy_script_manager_ptr->Get(full_path));
+                    enemy.script_runner_ = std::make_unique<EnemyScriptRunner>(g_game.enemy_script_manager->Get(full_path));
                 }
 
                 return true;
@@ -78,7 +82,7 @@ namespace game {
         }
 
         // 敵が追加できなかった場合
-        log.Print("EnemyManager: 敵のスポーンに失敗しました");
+        g_game.log->Print("EnemyManager: 敵のスポーンに失敗しました");
         return false;
     }
 
@@ -88,10 +92,10 @@ namespace game {
             enemy.is_active_ = false; // 消去
             // 撃破エフェクト
             for (int i = 0; i < 5; ++i) {
-                effect_manager_ptr->Spawn(EffectType::EnemyDead, enemy.x_, enemy.y_);
+                g_game.effect_manager->Spawn(EffectType::EnemyDead, enemy.x_, enemy.y_);
             }
             // アイテム出現
-            item_manager_ptr->Spawn(ItemType::Coin, enemy.x_, enemy.y_);
+            g_game.item_manager->Spawn(ItemType::Coin, enemy.x_, enemy.y_);
         }
     }
 

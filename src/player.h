@@ -19,7 +19,7 @@ namespace game {
         };
 
       public:
-        Player();
+        Player() = default;
         ~Player() = default;
         void Init();
         void Update();

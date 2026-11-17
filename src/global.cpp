@@ -1,4 +1,5 @@
 #include "global.h"
+#include <cmath>
 #include <Windows.h>
 #include <Psapi.h>
 

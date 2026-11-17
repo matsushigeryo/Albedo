@@ -43,7 +43,7 @@ namespace game {
         int elapsed_time_ = 0;
         int on_damage_timer_ = 0;
         int life_ = 0;
-        std::unique_ptr<enemy_script::EnemyScriptRunner> script_runner_{nullptr};
+        std::unique_ptr<EnemyScriptRunner> script_runner_{nullptr};
     };
 
     // “GŠÇ—‚ÌƒNƒ‰ƒX

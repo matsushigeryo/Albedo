@@ -1,15 +1,17 @@
 #include "player_bullet.h"
 #include <iostream>
 #include <DxLib.h>
+#include "asset.h"
+#include "effect.h"
+#include "game.h"
 #include "global.h"
 
 namespace game {
-    PlayerBulletManager::PlayerBulletManager() {
-        image_handle_mainshot_ = asset.GetImageAsset(ImageID::PlayerBulletMainShot);
-        image_handle_subshot_ = asset.GetImageAsset(ImageID::PlayerBulletSubShot);
-    }
 
     void PlayerBulletManager::Init() {
+        image_handle_mainshot_ = g_game.asset->GetImageAsset(ImageID::PlayerBulletMainShot);
+        image_handle_subshot_ = g_game.asset->GetImageAsset(ImageID::PlayerBulletSubShot);
+
         for (auto &bullet : bullets_) {
             bullet.is_active_ = false;
         }
@@ -72,8 +74,8 @@ namespace game {
 
     // 敵に当たったとき
     void PlayerBulletManager::OnDamage(PlayerBullet &bullet) {
-        bullet.is_active_ = false;                                                        // 消去
-        effect_manager_ptr->Spawn(EffectType::PlayerBulletSparkle, bullet.x_, bullet.y_); // エフェクト発生
+        bullet.is_active_ = false;                                                           // 消去
+        g_game.effect_manager->Spawn(EffectType::PlayerBulletSparkle, bullet.x_, bullet.y_); // エフェクト発生
     }
 
     // 弾の配列を取得する
