@@ -45,7 +45,6 @@ namespace game {
       public:
         using EntityManager::Spawn;
 
-        void Draw() override;
         EnemyBullet *Spawn(float x, float y, float angle, float speed, EnemyBulletSprite sprite);
         void OnHitPlayer(EnemyBullet &bullet);
 
@@ -58,6 +57,8 @@ namespace game {
             }};
             return kProperties;
         }
+
+        void UniqueDraw(EnemyBullet &bullet, const SpriteProperty &prop, int image_handle, int src_x, int image_height) override;
 
       private:
         float GetDrawAngle(const EnemyBullet &bullet) const;

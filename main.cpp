@@ -4,6 +4,7 @@
 #include "game.h"
 #include "global.h"
 #include "input.h"
+#include "player_bullet.h"
 
 static void Init() {
     is_running = true;
@@ -29,6 +30,7 @@ static void Draw() {
     DrawFormatString(3, 3 + 16 * debug_line++, GetColor(255, 255, 255), "%.1fFPS", current_FPS);
     DrawFormatString(3, 3 + 16 * debug_line++, GetColor(255, 255, 255), "USING %.2fMB", GetWindowsMemoryUsage() / 1024.0f / 1024.0f);
     debug_line++;
+    DrawFormatString(3, 3 + 16 * debug_line++, GetColor(255, 255, 255), "PLAYER BULLET COUNT: %d", game::g_game.player_bullet_manager->GetActiveCount());
     DrawFormatString(3, 3 + 16 * debug_line++, GetColor(255, 255, 255), "ENEMY COUNT: %d", game::g_game.enemy_manager->GetActiveCount());
     DrawFormatString(3, 3 + 16 * debug_line++, GetColor(255, 255, 255), "ENEMY BULLET COUNT: %d", game::g_game.enemy_bullet_manager->GetActiveCount());
 

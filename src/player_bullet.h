@@ -21,20 +21,20 @@ namespace game {
     // プレイヤー弾管理のクラス
     class PlayerBulletManager : public EntityManager<PlayerBullet, PlayerBulletSprite, 1024> {
       public:
-        void Draw() override;
-        void OnHit(PlayerBullet &bullet);
+        void OnHitEnemy(PlayerBullet &bullet);
 
       protected:
         const std::array<SpriteProperty, kTypeSize> &GetSpriteProperties() const override {
             static const std::array<SpriteProperty, kTypeSize> kProperties = {{
-                {ImageID::PlayerBulletMainShot, 15, 1, 1}, // MainShot
-                {ImageID::PlayerBulletSubShot, 15, 1, 1},  // SubShot
+                {ImageID::PlayerBulletMainShot, 32, 1, 1}, // MainShot
+                {ImageID::PlayerBulletSubShot, 32, 1, 1},  // SubShot
             }};
             return kProperties;
         }
 
         void UniqueSpawn(PlayerBullet &bullet) override;
         void UniqueUpdate(PlayerBullet &bullet) override;
+        void UniqueDraw(PlayerBullet &bullet, const SpriteProperty &prop, int image_handle, int src_x, int image_height) override;
     };
 }
 

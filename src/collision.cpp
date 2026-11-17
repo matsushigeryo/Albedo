@@ -50,7 +50,7 @@ namespace game {
             for (auto &enemy : enemy_manager->GetEntities()) {
                 if (!enemy.is_active_) continue;
                 if (CheckCollisionCircleToCircle(bullet.x_, bullet.y_, kPlayerBulletCollisionRadius, enemy.x_, enemy.y_, kEnemyCollisionRadius)) {
-                    player_bullet_manager->OnHit(bullet);
+                    player_bullet_manager->OnHitEnemy(bullet);
                     enemy_manager->OnHitPlayerBullet(enemy);
                     break;
                 }
