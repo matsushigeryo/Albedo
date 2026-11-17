@@ -59,9 +59,10 @@ namespace game {
                 item.vy_ = 0.0f;
                 item.elapsed_time_ = 0;
                 UniqueSpawn(item);
-                break;
+                return true;
             }
         }
+        return false;
     }
 
     // アイテム種別ごとの固有の初期化をする
