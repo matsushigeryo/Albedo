@@ -27,6 +27,15 @@ namespace game {
             // ”wŒi‚Ì•`‰æ
             SetDrawBlendMode(DX_BLENDMODE_MULA, InvLerpF(0, 60, timer) * 256);
             DrawBox(0, 0, gw, gh, GetColor(80, 250, 230), true);
+
+            // “Gƒ^[ƒQƒbƒeƒBƒ“ƒO˜gü‚Ì•`‰æ
+            SetDrawBlendMode(DX_BLENDMODE_ADD, InvLerpF(0, 60, timer) * 256);
+            for (Enemy &enemy : enemy_manager_ptr->GetEnemies()) {
+                if (!enemy.is_active_) continue;
+                const float ex = enemy.x_;
+                const float ey = enemy.y_;
+                DrawCircle(ex, ey, 32, GetColor(80, 250, 230), false, 1);
+            }
         }
 
         SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
