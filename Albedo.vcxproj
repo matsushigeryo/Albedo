@@ -172,6 +172,7 @@
     <ClInclude Include="src\enemy.h" />
     <ClInclude Include="src\enemy_bullet.h" />
     <ClInclude Include="src\enemy_script.h" />
+    <ClInclude Include="src\entity_manager.h" />
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\global.h" />
     <ClInclude Include="src\input.h" />
