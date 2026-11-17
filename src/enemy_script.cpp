@@ -215,8 +215,7 @@ namespace game {
                 command.speed_ = GetParamOrDefault(node, "speed", "0", true);
                 command.angle_range_ = GetParamOrDefault(node, "angle_range", "0", true);
                 command.base_angle_ = GetParamOrDefault(node, "base_angle", "0", true);
-                command.shape_ = EnemyBulletShapeFromString(node.attribute("shape").as_string("SmallCircle"));
-                command.color_ = EnemyBulletColorFromString(node.attribute("color").as_string("Red"));
+                command.sprite_ = EnemyBulletSpriteFromString(node.attribute("sprite").as_string(""));
                 out_commands.push_back({command});
             }
 
@@ -446,7 +445,7 @@ namespace game {
 
                 // 1Way‚Ìê‡‚ÍŠî€Šp‚É1”­”­Ë‚·‚é‚¾‚¯
                 if (way_count == 1) {
-                    g_game.enemy_bullet_manager->AddBullet(context.origin_x_ + offset_x, context.origin_y_ + offset_y, DegreeToRadian(base_angle), speed, command->shape_, command->color_);
+                    g_game.enemy_bullet_manager->Spawn(context.origin_x_ + offset_x, context.origin_y_ + offset_y, DegreeToRadian(base_angle), speed, command->sprite_);
                 }
 
                 // •¡”Way
@@ -456,7 +455,7 @@ namespace game {
                     const float angle_step = angle_range / (way_count - 1);
                     for (int i = 0; i < way_count; ++i) {
                         float current_angle = start_angle + (angle_step * i);
-                        g_game.enemy_bullet_manager->AddBullet(context.origin_x_ + offset_x, context.origin_y_ + offset_y, DegreeToRadian(current_angle), speed, command->shape_, command->color_);
+                        g_game.enemy_bullet_manager->Spawn(context.origin_x_ + offset_x, context.origin_y_ + offset_y, DegreeToRadian(current_angle), speed, command->sprite_);
                     }
                 }
 

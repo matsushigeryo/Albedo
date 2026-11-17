@@ -53,7 +53,9 @@ namespace game {
         g_game.asset->LoadImageAsset(ImageID::PlayerBulletMainShot, "image/player_bullet_main_shot.png");
         g_game.asset->LoadImageAsset(ImageID::PlayerBulletSubShot, "image/player_bullet_sub_shot.png");
         g_game.asset->LoadImageAsset(ImageID::EnemyKuro, "image/enemy_kuro.png");
-        g_game.asset->LoadImageAsset(ImageID::EnemyBullet, "image/enemy_bullet.png");
+        g_game.asset->LoadImageAsset(ImageID::EnemyBullet_WhiteSmallCircle, "image/enemy_bullet/white_small_circle.png");
+        g_game.asset->LoadImageAsset(ImageID::EnemyBullet_SpinningRedRice, "image/enemy_bullet/spinning_red_rice.png");
+        g_game.asset->LoadImageAsset(ImageID::EnemyBullet_GreenNeedle, "image/enemy_bullet/green_needle.png");
         g_game.asset->LoadImageAsset(ImageID::ItemCoin, "image/item_coin.png");
         g_game.asset->LoadImageAsset(ImageID::EffectWhiteSparkle1, "image/effect_white_sparkle_1.png");
         g_game.asset->LoadImageAsset(ImageID::EffectWhiteSparkle2, "image/effect_white_sparkle_2.png");

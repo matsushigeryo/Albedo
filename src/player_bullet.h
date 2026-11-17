@@ -2,40 +2,39 @@
 #define PLAYER_BULLET_H_
 
 #include <array>
+#include "entity_manager.h"
 
 namespace game {
-    enum class PlayerBulletType {
+
+    constexpr float kBulletSpeed = 8.0f;
+
+    // プレイヤー弾のスプライト種別
+    enum class PlayerBulletSprite {
         MainShot,
         SubShot,
+        ENUM_END
     };
 
-    struct PlayerBullet {
-        bool is_active_ = false;
-        PlayerBulletType type_;
-        float x_ = 0.0f;
-        float y_ = 0.0f;
-        int elapsed_time_ = 0;
-    };
+    // プレイヤー弾の構造体
+    struct PlayerBullet : public EntityBase<PlayerBulletSprite> {};
 
-    class PlayerBulletManager {
+    // プレイヤー弾管理のクラス
+    class PlayerBulletManager : public EntityManager<PlayerBullet, PlayerBulletSprite, 1024> {
       public:
-        static constexpr size_t kMaxNum = 64;
-        static constexpr float kBulletSpeed = 8.0f;
+        void Draw() override;
+        void OnHit(PlayerBullet &bullet);
 
-      public:
-        PlayerBulletManager() = default;
-        ~PlayerBulletManager() = default;
-        void Init();
-        void Update();
-        void Draw();
-        bool Shot(PlayerBulletType type, float x, float y);
-        void OnDamage(PlayerBullet &bullet);
-        std::array<PlayerBullet, kMaxNum> &GetBullets();
+      protected:
+        const std::array<SpriteProperty, kTypeSize> &GetSpriteProperties() const override {
+            static const std::array<SpriteProperty, kTypeSize> kProperties = {{
+                {ImageID::PlayerBulletMainShot, 15, 1, 1}, // MainShot
+                {ImageID::PlayerBulletSubShot, 15, 1, 1},  // SubShot
+            }};
+            return kProperties;
+        }
 
-      private:
-        std::array<PlayerBullet, kMaxNum> bullets_{};
-        int image_handle_mainshot_ = -1;
-        int image_handle_subshot_ = -1;
+        void UniqueSpawn(PlayerBullet &bullet) override;
+        void UniqueUpdate(PlayerBullet &bullet) override;
     };
 }
 

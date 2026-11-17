@@ -67,9 +67,9 @@ namespace game {
         // ƒVƒ‡ƒbƒg‚ð•ú‚Â
         if (input_shot) {
             if (shot_timer_ % kShotIntervalFrame == 0) {
-                g_game.player_bullet_manager->Shot(PlayerBulletType::MainShot, x_, y_);
+                g_game.player_bullet_manager->Spawn(PlayerBulletSprite::MainShot, x_, y_);
                 for (const auto &option : options_) {
-                    g_game.player_bullet_manager->Shot(PlayerBulletType::SubShot, x_ + option.offset_x_, y_ + option.offset_y_);
+                    g_game.player_bullet_manager->Spawn(PlayerBulletSprite::SubShot, x_ + option.offset_x_, y_ + option.offset_y_);
                 }
             }
             shot_timer_++;

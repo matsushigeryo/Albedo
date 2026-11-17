@@ -18,7 +18,7 @@ namespace game {
     void UpdateCollisionPlayerToEnemy(Player *player, EnemyManager *enemy_manager) {
         if (!player || !enemy_manager) return; // NULLチェック
 
-        for (auto &enemy : enemy_manager->GetEnemies()) {
+        for (auto &enemy : enemy_manager->GetEntities()) {
             if (!enemy.is_active_) continue;
             if (CheckCollisionCircleToCircle(player->GetX(), player->GetY(), kPlayerCollisionRadius, enemy.x_, enemy.y_, kEnemyCollisionRadius)) {
                 player->OnDamage();
@@ -31,7 +31,7 @@ namespace game {
     void UpdateCollisionPlayerToEnemyBullet(Player *player, EnemyBulletManager *enemy_bullet_manager) {
         if (!player || !enemy_bullet_manager) return; // NULLチェック
 
-        for (auto &bullet : enemy_bullet_manager->GetBullets()) {
+        for (auto &bullet : enemy_bullet_manager->GetEntities()) {
             if (!bullet.is_active_) continue;
             if (CheckCollisionCircleToCircle(player->GetX(), player->GetY(), kPlayerCollisionRadius, bullet.x_, bullet.y_, kEnemyBulletCollisionRadius)) {
                 player->OnDamage();
@@ -45,12 +45,12 @@ namespace game {
     void UpdateCollisionPlayerBulletToEnemy(PlayerBulletManager *player_bullet_manager, EnemyManager *enemy_manager) {
         if (!player_bullet_manager || !enemy_manager) return; // NULLチェック
 
-        for (auto &bullet : player_bullet_manager->GetBullets()) {
+        for (auto &bullet : player_bullet_manager->GetEntities()) {
             if (!bullet.is_active_) continue;
-            for (auto &enemy : enemy_manager->GetEnemies()) {
+            for (auto &enemy : enemy_manager->GetEntities()) {
                 if (!enemy.is_active_) continue;
                 if (CheckCollisionCircleToCircle(bullet.x_, bullet.y_, kPlayerBulletCollisionRadius, enemy.x_, enemy.y_, kEnemyCollisionRadius)) {
-                    player_bullet_manager->OnDamage(bullet);
+                    player_bullet_manager->OnHit(bullet);
                     enemy_manager->OnHitPlayerBullet(enemy);
                     break;
                 }

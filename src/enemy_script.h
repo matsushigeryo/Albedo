@@ -104,8 +104,7 @@ namespace game {
         Param speed_;
         Param angle_range_;
         Param base_angle_;
-        EnemyBulletShape shape_ = EnemyBulletShape::SmallCircle;
-        EnemyBulletColor color_ = EnemyBulletColor::Red;
+        EnemyBulletSprite sprite_;
     };
 
     // コマンド構造体のラッパー

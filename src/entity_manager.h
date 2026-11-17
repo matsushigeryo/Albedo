@@ -3,7 +3,9 @@
 
 #include <array>
 #include <DxLib.h>
+#include "asset.h"
 #include "game.h"
+#include "log.h"
 
 namespace game {
 
@@ -90,7 +92,7 @@ namespace game {
             }
         }
 
-        void Draw() {
+        virtual void Draw() {
             const auto &properties = GetSpriteProperties();
 
             for (auto &entity : entities_) {
@@ -102,7 +104,7 @@ namespace game {
                 GetGraphSize(image_handle, nullptr, &image_height);
 
                 int src_x = (entity.animation_time_ / prop.animation_interval_) * prop.image_width_; // 現在フレームから画像アセットの描画範囲を算出する
-                DrawRectRotaGraphF(entity.x_, entity.y_, src_x, 0, prop.image_width_, image_height, 1.0, 0.0, image_handle, true);
+                UniqueDraw(entity, prop, image_handle, src_x, image_height);
             }
         }
 
@@ -114,6 +116,8 @@ namespace game {
                     entity.type_ = type;
                     entity.x_ = x;
                     entity.y_ = y;
+                    entity.vx_ = 0.0f;
+                    entity.vy_ = 0.0f;
                     UniqueSpawn(entity);
                     return &entity;
                 }
@@ -137,8 +141,14 @@ namespace game {
 
       protected:
         virtual const std::array<SpriteProperty, kTypeSize> &GetSpriteProperties() const = 0;
-        virtual void UniqueSpawn(EntityType &entity) {};
-        virtual void UniqueUpdate(EntityType &entity) {};
+        
+        virtual void UniqueSpawn(EntityType &entity) {}
+        
+        virtual void UniqueUpdate(EntityType &entity) {}
+
+        virtual void UniqueDraw(EntityType &entity, const SpriteProperty &prop, int image_handle, int src_x, int image_height) {
+            DrawRectRotaGraphF(entity.x_, entity.y_, src_x, 0, prop.image_width_, image_height, 1.0, 0.0, image_handle, true);
+        }
 
       private:
         std::array<EntityType, PoolSize> entities_{};

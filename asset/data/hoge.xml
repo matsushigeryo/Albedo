@@ -23,7 +23,7 @@
                 <SetVar name="speed" value="2" />
                 <GetAngleToPlayer name="angle" />
                 <Repeat count="5">
-                    <FireNWay way_count="1" speed="$speed" base_angle="$angle" shape="Spike" color="Red" />
+                    <FireNWay way_count="1" speed="$speed" base_angle="$angle" sprite="SpinningRedRice" />
                     <AddVar name="speed" value="0.2" />
                     <Wait frames="2" />
                 </Repeat>

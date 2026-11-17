@@ -21,13 +21,10 @@ namespace game {
       protected:
         const std::array<SpriteProperty, kTypeSize> &GetSpriteProperties() const override {
             static const std::array<SpriteProperty, kTypeSize> kProperties = {{
-                {ImageID::ItemCoin, 15, 4, 2, AnimationMode::Loop}, // Coin
+                {ImageID::ItemCoin, 15, 4, 4, AnimationMode::Loop}, // Coin
             }};
             return kProperties;
         }
-
-        void UniqueSpawn(Item &item) override;
-        void UniqueUpdate(Item &item) override;
     };
 }
 

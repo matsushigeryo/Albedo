@@ -4,82 +4,63 @@
 #include <array>
 #include <string>
 #include <unordered_map>
+#include "asset.h"
+#include "entity_manager.h"
 
 namespace game {
-    enum class EnemyBulletShape {
-        SmallCircle,
-        Spike,
-        Rice,
-        MidiumCircle,
+
+    constexpr float kEnemyBulletEnterEffectLength = 10;        // 発射時のアニメーション効果の長さ
+    constexpr float kEnemyBulletSpinningAnimationSpeed = 0.1f; // 回転アニメーションの速度(Radian/F)
+
+    // 敵弾のスプライト種別
+    enum class EnemyBulletSprite {
+        WhiteSmallCircle,
+        SpinningRedRice,
+        GreenNeedle,
+        ENUM_END
     };
 
-    enum class EnemyBulletColor {
-        White,
-        Red,
-        Blue,
-    };
-
-    // 文字列から弾の形状を取得する関数
-    static EnemyBulletShape EnemyBulletShapeFromString(const std::string &str) {
-        static const std::unordered_map<std::string, EnemyBulletShape> kEnemyBulletShapeMap = {
-            {"SmallCircle", EnemyBulletShape::SmallCircle},
-            {"Spike", EnemyBulletShape::Spike},
-            {"Rice", EnemyBulletShape::Rice},
-            {"MidiumCircle", EnemyBulletShape::MidiumCircle},
+    // 文字列から敵弾のスプライト種別を取得する関数
+    static EnemyBulletSprite EnemyBulletSpriteFromString(const std::string &str) {
+        static const std::unordered_map<std::string, EnemyBulletSprite> kEnemyBulletSpriteMap = {
+            {"WhiteSmallCircle", EnemyBulletSprite::WhiteSmallCircle},
+            {"SpinningRedRice", EnemyBulletSprite::SpinningRedRice},
+            {"GreenNeedle", EnemyBulletSprite::GreenNeedle},
         };
-        if (kEnemyBulletShapeMap.find(str) != kEnemyBulletShapeMap.end()) {
-            return kEnemyBulletShapeMap.at(str);
+        if (kEnemyBulletSpriteMap.find(str) != kEnemyBulletSpriteMap.end()) {
+            return kEnemyBulletSpriteMap.at(str);
         } else {
-            return EnemyBulletShape::SmallCircle; // 見つからなかった場合はデフォルト値を返す
+            return EnemyBulletSprite::WhiteSmallCircle; // 見つからなかった場合はデフォルト値を返す
         }
     }
 
-    // 文字列から弾の色を取得する関数
-    static EnemyBulletColor EnemyBulletColorFromString(const std::string &str) {
-        static const std::unordered_map<std::string, EnemyBulletColor> kEnemyBulletColorMap = {
-            {"White", EnemyBulletColor::White},
-            {"Red", EnemyBulletColor::Red},
-            {"Blue", EnemyBulletColor::Blue},
-        };
-        if (kEnemyBulletColorMap.find(str) != kEnemyBulletColorMap.end()) {
-            return kEnemyBulletColorMap.at(str);
-        } else {
-            return EnemyBulletColor::Red; // 見つからなかった場合はデフォルト値を返す
-        }
-    }
-
-    struct EnemyBullet {
-        bool is_active_ = false;
-        float x_ = 0.0f;
-        float y_ = 0.0f;
-        float vx_ = 0.0f;
-        float vy_ = 0.0f;
+    // 敵弾の構造体
+    struct EnemyBullet : public EntityBase<EnemyBulletSprite> {
         float angle_ = 0.0f;
         float speed_ = 0.0f;
-        int elapsed_time_ = 0;
-        EnemyBulletShape shape_;
-        EnemyBulletColor color_;
     };
 
-    constexpr float kEnemyBulletEnterEffectLength = 10;
-
-    class EnemyBulletManager {
+    // 敵弾管理のクラス
+    class EnemyBulletManager : public EntityManager<EnemyBullet, EnemyBulletSprite, 1024> {
       public:
-        static constexpr int kMaxNum = 1024;
+        using EntityManager::Spawn;
 
-      public:
-        EnemyBulletManager() = default;
-        ~EnemyBulletManager() = default;
-        void Init();
-        void Update();
-        void Draw();
-        bool AddBullet(float x, float y, float angle, float speed, EnemyBulletShape shape, EnemyBulletColor color);
+        void Draw() override;
+        EnemyBullet *Spawn(float x, float y, float angle, float speed, EnemyBulletSprite sprite);
         void OnHitPlayer(EnemyBullet &bullet);
-        std::array<EnemyBullet, kMaxNum> &GetBullets();
-        size_t GetActiveBulletCount() const;
+
+      protected:
+        const std::array<SpriteProperty, kTypeSize> &GetSpriteProperties() const override {
+            static const std::array<SpriteProperty, kTypeSize> kProperties = {{
+                {ImageID::EnemyBullet_WhiteSmallCircle, 15, 1, 1},
+                {ImageID::EnemyBullet_SpinningRedRice, 15, 1, 1},
+                {ImageID::EnemyBullet_GreenNeedle, 15, 1, 1},
+            }};
+            return kProperties;
+        }
 
       private:
-        std::array<EnemyBullet, kMaxNum> bullets_{};
+        float GetDrawAngle(const EnemyBullet &bullet) const;
     };
 }
 

@@ -4,23 +4,17 @@
 #include <array>
 #include "asset.h"
 #include "enemy_script.h"
+#include "entity_manager.h"
 
 namespace game {
+
+    constexpr int kEnemyOnDamageFlashEffectLength = 4;
 
     // 敵のスプライト種別
     enum class EnemySprite {
         Kuro,
         ENUM_END
     };
-
-    constexpr size_t kEnemySpriteSize = static_cast<size_t>(EnemySprite::ENUM_END);
-
-    // 敵のスプライト種別に対応する画像ID
-    constexpr std::array<ImageID, kEnemySpriteSize> kEnemySpriteImageIDs = {
-        ImageID::EnemyKuro,
-    };
-
-    constexpr int kEnemyOnDamageFlashEffectLength = 4;
 
     // 文字列から敵のスプライト種別を取得する関数
     static EnemySprite EnemySpriteFromString(const std::string &str) {
@@ -35,36 +29,31 @@ namespace game {
     }
 
     // 敵の構造体
-    struct Enemy {
-        bool is_active_ = false;
-        EnemySprite sprite_;
-        float x_ = 0.0f;
-        float y_ = 0.0f;
-        int elapsed_time_ = 0;
+    struct Enemy : public EntityBase<EnemySprite> {
         int on_damage_timer_ = 0;
         int life_ = 0;
         std::unique_ptr<EnemyScriptRunner> script_runner_{nullptr};
     };
 
     // 敵管理のクラス
-    class EnemyManager {
+    class EnemyManager : public EntityManager<Enemy, EnemySprite, 64> {
       public:
-        static constexpr size_t kMaxNum = 64;
+        using EntityManager::Spawn;
 
-      public:
-        EnemyManager() = default;
-        ~EnemyManager() = default;
-        void Init();
-        void Update();
-        void Draw();
-        bool Spawn(EnemySprite sprite, float x, float y, std::string script_id = "");
+        Enemy *Spawn(EnemySprite sprite, float x, float y, std::string script_name);
         void Die(Enemy &enemy);
         void OnHitPlayerBullet(Enemy &enemy);
-        std::array<Enemy, kMaxNum> &GetEnemies();
-        size_t GetActiveEnemyCount() const;
 
-      private:
-        std::array<Enemy, kMaxNum> enemies_{};
+      protected:
+        const std::array<SpriteProperty, kTypeSize> &GetSpriteProperties() const override {
+            static const std::array<SpriteProperty, kTypeSize> kProperties = {{
+                {ImageID::EnemyKuro, 32, 1, 1}, // Kuro
+            }};
+            return kProperties;
+        }
+
+        void UniqueUpdate(Enemy &enemy) override;
+        void UniqueDraw(Enemy &enemy, const SpriteProperty &prop, int image_handle, int src_x, int image_height) override;
     };
 }
 
