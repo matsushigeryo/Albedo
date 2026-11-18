@@ -17,6 +17,19 @@ namespace game {
         image_map_.clear();
     }
 
+    // 画像アセットを一括で読み込む
+    bool Asset::Load() {
+        bool success = true;
+        for (size_t i = 0; i < kImageAssetSize; i++) {
+            const ImageID image_id = static_cast<ImageID>(i);
+            const std::string file_path = GetImageAssetPath(image_id);
+            if (!LoadImageAsset(image_id, file_path)) {
+                success = false;
+            }
+        }
+        return success;
+    }
+
     // 画像ファイルを読み込む
     bool Asset::LoadImageAsset(const ImageID image_id, const std::string &file_path) {
         const std::string full_path = root_folder_path_ + "/" + file_path;

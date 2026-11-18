@@ -3,6 +3,7 @@
 #include "player_bullet.h"
 #include "enemy.h"
 #include "enemy_bullet.h"
+#include "item.h"
 
 namespace game {
 
@@ -54,6 +55,19 @@ namespace game {
                     enemy_manager->OnHitPlayerBullet(enemy);
                     break;
                 }
+            }
+        }
+    }
+
+    // プレイヤーとアイテムの当たり判定
+    void UpdateCollisionPlayerToItem(Player* player, ItemManager* item_manager) {
+        if (!player || !item_manager) return; // NULLチェック
+
+        for (auto& item : item_manager->GetEntities()) {
+            if (!item.is_active_) continue;
+            if (CheckCollisionCircleToCircle(player->GetX(), player->GetY(), kPlayerCollisionRadius, item.x_, item.y_, kItemCollisionRadius)) {
+                item.is_active_ = false;
+                break;
             }
         }
     }
