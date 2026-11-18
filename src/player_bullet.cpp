@@ -33,7 +33,6 @@ namespace game {
         float alpha = 1.0f;
         if (bullet.elapsed_time_ >= 0 && bullet.elapsed_time_ <= 8) {
             alpha = InvLerpF(0, 8, bullet.elapsed_time_);
-            alpha = LerpF(0, 180, alpha);
         }
 
         // スプライト描画
