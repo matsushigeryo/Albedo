@@ -43,10 +43,10 @@ namespace game {
 
         // スプライト描画
         SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha * 255);
-        // SetDrawMode(DX_DRAWMODE_BILINEAR);
+        SetDrawMode(DX_DRAWMODE_BILINEAR);
         DrawRectRotaGraphF(bullet.x_, bullet.y_, src_x, 0, prop.image_width_, image_height, scale, GetDrawAngle(bullet), image_handle, true);
         SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-        // SetDrawMode(DX_DRAWMODE_NEAREST);
+        SetDrawMode(DX_DRAWMODE_NEAREST);
     }
 
     // 描画角度を弾ごとに決定する関数
