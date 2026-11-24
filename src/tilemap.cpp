@@ -25,7 +25,8 @@ namespace game {
                         enemy.sprite_,
                         enemy.x_ * kWorldScale,
                         (enemy.y_ - g_game.camera->GetY()) * kWorldScale,
-                        enemy.script_);
+                        enemy.script_,
+                        enemy.life_);
                 }
             }
         }
@@ -146,6 +147,7 @@ namespace game {
                 // カスタムプロパティを参照
                 std::string object_script = "";
                 EnemySprite object_sprite = EnemySprite::Kuro;
+                int object_life = 1;
 
                 const std::vector<nlohmann::json> properties = object.at("properties").get<std::vector<nlohmann::json>>();
 
@@ -161,6 +163,10 @@ namespace game {
                         object_sprite = EnemySpriteFromString(property.at("value").get<std::string>());
                     }
 
+                    else if (property_name == "life" && property_type == "int") {
+                        object_life = property.at("value").get<int>();
+                    }
+
                     else {
                         g_game.log->Print("TileMap: 敵オブジェクトから不明なカスタムプロパティが見つかったため無視されます: %s", property_name.c_str());
                     }
@@ -173,7 +179,8 @@ namespace game {
                     object_spawn_x,
                     object_spawn_y,
                     object_script,
-                    object_sprite);
+                    object_sprite,
+                    object_life);
 
                 g_game.log->Print("TileMap: 敵の出現情報を登録しました: (x=%f,y=%f,script=\"%s\",sprite=\"%s\")", object_spawn_x, object_spawn_y, object_script.c_str(), magic_enum::enum_name(object_sprite).data());
             }

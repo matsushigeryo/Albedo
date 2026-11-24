@@ -8,19 +8,21 @@
             "scale": 1,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 316,
-                "y": 6954
+                "x": 159.5,
+                "y": 3857.5
             }
         },
         "tilemap.tmx#object": {
             "dynamicWrapping": false,
-            "scaleInDock": 1
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         },
         "tilemap.tmx#tile": {
             "scaleInDock": 1.5
         }
     },
     "last.exportedFilePath": "C:/Users/g026g1072/source/repos/Albedo/asset/data",
+    "last.imagePath": "C:/Users/g026g1072/source/repos/Albedo/asset/image",
     "map.fixedSize": true,
     "map.height": 32,
     "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
@@ -32,7 +34,7 @@
         "tilemap.tmx"
     ],
     "project": "tilemap.tiled-project",
-    "property.type": "string",
+    "property.type": "int",
     "recentFiles": [
         "tilemap.tmx"
     ],

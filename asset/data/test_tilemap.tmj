@@ -1571,6 +1571,11 @@
                  "opacity":1,
                  "properties":[
                         {
+                         "name":"life",
+                         "type":"int",
+                         "value":3
+                        }, 
+                        {
                          "name":"script",
                          "type":"string",
                          "value":"hoge"
@@ -1585,7 +1590,7 @@
                  "visible":true,
                  "width":16,
                  "x":56,
-                 "y":7520
+                 "y":7616
                 }, 
                 {
                  "gid":257,
@@ -1594,6 +1599,11 @@
                  "name":"hoge",
                  "opacity":1,
                  "properties":[
+                        {
+                         "name":"life",
+                         "type":"int",
+                         "value":3
+                        }, 
                         {
                          "name":"script",
                          "type":"string",
@@ -1609,7 +1619,7 @@
                  "visible":true,
                  "width":16,
                  "x":88,
-                 "y":7536
+                 "y":7600
                 }, 
                 {
                  "gid":257,
@@ -1618,6 +1628,11 @@
                  "name":"hoge",
                  "opacity":1,
                  "properties":[
+                        {
+                         "name":"life",
+                         "type":"int",
+                         "value":3
+                        }, 
                         {
                          "name":"script",
                          "type":"string",
@@ -1633,7 +1648,7 @@
                  "visible":true,
                  "width":16,
                  "x":120,
-                 "y":7552
+                 "y":7584
                 }, 
                 {
                  "gid":257,
@@ -1642,6 +1657,11 @@
                  "name":"hoge",
                  "opacity":1,
                  "properties":[
+                        {
+                         "name":"life",
+                         "type":"int",
+                         "value":3
+                        }, 
                         {
                          "name":"script",
                          "type":"string",
@@ -1667,6 +1687,11 @@
                  "opacity":1,
                  "properties":[
                         {
+                         "name":"life",
+                         "type":"int",
+                         "value":3
+                        }, 
+                        {
                          "name":"script",
                          "type":"string",
                          "value":"hoge"
@@ -1681,7 +1706,7 @@
                  "visible":true,
                  "width":16,
                  "x":184,
-                 "y":7584
+                 "y":7552
                 }, 
                 {
                  "gid":257,
@@ -1690,6 +1715,11 @@
                  "name":"hoge",
                  "opacity":1,
                  "properties":[
+                        {
+                         "name":"life",
+                         "type":"int",
+                         "value":3
+                        }, 
                         {
                          "name":"script",
                          "type":"string",
@@ -1705,7 +1735,7 @@
                  "visible":true,
                  "width":16,
                  "x":216,
-                 "y":7600
+                 "y":7536
                 }, 
                 {
                  "gid":257,
@@ -1714,6 +1744,11 @@
                  "name":"hoge",
                  "opacity":1,
                  "properties":[
+                        {
+                         "name":"life",
+                         "type":"int",
+                         "value":3
+                        }, 
                         {
                          "name":"script",
                          "type":"string",
@@ -1729,7 +1764,7 @@
                  "visible":true,
                  "width":16,
                  "x":248,
-                 "y":7616
+                 "y":7520
                 }, 
                 {
                  "gid":257,
@@ -1738,6 +1773,11 @@
                  "name":"hoge",
                  "opacity":1,
                  "properties":[
+                        {
+                         "name":"life",
+                         "type":"int",
+                         "value":3
+                        }, 
                         {
                          "name":"script",
                          "type":"string",
@@ -1763,6 +1803,11 @@
                  "opacity":1,
                  "properties":[
                         {
+                         "name":"life",
+                         "type":"int",
+                         "value":3
+                        }, 
+                        {
                          "name":"script",
                          "type":"string",
                          "value":"hoge"
@@ -1786,6 +1831,11 @@
                  "name":"hoge",
                  "opacity":1,
                  "properties":[
+                        {
+                         "name":"life",
+                         "type":"int",
+                         "value":3
+                        }, 
                         {
                          "name":"script",
                          "type":"string",
@@ -1811,6 +1861,11 @@
                  "opacity":1,
                  "properties":[
                         {
+                         "name":"life",
+                         "type":"int",
+                         "value":3
+                        }, 
+                        {
                          "name":"script",
                          "type":"string",
                          "value":"hoge"
@@ -1834,6 +1889,11 @@
                  "name":"hoge",
                  "opacity":1,
                  "properties":[
+                        {
+                         "name":"life",
+                         "type":"int",
+                         "value":3
+                        }, 
                         {
                          "name":"script",
                          "type":"string",
@@ -1859,6 +1919,11 @@
                  "opacity":1,
                  "properties":[
                         {
+                         "name":"life",
+                         "type":"int",
+                         "value":3
+                        }, 
+                        {
                          "name":"script",
                          "type":"string",
                          "value":"hoge"
@@ -1882,6 +1947,11 @@
                  "name":"hoge",
                  "opacity":1,
                  "properties":[
+                        {
+                         "name":"life",
+                         "type":"int",
+                         "value":3
+                        }, 
                         {
                          "name":"script",
                          "type":"string",

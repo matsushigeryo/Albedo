@@ -29,8 +29,8 @@ namespace game {
         };
 
         struct EnemySpawnPoint {
-            EnemySpawnPoint(const float x, const float y, const std::string &script, const EnemySprite sprite)
-                : x_{x}, y_{y}, script_{script}, sprite_{sprite} {
+            EnemySpawnPoint(float x, float y, const std::string &script, EnemySprite sprite, int life)
+                : x_{x}, y_{y}, script_{script}, sprite_{sprite}, life_{life} {
             }
 
             bool is_spawned_ = false;
@@ -38,6 +38,7 @@ namespace game {
             float y_;
             std::string script_;
             EnemySprite sprite_;
+            int life_;
         };
 
       public:

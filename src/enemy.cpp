@@ -11,13 +11,13 @@
 namespace game {
 
     // 敵のスポーン
-    Enemy *EnemyManager::Spawn(EnemySprite sprite, float x, float y, std::string script_name) {
+    Enemy *EnemyManager::Spawn(EnemySprite sprite, float x, float y, std::string script_name, int life) {
         auto *enemy = Spawn(sprite, x, y);
 
         if (enemy) {
             // 固有のメンバ変数を設定
             enemy->on_damage_timer_ = kEnemyOnDamageFlashEffectLength + 1;
-            enemy->life_ = 8;
+            enemy->life_ = life;
             // スクリプトを割り当て
             if (script_name != "") {
                 const std::string full_path = "asset/data/" + script_name + ".xml";

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="20" height="500" tilewidth="16" tileheight="16" infinite="0" nextlayerid="18" nextobjectid="61">
  <editorsettings>
-  <export target="data/test_tilemap.tmj" format="json"/>
+  <export target="../data/test_tilemap.tmj" format="json"/>
  </editorsettings>
  <tileset firstgid="1" name="tile" tilewidth="16" tileheight="16" tilecount="256" columns="16">
-  <image source="image/tileset.png" width="256" height="256"/>
+  <image source="../image/tileset.png" width="256" height="256"/>
   <wangsets>
    <wangset name="DirtGround" type="corner" tile="-1">
     <wangcolor name="" color="#ff0000" tile="-1" probability="1"/>
@@ -59,7 +59,7 @@
  <tileset firstgid="257" name="object" tilewidth="16" tileheight="16" tilecount="1" columns="0">
   <grid orientation="orthogonal" width="1" height="1"/>
   <tile id="0" x="8" y="8" width="16" height="16">
-   <image source="image/enemy_kuro.png" width="32" height="32"/>
+   <image source="../image/enemy_kuro.png" width="32" height="32"/>
   </tile>
  </tileset>
  <layer id="1" name="tile_0" width="20" height="500">
@@ -1580,84 +1580,98 @@
  <objectgroup id="14" name="enemy">
   <object id="20" name="hoge" gid="257" x="56" y="7616" width="16" height="16">
    <properties>
+    <property name="life" type="int" value="3"/>
     <property name="script" value="hoge"/>
     <property name="sprite" value="Kuro"/>
    </properties>
   </object>
   <object id="23" name="hoge" gid="257" x="88" y="7600" width="16" height="16">
    <properties>
+    <property name="life" type="int" value="3"/>
     <property name="script" value="hoge"/>
     <property name="sprite" value="Kuro"/>
    </properties>
   </object>
   <object id="28" name="hoge" gid="257" x="120" y="7584" width="16" height="16">
    <properties>
+    <property name="life" type="int" value="3"/>
     <property name="script" value="hoge"/>
     <property name="sprite" value="Kuro"/>
    </properties>
   </object>
   <object id="29" name="hoge" gid="257" x="152" y="7568" width="16" height="16">
    <properties>
+    <property name="life" type="int" value="3"/>
     <property name="script" value="hoge"/>
     <property name="sprite" value="Kuro"/>
    </properties>
   </object>
   <object id="30" name="hoge" gid="257" x="184" y="7552" width="16" height="16">
    <properties>
+    <property name="life" type="int" value="3"/>
     <property name="script" value="hoge"/>
     <property name="sprite" value="Kuro"/>
    </properties>
   </object>
   <object id="31" name="hoge" gid="257" x="216" y="7536" width="16" height="16">
    <properties>
+    <property name="life" type="int" value="3"/>
     <property name="script" value="hoge"/>
     <property name="sprite" value="Kuro"/>
    </properties>
   </object>
   <object id="32" name="hoge" gid="257" x="248" y="7520" width="16" height="16">
    <properties>
+    <property name="life" type="int" value="3"/>
     <property name="script" value="hoge"/>
     <property name="sprite" value="Kuro"/>
    </properties>
   </object>
   <object id="33" name="hoge" gid="257" x="248" y="7312" width="16" height="16">
    <properties>
+    <property name="life" type="int" value="3"/>
     <property name="script" value="hoge"/>
     <property name="sprite" value="Kuro"/>
    </properties>
   </object>
   <object id="34" name="hoge" gid="257" x="216" y="7296" width="16" height="16">
    <properties>
+    <property name="life" type="int" value="3"/>
     <property name="script" value="hoge"/>
     <property name="sprite" value="Kuro"/>
    </properties>
   </object>
   <object id="35" name="hoge" gid="257" x="184" y="7280" width="16" height="16">
    <properties>
+    <property name="life" type="int" value="3"/>
     <property name="script" value="hoge"/>
     <property name="sprite" value="Kuro"/>
    </properties>
   </object>
   <object id="36" name="hoge" gid="257" x="152" y="7264" width="16" height="16">
    <properties>
+    <property name="life" type="int" value="3"/>
     <property name="script" value="hoge"/>
     <property name="sprite" value="Kuro"/>
    </properties>
   </object>
   <object id="37" name="hoge" gid="257" x="120" y="7248" width="16" height="16">
    <properties>
+    <property name="life" type="int" value="3"/>
     <property name="script" value="hoge"/>
     <property name="sprite" value="Kuro"/>
    </properties>
   </object>
   <object id="38" name="hoge" gid="257" x="88" y="7232" width="16" height="16">
    <properties>
+    <property name="life" type="int" value="3"/>
     <property name="script" value="hoge"/>
     <property name="sprite" value="Kuro"/>
    </properties>
   </object>
   <object id="39" name="hoge" gid="257" x="56" y="7216" width="16" height="16">
    <properties>
+    <property name="life" type="int" value="3"/>
     <property name="script" value="hoge"/>
     <property name="sprite" value="Kuro"/>
    </properties>

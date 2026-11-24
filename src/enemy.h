@@ -40,7 +40,7 @@ namespace game {
       public:
         using EntityManager::Spawn;
 
-        Enemy *Spawn(EnemySprite sprite, float x, float y, std::string script_name);
+        Enemy *Spawn(EnemySprite sprite, float x, float y, std::string script_name, int life);
         void Die(Enemy &enemy);
         void OnHitPlayerBullet(Enemy &enemy);
 
