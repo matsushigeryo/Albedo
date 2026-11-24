@@ -45,6 +45,24 @@ namespace game {
         return kImageAssetPaths[static_cast<size_t>(image_id)];
     }
 
+    // フォントアセットの識別子
+    enum class FontID {
+        PublicPixel8px,
+        MisakiGothic8px,
+        ENUM_END
+    };
+
+    constexpr size_t kFontAssetSize = static_cast<size_t>(FontID::ENUM_END);
+
+    // フォントアセットのパスを取得する関数
+    static std::string GetFontAssetPath(const FontID font_id) {
+        static std::array<std::string, kFontAssetSize> kFontAssetPaths = {
+            "font/public_pixel_8px.dft",
+            "font/misaki_gothic_8px.dft",
+        };
+        return kFontAssetPaths[static_cast<size_t>(font_id)];
+    }
+
     // アセット管理クラス
     class Asset {
       public:
@@ -54,10 +72,13 @@ namespace game {
         bool Load();
         bool LoadImageAsset(const ImageID image_id, const std::string &file_path);
         int GetImageAsset(const ImageID image_id) const;
+        bool LoadFontAsset(const FontID font_id, const std::string &file_path);
+        int GetFontAsset(const FontID font_id) const;
 
       private:
         std::string root_folder_path_;
         std::unordered_map<ImageID, int> image_map_;
+        std::unordered_map<FontID, int> font_map_;
     };
 }
 

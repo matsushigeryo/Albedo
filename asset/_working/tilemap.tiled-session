@@ -6,10 +6,10 @@
     "fileStates": {
         "tilemap.tmx": {
             "scale": 1,
-            "selectedLayer": 3,
+            "selectedLayer": 4,
             "viewCenter": {
-                "x": 295.5,
-                "y": 7883
+                "x": 316,
+                "y": 6954
             }
         },
         "tilemap.tmx#object": {

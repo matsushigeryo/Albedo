@@ -6,6 +6,7 @@
 #include "global.h"
 #include "item.h"
 #include "log.h"
+#include "xoshiro.h"
 
 namespace game {
 
@@ -39,7 +40,11 @@ namespace game {
                 g_game.effect_manager->Spawn(EffectType::EnemyDead, enemy.x_, enemy.y_);
             }
             // アイテム出現
-            g_game.item_manager->Spawn(ItemType::Coin, enemy.x_, enemy.y_);
+            for (int i = 0; i < 5; ++i) {
+                const float ofs_x = LerpF(-8, 8, g_game.xoshiro->GetRandomNormalized());
+                const float ofs_y = LerpF(-8, 8, g_game.xoshiro->GetRandomNormalized());
+                g_game.item_manager->Spawn(ItemType::Coin, enemy.x_ + ofs_x, enemy.y_ + ofs_y);
+            }
         }
     }
 

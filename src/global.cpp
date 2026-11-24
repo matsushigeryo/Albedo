@@ -34,6 +34,13 @@ float EaseOutCubic(float x) {
     return 1.0f - std::pow(1.0f - x, 3);
 }
 
+// 距離の取得
+float GetDistance(float ax, float ay, float bx, float by) {
+    float dx = bx - ax;
+    float dy = by - ay;
+    return std::sqrtf((dx * dx) + (dy * dy));
+}
+
 // 度数法をラジアンに変換
 float DegreeToRadian(float degree) {
     return (degree / 360.0f) * (kPi * 2.0f);

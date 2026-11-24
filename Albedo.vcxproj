@@ -162,6 +162,8 @@
     <ClCompile Include="src\player_bomb.cpp" />
     <ClCompile Include="src\player_bullet.cpp" />
     <ClCompile Include="src\pugixml\pugixml.cpp" />
+    <ClCompile Include="src\text_entity.cpp" />
+    <ClCompile Include="src\text_function.cpp" />
     <ClCompile Include="src\tilemap.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +183,8 @@
     <ClInclude Include="src\player.h" />
     <ClInclude Include="src\player_bomb.h" />
     <ClInclude Include="src\player_bullet.h" />
+    <ClInclude Include="src\text_entity.h" />
+    <ClInclude Include="src\text_function.h" />
     <ClInclude Include="src\tilemap.h" />
     <ClInclude Include="src\xoshiro.h" />
   </ItemGroup>

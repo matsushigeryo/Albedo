@@ -23,6 +23,7 @@ float EaseInQuad(float x);
 float EaseOutQuad(float x);
 float EaseInCubic(float x);
 float EaseOutCubic(float x);
+float GetDistance(float ax, float ay, float bx, float by);
 float DegreeToRadian(float degree);
 float RadianToDegree(float radian);
 bool OnScreen(int x, int y);

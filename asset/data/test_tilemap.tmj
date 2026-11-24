@@ -1585,7 +1585,7 @@
                  "visible":true,
                  "width":16,
                  "x":56,
-                 "y":7616
+                 "y":7520
                 }, 
                 {
                  "gid":257,
@@ -1609,7 +1609,7 @@
                  "visible":true,
                  "width":16,
                  "x":88,
-                 "y":7600
+                 "y":7536
                 }, 
                 {
                  "gid":257,
@@ -1633,7 +1633,7 @@
                  "visible":true,
                  "width":16,
                  "x":120,
-                 "y":7584
+                 "y":7552
                 }, 
                 {
                  "gid":257,
@@ -1681,7 +1681,7 @@
                  "visible":true,
                  "width":16,
                  "x":184,
-                 "y":7552
+                 "y":7584
                 }, 
                 {
                  "gid":257,
@@ -1705,7 +1705,7 @@
                  "visible":true,
                  "width":16,
                  "x":216,
-                 "y":7536
+                 "y":7600
                 }, 
                 {
                  "gid":257,
@@ -1729,7 +1729,7 @@
                  "visible":true,
                  "width":16,
                  "x":248,
-                 "y":7520
+                 "y":7616
                 }, 
                 {
                  "gid":257,
@@ -1898,343 +1898,6 @@
                  "width":16,
                  "x":56,
                  "y":7216
-                }, 
-                {
-                 "gid":257,
-                 "height":16,
-                 "id":47,
-                 "name":"fuga",
-                 "opacity":1,
-                 "properties":[
-                        {
-                         "name":"script",
-                         "type":"string",
-                         "value":"fuga"
-                        }, 
-                        {
-                         "name":"sprite",
-                         "type":"string",
-                         "value":"Kuro"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":56,
-                 "y":6960
-                }, 
-                {
-                 "gid":257,
-                 "height":16,
-                 "id":48,
-                 "name":"fuga",
-                 "opacity":1,
-                 "properties":[
-                        {
-                         "name":"script",
-                         "type":"string",
-                         "value":"fuga"
-                        }, 
-                        {
-                         "name":"sprite",
-                         "type":"string",
-                         "value":"Kuro"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":88,
-                 "y":6944
-                }, 
-                {
-                 "gid":257,
-                 "height":16,
-                 "id":49,
-                 "name":"fuga",
-                 "opacity":1,
-                 "properties":[
-                        {
-                         "name":"script",
-                         "type":"string",
-                         "value":"fuga"
-                        }, 
-                        {
-                         "name":"sprite",
-                         "type":"string",
-                         "value":"Kuro"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":120,
-                 "y":6928
-                }, 
-                {
-                 "gid":257,
-                 "height":16,
-                 "id":50,
-                 "name":"fuga",
-                 "opacity":1,
-                 "properties":[
-                        {
-                         "name":"script",
-                         "type":"string",
-                         "value":"fuga"
-                        }, 
-                        {
-                         "name":"sprite",
-                         "type":"string",
-                         "value":"Kuro"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":152,
-                 "y":6912
-                }, 
-                {
-                 "gid":257,
-                 "height":16,
-                 "id":51,
-                 "name":"fuga",
-                 "opacity":1,
-                 "properties":[
-                        {
-                         "name":"script",
-                         "type":"string",
-                         "value":"fuga"
-                        }, 
-                        {
-                         "name":"sprite",
-                         "type":"string",
-                         "value":"Kuro"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":184,
-                 "y":6928
-                }, 
-                {
-                 "gid":257,
-                 "height":16,
-                 "id":52,
-                 "name":"fuga",
-                 "opacity":1,
-                 "properties":[
-                        {
-                         "name":"script",
-                         "type":"string",
-                         "value":"fuga"
-                        }, 
-                        {
-                         "name":"sprite",
-                         "type":"string",
-                         "value":"Kuro"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":216,
-                 "y":6944
-                },
-            
-                {
-                 "gid":257,
-                 "height":16,
-                 "id":53,
-                 "name":"fuga",
-                 "opacity":1,
-                 "properties":[
-                        {
-                         "name":"script",
-                         "type":"string",
-                         "value":"fuga"
-                        }, 
-                        {
-                         "name":"sprite",
-                         "type":"string",
-                         "value":"Kuro"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":248,
-                 "y":6960
-                }, 
-                {
-                 "gid":257,
-                 "height":16,
-                 "id":54,
-                 "name":"fuga",
-                 "opacity":1,
-                 "properties":[
-                        {
-                         "name":"script",
-                         "type":"string",
-                         "value":"fuga"
-                        }, 
-                        {
-                         "name":"sprite",
-                         "type":"string",
-                         "value":"Kuro"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":56,
-                 "y":6720
-                }, 
-                {
-                 "gid":257,
-                 "height":16,
-                 "id":55,
-                 "name":"fuga",
-                 "opacity":1,
-                 "properties":[
-                        {
-                         "name":"script",
-                         "type":"string",
-                         "value":"fuga"
-                        }, 
-                        {
-                         "name":"sprite",
-                         "type":"string",
-                         "value":"Kuro"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":88,
-                 "y":6704
-                }, 
-                {
-                 "gid":257,
-                 "height":16,
-                 "id":56,
-                 "name":"fuga",
-                 "opacity":1,
-                 "properties":[
-                        {
-                         "name":"script",
-                         "type":"string",
-                         "value":"fuga"
-                        }, 
-                        {
-                         "name":"sprite",
-                         "type":"string",
-                         "value":"Kuro"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":120,
-                 "y":6688
-                }, 
-                {
-                 "gid":257,
-                 "height":16,
-                 "id":57,
-                 "name":"fuga",
-                 "opacity":1,
-                 "properties":[
-                        {
-                         "name":"script",
-                         "type":"string",
-                         "value":"fuga"
-                        }, 
-                        {
-                         "name":"sprite",
-                         "type":"string",
-                         "value":"Kuro"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":152,
-                 "y":6672
-                }, 
-                {
-                 "gid":257,
-                 "height":16,
-                 "id":58,
-                 "name":"fuga",
-                 "opacity":1,
-                 "properties":[
-                        {
-                         "name":"script",
-                         "type":"string",
-                         "value":"fuga"
-                        }, 
-                        {
-                         "name":"sprite",
-                         "type":"string",
-                         "value":"Kuro"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":184,
-                 "y":6688
-                }, 
-                {
-                 "gid":257,
-                 "height":16,
-                 "id":59,
-                 "name":"fuga",
-                 "opacity":1,
-                 "properties":[
-                        {
-                         "name":"script",
-                         "type":"string",
-                         "value":"fuga"
-                        }, 
-                        {
-                         "name":"sprite",
-                         "type":"string",
-                         "value":"Kuro"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":216,
-                 "y":6704
-                }, 
-                {
-                 "gid":257,
-                 "height":16,
-                 "id":60,
-                 "name":"fuga",
-                 "opacity":1,
-                 "properties":[
-                        {
-                         "name":"script",
-                         "type":"string",
-                         "value":"fuga"
-                        }, 
-                        {
-                         "name":"sprite",
-                         "type":"string",
-                         "value":"Kuro"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":248,
-                 "y":6720
                 }],
          "opacity":1,
          "type":"objectgroup",

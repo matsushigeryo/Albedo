@@ -10,7 +10,7 @@
 namespace game {
 
     constexpr float kEnemyBulletEnterEffectLength = 10;        // 発射時のアニメーション効果の長さ
-    constexpr float kEnemyBulletSpinningAnimationSpeed = 0.1f; // 回転アニメーションの速度(Radian/F)
+    constexpr float kEnemyBulletSpinningAnimationSpeed = 0.3f; // 回転アニメーションの速度(Radian/F)
 
     // 敵弾のスプライト種別
     enum class EnemyBulletSprite {

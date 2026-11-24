@@ -20,6 +20,7 @@ namespace game {
     class EnemyScriptManager;
     class ItemManager;
     class EffectManager;
+    class TextEntityManager;
 
     struct Game {
         Game();
@@ -40,6 +41,7 @@ namespace game {
         std::unique_ptr<EnemyScriptManager> enemy_script_manager;
         std::unique_ptr<ItemManager> item_manager;
         std::unique_ptr<EffectManager> effect_manager;
+        std::unique_ptr<TextEntityManager> text_entity_manager;
     };
 
     extern Game g_game;

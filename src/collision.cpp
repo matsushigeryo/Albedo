@@ -1,4 +1,5 @@
 #include "collision.h"
+#include "global.h"
 #include "player.h"
 #include "player_bullet.h"
 #include "enemy.h"
@@ -9,10 +10,7 @@ namespace game {
 
     // ³‰~“¯m‚Ì“–‚½‚è”»’è
     bool CheckCollisionCircleToCircle(float ax, float ay, float ar, float bx, float by, float br) {
-        const float dx = bx - ax;
-        const float dy = by - ay;
-        const float distance = std::sqrtf((dx * dx) + (dy * dy));
-        return distance < (ar + br);
+        return GetDistance(ax, ay, bx, by) < (ar + br);
     }
 
     // ƒvƒŒƒCƒ„[‚Æ“G‚Ì“–‚½‚è”»’è
@@ -66,8 +64,7 @@ namespace game {
         for (auto& item : item_manager->GetEntities()) {
             if (!item.is_active_) continue;
             if (CheckCollisionCircleToCircle(player->GetX(), player->GetY(), kPlayerCollisionRadius, item.x_, item.y_, kItemCollisionRadius)) {
-                item.is_active_ = false;
-                break;
+                item_manager->OnHitPlayer(item);
             }
         }
     }

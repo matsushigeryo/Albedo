@@ -3,14 +3,14 @@
     <Parallel mode="Join">
         <!-- 移動 -->
         <Task>
-            <Repeat count="40">
+            <Repeat count="60">
                 <MoveBy dx="0" dy="2" />
                 <Wait frames="1" />
             </Repeat>
 
             <Wait frames="160" />
 
-            <Repeat count="40">
+            <Repeat count="60">
                 <MoveBy dx="0" dy="-2" />
                 <Wait frames="1" />
             </Repeat>
@@ -19,7 +19,7 @@
         <!-- 攻撃 -->
         <Task>
             <Wait frames="60" />
-            <Repeat count="5">
+            <Repeat count="3">
                 <SetVar name="speed" value="2" />
                 <GetAngleToPlayer name="angle" />
                 <Repeat count="5">

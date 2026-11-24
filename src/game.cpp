@@ -15,6 +15,7 @@
 #include "player.h"
 #include "player_bomb.h"
 #include "player_bullet.h"
+#include "text_entity.h"
 #include "tilemap.h"
 #include "xoshiro.h"
 
@@ -44,21 +45,11 @@ namespace game {
         g_game.enemy_script_manager = std::make_unique<EnemyScriptManager>();
         g_game.item_manager = std::make_unique<ItemManager>();
         g_game.effect_manager = std::make_unique<EffectManager>();
+        g_game.text_entity_manager = std::make_unique<TextEntityManager>();
 
         // アセット群の読み込み
         g_game.asset->Clear();
-        g_game.asset->LoadImageAsset(ImageID::TileSet, "image/tileset.png");
-        g_game.asset->LoadImageAsset(ImageID::Player, "image/player.png");
-        g_game.asset->LoadImageAsset(ImageID::PlayerOption, "image/player_option.png");
-        g_game.asset->LoadImageAsset(ImageID::PlayerBulletMainShot, "image/player_bullet_main_shot.png");
-        g_game.asset->LoadImageAsset(ImageID::PlayerBulletSubShot, "image/player_bullet_sub_shot.png");
-        g_game.asset->LoadImageAsset(ImageID::EnemyKuro, "image/enemy_kuro.png");
-        g_game.asset->LoadImageAsset(ImageID::EnemyBullet_WhiteSmallCircle, "image/enemy_bullet/white_small_circle.png");
-        g_game.asset->LoadImageAsset(ImageID::EnemyBullet_SpinningRedRice, "image/enemy_bullet/spinning_red_rice.png");
-        g_game.asset->LoadImageAsset(ImageID::EnemyBullet_GreenNeedle, "image/enemy_bullet/green_needle.png");
-        g_game.asset->LoadImageAsset(ImageID::ItemCoin, "image/item_coin.png");
-        g_game.asset->LoadImageAsset(ImageID::EffectWhiteSparkle1, "image/effect_white_sparkle_1.png");
-        g_game.asset->LoadImageAsset(ImageID::EffectWhiteSparkle2, "image/effect_white_sparkle_2.png");
+        g_game.asset->Load();
 
         // 初期化
         g_game.input->Init();
@@ -77,6 +68,8 @@ namespace game {
     }
 
     void Update() {
+
+        // F5キー押下でリセット
         if (g_game.input->OnPressedKeyboard(KEY_INPUT_F5)) {
             Init();
             return;
@@ -93,11 +86,13 @@ namespace game {
         g_game.enemy_bullet_manager->Update();
         g_game.item_manager->Update();
         g_game.effect_manager->Update();
+        g_game.text_entity_manager->Update();
 
         // 当たり判定の処理
         UpdateCollisionPlayerToEnemy(g_game.player.get(), g_game.enemy_manager.get());
         UpdateCollisionPlayerToEnemyBullet(g_game.player.get(), g_game.enemy_bullet_manager.get());
         UpdateCollisionPlayerBulletToEnemy(g_game.player_bullet_manager.get(), g_game.enemy_manager.get());
+        UpdateCollisionPlayerToItem(g_game.player.get(), g_game.item_manager.get());
 
         // 敵のスポーン処理(仮)
         // if (game_time >= 40 && (game_time - 40) % 40 == 0) {
@@ -122,6 +117,7 @@ namespace game {
         g_game.enemy_manager->Draw();
         g_game.enemy_bullet_manager->Draw();
         g_game.effect_manager->Draw();
+        g_game.text_entity_manager->Draw();
         g_game.player_bomb->Draw();
     }
 }
